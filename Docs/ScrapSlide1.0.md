@@ -4,19 +4,16 @@ ScrapSlide1.0 API Document
 * ScrapSlide.Slide
 * ScrapSlide.SlidePanel
 * ScrapSlide.Navigator
+
 * ScrapSlide.Controller
-* ScrapSlide.Delegtor
+* ScrapSlide.SlideController
+* ScrapSlide.Navigator
+
 * ScrapSlide.Behavior
-
-
-Refarence
-----------------------------------------------------------------------------------------------
-
-namespace: ScrapSlide
+* ScrapSlide.Delegtor
 
 
 ### ScrapSlide.Slide
-
 
 
 ### ScrapSlide.SlidePanel
@@ -29,6 +26,8 @@ namespace: ScrapSlide
 
 ### ScrapSlide.Controller
 
+### ScrapSlide.SlideController
+### ScrapSlide.NavigaterController
 
 ### ScrapSlide.Delegtor
 

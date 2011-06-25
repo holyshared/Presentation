@@ -1,0 +1,34 @@
+<script type="text/javascript" src="/depender/build?require=ScrapSlide/ScrapSlide,ScrapSlide/ScrapSlide.Delegtor"></script>
+<script type="text/javascript">
+(function(doc){
+
+	Slide.NavigaterController = new Class({
+		first: function(){
+		},
+
+		prev: function(){
+		},
+
+		next: function(){
+		},
+
+		last: function(){
+		}
+	});
+
+	window.addEventListener('load', function(){
+
+		var behavior = new Behavior();
+		behavior.apply(behavior.getContentElement());
+
+	}, false);
+
+}(document));
+</script>
+
+<p data-behavior="NavigaterController">
+	<a data-trigger="first" title="first" href="#first">first</a>
+	<a data-trigger="prev" title="prev" href="#prev">prev</a>
+	<a data-trigger="next" title="next" href="#next">next</a>
+	<a data-trigger="last" title="last" href="#prev">last</a>
+</p>

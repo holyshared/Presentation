@@ -1,0 +1,32 @@
+name: ScrapSlide
+
+web: "[ScrapSlide](http://holyshared.github.com/ScrapSlide ScrapSlide)"
+
+description: ""
+
+authors: "[Noritaka Horio](http://sharedhat.com)"
+
+license: "[MIT License](http://holyshared.github.com/URLDispatcher/license.txt)"
+
+copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
+
+sources:
+  - "Source/Core/ScrapSlide.js"
+  - "Source/Core/ScrapSlide.SlidePanel.js"
+  - "Source/Core/ScrapSlide.Navigator.js"
+  - "Source/Core/ScrapSlide.Slide.js"
+  - "Source/Controller/ScrapSlide.Controller.js"
+  - "Source/Controller/ScrapSlide.NavigaterController.js"
+  - "Source/Controller/ScrapSlide.SlideController.js"
+  - "Source/Behavior/ScrapSlide.Behavior.js"
+  - "Source/Behavior/ScrapSlide.Delegtor.js"
+
+author: holyshared
+
+category: Utilities
+
+tags: [slide, ui, behavior]
+
+current: 1.0
+
+demo: http://holyshared.github.com/ScrapSlide/
