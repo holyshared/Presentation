@@ -17,3 +17,38 @@ provides: [ScrapSlide.SlidePanel]
 
 ...
 */
+
+
+(function(slide){
+	
+slide.SlidePanel = new Class({
+
+	_element: null,
+
+	initialize: function(element){
+		this._element = element;
+	},
+
+	isCurrent: function(){
+		
+	},
+
+	isChild: function(){
+		
+	},
+
+	prev: function(){
+		
+	},
+
+	next: function(){
+		
+	}
+	
+	
+});	
+	
+	
+	
+	
+}(ScrapSlide));
