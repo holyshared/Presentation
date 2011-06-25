@@ -15,7 +15,7 @@ requires:
   - ScrapSlide/ScrapSlide
   - ScrapSlide/ScrapSlide.SlideController
 
-provides: [ScrapSlide.SlideController]
+provides: [ScrapSlide.SlideController, ScrapSlide.SlideConnecter]
 
 ...
 */
@@ -23,6 +23,9 @@ provides: [ScrapSlide.SlideController]
 (function(slide){
 
 slide.SlideController = new Class({
+
+	initialize: function(element, options){
+	},
 
 	prev: function(){
 	},
@@ -39,5 +42,23 @@ slide.SlideController = new Class({
 });
 
 new Type('SlideController', slide.SlideController);
+
+
+slide.SlideConnecter = new Class({
+
+	_slide: null,
+
+	setSlide: function(slide){
+		if (!Type.isSlideController(slide)){ 
+			throw new TypeError('Please specify SlideController.');
+		}
+		this._slide = slide;
+	},
+
+	getSlide: function(){
+		return this._slide;
+	}
+
+});
 
 }(ScrapSlide));

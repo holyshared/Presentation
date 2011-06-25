@@ -19,7 +19,7 @@ sources:
   - "Source/Controller/ScrapSlide.NavigaterController.js"
   - "Source/Controller/ScrapSlide.SlideController.js"
   - "Source/Behavior/ScrapSlide.Behavior.js"
-  - "Source/Behavior/ScrapSlide.Delegtor.js"
+  - "Source/Behavior/ScrapSlide.Delegator.js"
 
 author: holyshared
 

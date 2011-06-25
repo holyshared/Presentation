@@ -9,23 +9,27 @@ license: MIT-style
 authors:
 - Noritaka Horio
 
-provides: [ScrapSlide.Behavior]
+requires:
+  - Behavior/Behavior
+  - ScrapSlide/ScrapSlide
+
+provides: [Behavior]
 
 ...
 */
 
-(function(slide){
+(function(behavior, slide){
 
-slide.addGlobalFilter('SlideController', {
+behavior.addGlobalFilter('SlideController', {
 
 	setup: function(element, api){
-		var slide = new slide.SlideController();
-		return slide;
+		var controller = new slide.SlideController(element);
+		return controller;
 	}
 
 });
 
-slide.addGlobalFilter('NavigaterController', {
+behavior.addGlobalFilter('NavigaterController', {
 
 	requireAs: {
 		connectTo: String
@@ -39,14 +43,35 @@ slide.addGlobalFilter('NavigaterController', {
 			throw new Error('Slide is not found');
 		}
 
-		var slide = target.getBehaviorResult('SlideController');
+		var slideController = target.getBehaviorResult('SlideController');
 
 		var navigation = new slide.NavigaterController();
-		navigation.setSlide(slide);
+		navigation.setSlide(slideController);
+
+		var eventListener = function(eventType){
+			return function(){
+				navigation[eventType]();
+			}
+		};
+
+		var listeners = {
+			firstSlide: 'first',
+			prevSlide: 'prev',
+			nextSlide: 'next',
+			lastSlide: 'last'
+		};
+		for (var key in listeners){
+			var callMethod = listeners[key];
+			api.addEvent(key, eventListener(callMethod));
+		}
+
+		api.onCleanup(function(){
+			api.removeEvents('firstSlide', 'prevSlide', 'nextSlide', 'lastSlide');
+		});
 
 		return navigation;
 	}
 
 });
 
-}(ScrapSlide));
+}(Behavior, ScrapSlide));

@@ -1,18 +1,67 @@
-<script type="text/javascript" src="/depender/build?require=ScrapSlide/ScrapSlide,ScrapSlide/ScrapSlide.Delegtor"></script>
+<script type="text/javascript" src="/depender/build?require=ScrapSlide/ScrapSlide,ScrapSlide/Behavior,ScrapSlide/Delegator"></script>
 <script type="text/javascript">
-(function(doc){
+(function(doc, slide){
 
-	Slide.NavigaterController = new Class({
+	slide.SlideConnecter = new Class({
+	
+		_slide: null,
+
+		setSlide: function(slide){
+			this._slide = slide;
+		},
+	
+		getSlide: function(){
+			return this._slide;
+		}
+	
+	});
+
+	slide.SlideController = new Class({
+
+		initialize: function(element, options){
+			this.element = element;
+		},
+
 		first: function(){
+			this.element.set('html', 'first');
 		},
 
 		prev: function(){
+			this.element.set('html', 'prev');
 		},
 
 		next: function(){
+			this.element.set('html', 'next');
 		},
 
 		last: function(){
+			this.element.set('html', 'last');
+		}
+
+	});
+
+	slide.NavigaterController = new Class({
+
+		Implements: [slide.SlideConnecter],
+
+		first: function(){
+			log('NavigaterController - first');
+			this.getSlide().first();
+		},
+
+		prev: function(){
+			log('NavigaterController - prev');
+			this.getSlide().prev();
+		},
+
+		next: function(){
+			log('NavigaterController - next');
+			this.getSlide().next();
+		},
+
+		last: function(){
+			log('NavigaterController - last');
+			this.getSlide().last();
 		}
 	});
 
@@ -21,12 +70,18 @@
 		var behavior = new Behavior();
 		behavior.apply(behavior.getContentElement());
 
+		var delegator = new Delegator();
+		delegator.bindToBehavior(behavior);
+		delegator.attach(document.body);
+
 	}, false);
 
-}(document));
+}(document, ScrapSlide));
 </script>
+<article id="slide" data-behavior="SlideController">
+</article>
 
-<p data-behavior="NavigaterController">
+<p data-behavior="NavigaterController" data-navigatercontroller-options="{ 'connectTo': 'slide' }">
 	<a data-trigger="first" title="first" href="#first">first</a>
 	<a data-trigger="prev" title="prev" href="#prev">prev</a>
 	<a data-trigger="next" title="next" href="#next">next</a>

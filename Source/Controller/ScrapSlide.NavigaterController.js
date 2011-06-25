@@ -13,7 +13,7 @@ requires:
   - Core/Type
   - Core/Class
   - ScrapSlide/ScrapSlide
-  - ScrapSlide/ScrapSlide.SlideController
+  - ScrapSlide/ScrapSlide.SlideConnecter
 
 provides: [ScrapSlide.NavigatorController]
 
@@ -24,18 +24,7 @@ provides: [ScrapSlide.NavigatorController]
 
 slide.NavigatorController = new Class({
 
-	_slide: null,
-
-	setSlide: function(slide){
-		if (!Type.isSlideController(slide)){ 
-			throw new TypeError('Please specify SlideController.');
-		}
-		this._slide = slide;
-	},
-
-	getSlide: function(){
-		return this._slide;
-	},
+	Implements: [SlideConnecter],
 
 	prev: function(){
 		this._slide.prev();
