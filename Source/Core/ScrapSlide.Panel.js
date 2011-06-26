@@ -1,6 +1,6 @@
 /*
 ---
-name: ScrapSlide.SlidePanel
+name: ScrapSlide.Panel
 
 description: 
 
@@ -10,17 +10,18 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Core/Class
-  - ScrapSlide/ScrapSlide.Slide
+  - ScrapSlide/ScrapSlide.Item
 
-provides: [ScrapSlide.SlidePanel]
+provides: [ScrapSlide.Panel]
 
 ...
 */
 
 (function(slide){
 	
-slide.SlidePanel = new Class({
+slide.Panel = new Class({
+
+	Extends: slide.Item,
 
 	_index: null,
 	_element: null,
@@ -55,6 +56,6 @@ slide.SlidePanel = new Class({
 
 });
 
-new Type('SlidePanel', slide.SlidePanel);
+new Type('ScrapSlidePanel', slide.Panel);
 
 }(ScrapSlide));

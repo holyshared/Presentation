@@ -12,9 +12,8 @@ authors:
 requires:
   - Core/Class
   - ScrapSlide/ScrapSlide
-  - ScrapSlide/ScrapSlide.SlidePanel
 
-provides: [ScrapSlide.Slide]
+provides: [ScrapSlide.Slide, ScrapSlide.Item]
 
 ...
 */
@@ -34,8 +33,8 @@ slide.Slide = new Class({
 	},
 
 	addPanel: function(panel){
-		if (!Type.isSlidePanel(panel)) {
-			throw new TypeError('The specified value is not a slide panel.');
+		if (!Type.isScrapSlideItem(panel)) {
+			throw new TypeError('The specified value is not a slide item.');
 		}
 		this._panels.push(panel);
 	},
@@ -104,14 +103,16 @@ slide.Slide = new Class({
 
 });
 
-new Type('Slide', slide.Slide);
+new Type('ScrapSlide', slide.Slide);
 
-slide.Slide.implement({
+
+
+slide.Item = new Class({
 
 	_slide: null,
 
 	setSlide: function(slideUI){
-		if (!Type.isSlide(slideUI)) {
+		if (!Type.isScrapSlide(slideUI)) {
 			throw new TypeError('The specified value is not a slide.');
 		}
 		this._slide = slideUI;
@@ -145,5 +146,8 @@ slide.Slide.implement({
 	}
 
 });
+
+new Type('ScrapSlideItem', slide.Item);
+
 
 }(ScrapSlide));

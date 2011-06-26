@@ -12,9 +12,8 @@ authors:
 requires:
   - Core/Object
   - Core/Element
-  - ScrapSlide/ScrapSlide
   - ScrapSlide/ScrapSlide.Loader
-  - ScrapSlide/ScrapSlide.SlidePanel
+  - ScrapSlide/ScrapSlide.Panel
 
 provides: [ScrapSlide.ElementLoader]
 

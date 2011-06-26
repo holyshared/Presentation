@@ -12,8 +12,7 @@ authors:
 requires:
   - Core/Object
   - Core/Request.HTML
-  - ScrapSlide/ScrapSlide
-  - ScrapSlide/ScrapSlide.SlidePanel
+  - ScrapSlide/ScrapSlide.Panel
   - ScrapSlide/ScrapSlide.Loader
 
 provides: [ScrapSlide.RequestLoader]
@@ -32,7 +31,7 @@ slide.RequestLoader = new Class({
 			onSuccess: function(tree, elements, html, scripts){
 				var panels = [];
 				elements.each(function(element){
-					var panel = new slide.SlidePanel();
+					var panel = new slide.Panel();
 					panels.push(panel);
 				});
 				this.fireEvent('complete', [panels]);

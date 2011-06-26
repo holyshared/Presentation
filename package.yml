@@ -12,8 +12,8 @@ copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
   - "Source/Core/ScrapSlide.js"
-  - "Source/Core/ScrapSlide.SlidePanel.js"
   - "Source/Core/ScrapSlide.Slide.js"
+  - "Source/Core/ScrapSlide.Panel.js"
   - "Source/Loader/ScrapSlide.Loader.js"
   - "Source/Loader/ScrapSlide.ElementLoader.js"
   - "Source/Loader/ScrapSlide.RequestLoader.js"
