@@ -15,6 +15,7 @@ sources:
   - "Source/Core/ScrapSlide.SlidePanel.js"
   - "Source/Core/ScrapSlide.Navigator.js"
   - "Source/Core/ScrapSlide.Slide.js"
+  - "Source/Core/ScrapSlide.StandardSlide.js"
   - "Source/Controller/ScrapSlide.Controller.js"
   - "Source/Controller/ScrapSlide.NavigaterController.js"
   - "Source/Controller/ScrapSlide.SlideController.js"

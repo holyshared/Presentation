@@ -45,6 +45,53 @@ ScrapSlide1.0 API Document
 * prev
 * next
 
+
+
+
+
+### ScrapSlide.Loader
+
+### ScrapSlide.StandardLoader
+
+	var loader = new ScrapSlide.StandardLoader({
+		onLoadStart: function(){
+		},
+		onLoadEnd: function(panels){
+		}
+	});
+	loader.load();
+
+	var loader = new ScrapSlide.StandardLoader();
+	var slide = new Slide.Slide(loader, {});
+	slide.start();
+
+
+### ScrapSlide.RequestLoader
+
+	var loader = new ScrapSlide.RequestLoader({
+		onLoadStart: function(){
+		},
+		onLoadEnd: function(panels){
+		}
+	});
+	loader.load();
+
+
+	var slide = new Slide.Slide({});
+
+	var loader = new ScrapSlide.RequestLoader({
+		onComplete: function(panels){
+			slide.addPanels(panels);
+		}
+	});
+	loader.load();
+
+#### Methods
+
+* load (string)
+
+
+
 ### ScrapSlide.Navigator
 
 * setSlide

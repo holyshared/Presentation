@@ -22,15 +22,18 @@ provides: [ScrapSlide.Slide]
 
 slide.Slide = new Class({
 
-	_current: 0,	
+	_current: 0,
 	_panels: [],
 
-	initialize: function(){
-		
+	options: {
+	},
+
+	initialize: function(options){
+		this.setOptions(options);
 	},
 
 	addPanel: function(panel){
-		this._panels.push(panel);		
+		this._panels.push(panel);
 	},
 
 	addPanels: function(panels){
@@ -38,7 +41,6 @@ slide.Slide = new Class({
 		panels.each(function(panel){
 			self.addPanel(panel);
 		});
-		
 	},
 
 	removePanel: function(panel){
@@ -50,13 +52,18 @@ slide.Slide = new Class({
 		panels.each(function(panel){
 			self.removePanel(panel);
 		});
-
 	},
 
 	getCurrentIndex: function(){
 		return this._current;
 	},
 
+	setCurrentIndex: function(index){
+		if (!this._isValid(index)) {
+			throw new TypeError('');
+		}
+		this._current = index;
+	},
 
 	isValid: function(){
 		var index = this.getCurrentIndex();
@@ -72,14 +79,14 @@ slide.Slide = new Class({
 		var prevIndex = this.getCurrentIndex() - 1;
 		if (this.isValid(prevIndex)) {
 			this.setCurrentIndex(prevIndex);
-		}		
+		}
 	},
 
 	next: function(){
 		var nextIndex = this.getCurrentIndex() + 1;
 		if (this.isValid(nextIndex)) {
 			this.setCurrentIndex(nextIndex);
-		}		
+		}
 	},
 
 	first:function(){
@@ -90,7 +97,7 @@ slide.Slide = new Class({
 		var last = this.getLength();
 		this.setCurrentIndex(last);
 	}
-	
+
 });
 	
 }(ScrapSlide));
