@@ -13,6 +13,7 @@ requires:
   - Core/Object
   - Core/Request.HTML
   - ScrapSlide/ScrapSlide
+  - ScrapSlide/ScrapSlide.SlidePanel
   - ScrapSlide/ScrapSlide.Loader
 
 provides: [ScrapSlide.RequestLoader]

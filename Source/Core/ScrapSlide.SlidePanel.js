@@ -11,7 +11,6 @@ authors:
 
 requires:
   - Core/Class
-  - ScrapSlide/ScrapSlide
   - ScrapSlide/ScrapSlide.Slide
 
 provides: [ScrapSlide.SlidePanel]
@@ -24,7 +23,6 @@ provides: [ScrapSlide.SlidePanel]
 slide.SlidePanel = new Class({
 
 	_index: null,
-	_slide: null,
 	_element: null,
 
 	initialize: function(element){
@@ -43,40 +41,20 @@ slide.SlidePanel = new Class({
 		return this;
 	},
 
-	setSlide: function(slideUI){
-		if (!Type.isSlide(slideUI)) {
-			throw new TypeError('The specified value is not a slide.');
+	getElement: function(){
+		return this._element;
+	},
+
+	setElement: function(element){
+		if (!Type.isElement(element)) {
+			throw new TypeError('The specified value is not a element.');
 		}
-		this._slide = slideUI;
+		this._element = element;
 		return this;
-	},
-
-	getSlide: function(){
-		return this._slide;
-	},
-
-	isCurrent: function(){
-		return (this.getIndex() == this._slide.getCurrentIndex()) ? true : false;
-	},
-
-	isChild: function(slide){
-		return (this.getSlide() == slide) ? true : false;
-	},
-
-	prev: function(){
-		if (!this.getSlide()) {
-			throw new Error('The slide is not set.');
-		}
-		this.getSlide().prev();
-	},
-
-	next: function(){
-		if (!this.getSlide()) {
-			throw new Error('The slide is not set.');
-		}
-		this.getSlide().next();
 	}
 
 });
+
+new Type('SlidePanel', slide.SlidePanel);
 
 }(ScrapSlide));

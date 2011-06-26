@@ -10,8 +10,11 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Object
+  - Core/Element
   - ScrapSlide/ScrapSlide
   - ScrapSlide/ScrapSlide.Loader
+  - ScrapSlide/ScrapSlide.SlidePanel
 
 provides: [ScrapSlide.ElementLoader]
 

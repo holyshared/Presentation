@@ -12,6 +12,7 @@ authors:
 requires:
   - Core/Class
   - ScrapSlide/ScrapSlide
+  - ScrapSlide/ScrapSlide.SlidePanel
 
 provides: [ScrapSlide.Slide]
 
@@ -33,6 +34,9 @@ slide.Slide = new Class({
 	},
 
 	addPanel: function(panel){
+		if (!Type.isSlidePanel(panel)) {
+			throw new TypeError('The specified value is not a slide panel.');
+		}
 		this._panels.push(panel);
 	},
 
@@ -99,5 +103,47 @@ slide.Slide = new Class({
 	}
 
 });
-	
+
+new Type('Slide', slide.Slide);
+
+slide.Slide.implement({
+
+	_slide: null,
+
+	setSlide: function(slideUI){
+		if (!Type.isSlide(slideUI)) {
+			throw new TypeError('The specified value is not a slide.');
+		}
+		this._slide = slideUI;
+		return this;
+	},
+
+	getSlide: function(){
+		return this._slide;
+	},
+
+	isCurrent: function(){
+		return (this.getIndex() == this.getSlide().getCurrentIndex()) ? true : false;
+	},
+
+	isChild: function(slide){
+		return (this.getSlide() == slide) ? true : false;
+	},
+
+	prev: function(){
+		if (!this.getSlide()) {
+			throw new Error('The slide is not set.');
+		}
+		this.getSlide().prev();
+	},
+
+	next: function(){
+		if (!this.getSlide()) {
+			throw new Error('The slide is not set.');
+		}
+		this.getSlide().next();
+	}
+
+});
+
 }(ScrapSlide));

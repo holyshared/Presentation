@@ -24,7 +24,7 @@ provides: [ScrapSlide.Loader]
 
 slide.Loader = new Class({
 
-	Implements: [Events, Options],
+	Implements: [Events, Options]
 
 });
 	
