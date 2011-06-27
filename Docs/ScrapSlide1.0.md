@@ -31,20 +31,30 @@ ScrapSlide1.0 API Document
 * last -
 
 
-### ScrapSlide.SlidePanel
+### ScrapSlide.Panel
+
+#### Extends
+ScrapSlide.Item
 
 #### Methods
 
-* getIndex
-* setSlide
-* getSlide
-* isChild
-* isCurrent
-* show
-* hide
-* prev
-* next
+* getIndex - 
+* setIndex (number) - 
+* getElement - 
+* setElement (element) - 
+* show - 
+* hide - 
 
+### ScrapSlide.Item
+
+#### Methods
+
+* setSlide (object) - 
+* getSlide - 
+* isCurrent - 
+* isChild (object) -
+* prev - 
+* next - 
 
 
 

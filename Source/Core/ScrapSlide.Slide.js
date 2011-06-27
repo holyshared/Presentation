@@ -10,7 +10,11 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Object
+  - Core/Type
   - Core/Class
+  - Core/Events
+  - Core/Options
   - ScrapSlide/ScrapSlide
 
 provides: [ScrapSlide.Slide, ScrapSlide.Item]
@@ -21,6 +25,8 @@ provides: [ScrapSlide.Slide, ScrapSlide.Item]
 (function(slide){
 
 slide.Slide = new Class({
+
+	Implements: [Options, Events],
 
 	_current: 0,
 	_panels: [],
@@ -36,6 +42,7 @@ slide.Slide = new Class({
 		if (!Type.isScrapSlideItem(panel)) {
 			throw new TypeError('The specified value is not a slide item.');
 		}
+		panel.setSlide(this);
 		this._panels.push(panel);
 	},
 
@@ -78,6 +85,10 @@ slide.Slide = new Class({
 		return (index > 0 && index <= count) ? true : false;
 	},
 
+	getLength: function(){
+		return this._panels.length;
+	},
+
 	prev: function(){
 		var prevIndex = this.getCurrentIndex() - 1;
 		if (this.isValid(prevIndex)) {
@@ -109,7 +120,41 @@ new Type('ScrapSlide', slide.Slide);
 
 slide.Item = new Class({
 
+	Implements: [Options, Events],
+
+	options: {
+		index: null,
+		slide: null
+	},
+
 	_slide: null,
+	_index: null,
+
+	initialize: function(options){
+		this.setOptions(this._prepare(options));
+	},
+
+	_prepare: function(options){
+		var props = Object.subset(options || {}, ['index', 'slide']);
+		for (var key in props){
+			var setter = 'set' + key.capitalize();
+			this[setter](props[key]);
+			delete options[key];
+		}
+		return options;
+	},
+
+	getIndex: function(){
+		return this._index;
+	},
+
+	setIndex: function(index){
+		if (!Type.isNumber(index)) {
+			throw new TypeError('The specified value is not a integer.');
+		}
+		this._index = index;
+		return this;
+	},
 
 	setSlide: function(slideUI){
 		if (!Type.isScrapSlide(slideUI)) {

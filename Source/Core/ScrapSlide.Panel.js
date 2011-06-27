@@ -10,6 +10,7 @@ authors:
 - Noritaka Horio
 
 requires:
+  - Core/Object
   - ScrapSlide/ScrapSlide.Item
 
 provides: [ScrapSlide.Panel]
@@ -26,20 +27,9 @@ slide.Panel = new Class({
 	_index: null,
 	_element: null,
 
-	initialize: function(element){
-		this._element = element;
-	},
-
-	getIndex: function(){
-		return this._index;
-	},
-
-	setIndex: function(index){
-		if (!Type.isNumber(index)) {
-			throw new TypeError('The specified value is not a integer.');
-		}
-		this._index = index;
-		return this;
+	initialize: function(element, options){
+		this.parent(options);
+		this.setElement(element);
 	},
 
 	getElement: function(){

@@ -1,0 +1,26 @@
+<script type="text/javascript" src="/depender/build?require=Core/$,ScrapSlide/ScrapSlide.Panel"></script>
+<script type="text/javascript">
+(function(doc, slide){
+
+	window.addEventListener('load', function(){
+
+		var mySlide = new slide.Slide();
+
+		var panel = new slide.Panel($('panel'), {
+			index: 10,
+			slide: mySlide
+		});
+		log( (panel.getIndex() == 10) ? 'assert ok' : 'Index is not set.');
+		log( (panel.getSlide() == mySlide) ? 'assert ok' : 'Slide is not set.');
+
+
+
+
+
+	}, false);
+
+}(document, ScrapSlide));
+</script>
+<section id="panel" >
+	<h1>Slide.Panel</h1>
+</section>
