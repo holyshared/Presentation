@@ -54,7 +54,7 @@ slide.Slide = new Class({
 	},
 
 	removePanel: function(panel){
-		this._panels.erase(panel);		
+		this._panels.erase(panel);
 	},
 
 	removePanels: function(panels){
@@ -103,7 +103,7 @@ slide.Slide = new Class({
 		}
 	},
 
-	first:function(){
+	first: function(){
 		this.setCurrentIndex(0);
 	},
 
@@ -174,7 +174,7 @@ slide.Item = new Class({
 
 	isChild: function(slide){
 		return (this.getSlide() == slide) ? true : false;
-	},
+	} /*,
 
 	prev: function(){
 		if (!this.getSlide()) {
@@ -189,6 +189,7 @@ slide.Item = new Class({
 		}
 		this.getSlide().next();
 	}
+*/
 
 });
 
