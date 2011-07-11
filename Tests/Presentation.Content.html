@@ -1,0 +1,99 @@
+<style type="text/css">
+.slideContainer {
+	width: 120px;
+	overflow: hidden;
+	position: relative;
+	margin: 0px auto;
+	padding: 0px;
+	display: block;
+	border: 1px solid #cccccc;	
+	height: 100px;
+}
+.slideContent {
+	width: 100px;
+	height: 100px;
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-o-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	background: #cccccc;
+	padding: 10px;
+}
+</style>
+<script type="text/javascript" src="/depender/build?require=Element.Event,Presentation/Presentation.Content"></script>
+<script type="text/javascript">
+(function(doc){
+
+	window.addEventListener('load', function(){
+
+		var margin = {
+			'margin-top': -(100/2),
+			'margin-left': -(120/2)
+		}; 
+
+		var container = new Element('section', {
+			'class': 'slideContainer'
+		});
+
+		var forwardElement = new Element('section', {
+			'class': 'slideContent',
+			'styles': Object.merge({
+				'left': '150%'
+			}, margin),
+			'html': 'forwardElement'
+		});
+
+		var backwardElement = new Element('section', {
+			'class': 'slideContent',
+			'styles': Object.merge({
+				'left': '150%'
+			}, margin),
+			'html': 'backwardElement'
+		});
+
+		var centerElement = new Element('section', {
+			'class': 'slideContent',
+			'styles': Object.merge({
+				'left': '150%'
+			}, margin),
+			'html': 'centerElement'
+		});
+
+		container.adopt([
+			forwardElement,
+			backwardElement,
+			centerElement
+		]);
+		container.inject($('mt-content'));
+
+
+		var testcases = [];
+
+		testcases.push({
+			title: 'animation methods',
+			description : 'forward, backward, center animaton test',
+			fn: function(){
+
+				var content = new Presentation.Content(forwardElement);
+				content.forward();
+
+				var content = new Presentation.Content(backwardElement);
+				content.backward();
+
+				var content = new Presentation.Content(centerElement);
+				content.center();
+
+			}
+		});
+
+		makeActions(testcases);
+
+	}, false);
+
+}(document));
+</script>

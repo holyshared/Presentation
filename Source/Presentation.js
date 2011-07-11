@@ -14,6 +14,7 @@ requires:
   - Core/Function
   - Core/Type
   - Core/Class
+  - Core/Element.Style
 
 provides:
   - Presentation
@@ -200,11 +201,11 @@ Presentation.Content = new Class({
 	},
 
 	forward: function(){
-		this.element.setStyle('left', '0%');
+		this.element.setStyle('left', '150%');
 	},
 
 	backward: function(){
-		this.element.setStyle('left', '150%');
+		this.element.setStyle('left', '0%');
 	},
 
 	center: function(){
