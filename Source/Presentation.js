@@ -97,7 +97,7 @@ Presentation.Container = new Class({
 
 	addContent: function(content){
 		if (!Type.isPresentationContent(content)) {
-			throw new TypeError('aaaaaaaaaaaaaaaaaaaaaaa');
+			throw new TypeError('It is not PresentationContent.');
 		}
 		this.contents.push(content);
 		return this;
@@ -112,7 +112,7 @@ Presentation.Container = new Class({
 
 	removeContent: function(content){
 		if (!Type.isPresentationContent(content)) {
-			throw new TypeError('aaaaaaaaaaaaaaaaaaaaaaa');
+			throw new TypeError('It is not PresentationContent.');
 		}
 		this.contents.erase(content);
 	},
@@ -173,7 +173,7 @@ Presentation.Container = new Class({
 	getNextContent: function(){
 		var nextIndex = this.index + 1;
 		if (!this.isValid(nextIndex)) {
-			
+			throw new TypeError('The index has come first at the end.');
 		}
 		return this.getContent(++this.index);
 	},
@@ -181,7 +181,7 @@ Presentation.Container = new Class({
 	getPrevContent: function(){
 		var prevIndex = this.index - 1;
 		if (!this.isValid(prevIndex)) {
-
+			throw new TypeError('The index has come first at the end.');
 		}
 		return this.getContent(--this.index);
 	},
