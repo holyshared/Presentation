@@ -1,34 +1,27 @@
-name: ScrapSlide
+name: "Presentation"
 
-web: "[ScrapSlide](http://holyshared.github.com/ScrapSlide ScrapSlide)"
+web: "[http://sharedhat.com](http://sharedhat.com)"
 
 description: ""
 
 authors: "[Noritaka Horio](http://sharedhat.com)"
 
-license: "[MIT License](http://holyshared.github.com/URLDispatcher/license.txt)"
+license: "[MIT License](http://holyshared.github.com/Presentation/license.txt)"
 
 copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
-  - "Source/Core/ScrapSlide.js"
-  - "Source/Core/ScrapSlide.Slide.js"
-  - "Source/Core/ScrapSlide.Panel.js"
-  - "Source/Loader/ScrapSlide.Loader.js"
-  - "Source/Loader/ScrapSlide.ElementLoader.js"
-  - "Source/Loader/ScrapSlide.RequestLoader.js"
-  - "Source/Controller/ScrapSlide.Controller.js"
-  - "Source/Controller/ScrapSlide.NavigaterController.js"
-  - "Source/Controller/ScrapSlide.SlideController.js"
-  - "Source/Behavior/ScrapSlide.Behavior.js"
-  - "Source/Behavior/ScrapSlide.Delegator.js"
+  - "Source/Presentation.js"
+  - "Source/Presentation.Filter.js"
 
-author: holyshared
+author: Noritaka Horio
 
-category: Utilities
+category: Widgets
 
-tags: [slide, ui, behavior]
+tags: [utils, slide]
 
 current: 1.0
 
-demo: http://holyshared.github.com/ScrapSlide/
+#docs: http://holyshared.github.com/Mixin/docs
+
+demo: http://holyshared.github.com/Presentation/
