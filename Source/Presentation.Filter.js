@@ -24,14 +24,14 @@ provides:
 
 function validateFilter(filter) {
 	if (!Type.isFunction(filter)){
-		throw new TypeError('aaaaaaaaaaaaaaaaaaa');
+		throw new TypeError('invalid filter');
 	}
 	return filter;
 }
 
 function validateFilters(filters){
-	if (!Type.isObject(filters)){
-		throw new TypeError('aaaaaaaaaaaaaaaaaaa');
+	if (!Type.isArray(filters)){
+		throw new TypeError('invalid filters');
 	};
 	return filters;
 }
@@ -72,7 +72,7 @@ Presentation.Filter = new Class({
 
 	addFilters: function(filters){
 		var values = validateFilters(filters);
-		Object.each(values, function(filter, index){
+		values.each(function(filter, index){
 			this.addFilter(filter.type, filter.handler);
 		}, this);
 	},
@@ -85,7 +85,7 @@ Presentation.Filter = new Class({
 	removeFilters: function(filters){
 		var type;
 		if (typeOf(filters) == 'object'){
-			for (type in filters) this.removeFilter(type, removeFilter[type]);
+			for (type in filters) this.removeFilter(type, filters[type]);
 			return this;
 		}
 		type = filters;
