@@ -65,6 +65,7 @@ first.center();
 * addContents
 * removeContent
 * removeContents
+* setCurrentIndex
 * getCurrentIndex
 * getCurrentContent
 * getFirstContent
@@ -76,7 +77,8 @@ first.center();
 * getContent
 * getLength
 * isValid
-
+* hasPrevContent
+* hasNextContent
 
 Presentation.Content
 -----------------------------------------------------

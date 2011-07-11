@@ -14,6 +14,8 @@ requires:
   - Core/Function
   - Core/Type
   - Core/Class
+  - Core/Options
+  - Core/Events
   - Core/Element.Style
 
 provides:
@@ -27,36 +29,72 @@ provides:
 
 var Presentation = this.Presentation = new Class({
 
-	initialize: function(element){
-		this.container = new Presentation.Container(element);
+	Implements: [Events, Options],
+
+	options: {
+		slide: 'section'
+	},
+
+	initialize: function(container, options){
+		this.setOptions(options);
+		this.container = $(container);
+		this.contents = new Presentation.Container();
+
+		var elements = this.container.getElements(this.options.slide);
+		elements.each(function(element){
+			var content = new Presentation.Content(element);
+			this.contents.addContent(content);
+		}, this);
+		this.set(0);
+	},
+
+	set: function(index){
+		this.contents.setCurrentIndex(index);
+		var current = this.contents.getCurrentContent();
+		var after = this.contents.getAfterContents();
+		var before = this.contents.getBeforeContents();
+		if (after.length > 0) { after.invoke('forward'); }
+		if (before.length > 0) { before.invoke('backward'); }
+		current.center();
+		return this;
 	},
 
 	first: function(){
-		var first = this.container.getFirstContent();
-		var between = this.container.getFirstBetweenContents();
+		var first = this.contents.getFirstContent();
+		var after = this.contents.getAfterContents();
 		first.center();
-		between.invoke('backward');
+		after.invoke('forward');
+		return this;
 	},
 
 	prev: function(){
-		var current = this.container.getCurrentContent();
-		var prev = this.container.getPrevContent();
-		current.backward();
+		if (!this.contents.hasPrevContent()) {
+			return;
+		}
+		var current = this.contents.getCurrentContent();
+		var prev = this.contents.getPrevContent();
+		current.forward();
 		prev.center();
+		return this;
 	},
 
 	next: function(){
-		var current = this.container.getCurrentContent();
-		var next = this.container.getNextContent();
-		current.forward();
+		if (!this.contents.hasNextContent()) {
+			return;
+		}
+		var current = this.contents.getCurrentContent();
+		var next = this.contents.getNextContent();
+		current.backward();
 		next.center();
+		return this;
 	},
 
 	last: function(){
-		var last = this.container.getLastContent();
-		var between = this.container.getFirstBetweenContents();
+		var last = this.contents.getLastContent();
+		var before = this.contents.getBeforeContents();
 		last.center();
-		between.invoke('forward');
+		before.invoke('backward');
+		return this;
 	}
 
 });
@@ -69,18 +107,20 @@ var methods = [
 	'removeContents',
 	'getCurrentIndex',
 	'getCurrentContent',
-	'setCurrentIndex',
-	'setCurrentContent',
+//	'setCurrentIndex',
+//	'setCurrentContent',
 	'getContent',
 	'getLength'
 ];
-var mixin = {};
+var mixins = {};
 methods.each(function(method){
-	mixin[method] = function(){
-		this.container.apply(this.container, arguments);
+	mixins[method] = function(){
+		return this.contents[method].apply(this.contents, arguments);
 	};
 });
-Presentation.implement(mixin);
+Presentation.implement(mixins);
+
+
 
 
 
@@ -116,12 +156,21 @@ Presentation.Container = new Class({
 			throw new TypeError('It is not PresentationContent.');
 		}
 		this.contents.erase(content);
+		return this;
 	},
 
 	removeContents: function(contents){
 		contents.each(function(content){
 			this.removeContent(content);
 		}, this);
+		return this;
+	},
+
+	setCurrentIndex: function(index){
+		if (!this.isValid(index)) {
+			throw new RangeError('The index has come first at the end.');
+		}
+		this.index = index;
 		return this;
 	},
 
@@ -172,23 +221,31 @@ Presentation.Container = new Class({
 	},
 
 	getNextContent: function(){
-		var nextIndex = this.index + 1;
-		if (!this.isValid(nextIndex)) {
-			throw new TypeError('The index has come first at the end.');
+		if (!this.isValid(this.index + 1)) {
+			return;
 		}
-		return this.getContent(++this.index);
+		this.index++;
+		return this.getContent(this.index);
 	},
 
 	getPrevContent: function(){
-		var prevIndex = this.index - 1;
-		if (!this.isValid(prevIndex)) {
-			throw new TypeError('The index has come first at the end.');
+		if (!this.isValid(this.index - 1)) {
+			return;
 		}
-		return this.getContent(--this.index);
+		this.index--;
+		return this.getContent(this.index);
 	},
 
 	isValid: function(index){
-		return (index > 0 && index < this.getLength()) ? true : false;
+		return (index >= 0 && index < this.getLength()) ? true : false;
+	},
+
+	hasPrevContent: function(){
+		return (this.isValid(this.index - 1)) ? true : false;
+	},
+
+	hasNextContent: function(){
+		return (this.isValid(this.index + 1)) ? true : false;
 	}
 
 });
@@ -198,6 +255,7 @@ Presentation.Content = new Class({
 
 	initialize: function(element){
 		this.element = element;
+		this.element.setStyle('left', '150%');
 	},
 
 	forward: function(){
