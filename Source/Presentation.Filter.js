@@ -11,9 +11,12 @@ authors:
 
 requires:
   - Core/Class
+  - Presentation/Presentation
 
 provides:
-  - Presentation.TypeFilter
+  - Presentation.Filter
+  - Presentation.BeforeFilter
+  - Presentation.AfterFilter
 ...
 */
 
@@ -33,12 +36,38 @@ function validateFilters(filters){
 	return filters;
 }
 
-Presentation.implement({
+//var previous = {};
+var methods = [ 'set', 'first', 'prev', 'next', 'last' ];
+var OverridePresentation = Presentation.prototype;
+methods.each(function(name){
+	OverridePresentation[name] = wrapFilter(OverridePresentation[name]);
+});
+
+function wrapFilter(method) {
+
+	return function(){
+
+		var content = method.apply(this, arguments);
+		if (this.hasFilter('before')) {
+			this.applyFilter('before', content);
+		}
+
+		if (this.hasFilter('after')) {
+			this.applyFilter('after', content);
+		}
+
+	};
+};
+
+
+
+
+Presentation.Filter = new Class({
 
 	filters: {},
 
 	addFilter: function(type, filter){
-		this.filters[type] = validateFilter(filter);
+		this.filters[type].push(validateFilter(filter));
 	},
 
 	addFilters: function(filters){
@@ -71,10 +100,52 @@ Presentation.implement({
 			return false;
 		}
 		return (this.filters[type].length > 0) ? true : false;
+	},
+
+	applyFilter: function(type, content){
+		var filters = this.filters[type];
+		filters.each(function(filter){
+			filter(content);
+		});
 	}
 
 });
+Presentation.implement(new Presentation.Filter());
 
+
+var filterTypes = ['before', 'after'];
+filterTypes.each(function(key){
+	var name = key.capitalize();
+	Presentation[name + 'Filter'] = function(){
+		OverridePresentation.filters[key] = [];
+		Presentation.implement(createTypeMethod(key));
+	}
+});
+
+
+
+
+
+
+
+
+/*
+
+Presentation.BeforeFilter = function(){
+	Presentation.filters['before'] = [];
+	Presentation.implement(createTypeMethod('before'));
+}
+
+Presentation.AfterFilter = function(){
+	Presentation.filters['after'] = [];
+	Presentation.implement(createTypeMethod('after'));
+}
+*/
+Presentation.implement(new Presentation.BeforeFilter());
+Presentation.implement(new Presentation.AfterFilter());
+
+
+/*
 var TypeFilter = {
 	define: function(type){
 		Presentation.filters[type] = [];
@@ -87,7 +158,7 @@ var filterTypes = ['before', 'after'];
 filterTypes.each(function(key){
 	TypeFilter.define(key);
 });
-
+*/
 function createTypeMethod(type) {
 
 	var methods = {};

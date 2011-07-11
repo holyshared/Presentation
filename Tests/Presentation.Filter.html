@@ -28,7 +28,7 @@
 		padding: 10px;
 	}
 </style>
-<script type="text/javascript" src="/depender/build?require=Element.Event,Presentation/Presentation"></script>
+<script type="text/javascript" src="/depender/build?require=Element.Event,Presentation/Presentation,Presentation/Presentation.Filter"></script>
 <script type="text/javascript">
 (function(doc){
 
@@ -42,7 +42,19 @@
 			title: 'Next slide',
 			description : 'next method test.',
 			fn: function(){
+				var counter = 0;
+				var before = function(content){
+					counter++;
+				};
+				var after = function(content){
+					counter++;
+				};
+				myPresen.addBeforeFilter(before);
+				myPresen.addAfterFilter(after);
 				myPresen.next();
+				if (counter == 2){
+					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - next' );
+				}
 			}
 		});
 
@@ -50,7 +62,19 @@
 			title: 'Prev slide',
 			description : 'prev method test.',
 			fn: function(){
+				var counter = 0;
+				var before = function(content){
+					counter++;
+				};
+				var after = function(content){
+					counter++;
+				};
+				myPresen.addBeforeFilter(before);
+				myPresen.addAfterFilter(after);
 				myPresen.prev();
+				if (counter == 2){
+					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - prev' );
+				}
 			}
 		});
 
@@ -58,7 +82,19 @@
 			title: 'First slide',
 			description : 'first method test.',
 			fn: function(){
+				var counter = 0;
+				var before = function(content){
+					counter++;
+				};
+				var after = function(content){
+					counter++;
+				};
+				myPresen.addBeforeFilter(before);
+				myPresen.addAfterFilter(after);
 				myPresen.first();
+				if (counter == 2){
+					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - first' );
+				}
 			}
 		});
 
@@ -66,7 +102,19 @@
 			title: 'Last slide',
 			description : 'last method test.',
 			fn: function(){
+				var counter = 0;
+				var before = function(content){
+					counter++;
+				};
+				var after = function(content){
+					counter++;
+				};
+				myPresen.addBeforeFilter(before);
+				myPresen.addAfterFilter(after);
 				myPresen.last();
+				if (counter == 2){
+					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - last' );
+				}
 			}
 		});
 
@@ -77,7 +125,20 @@
 				var min = 0;
 				var max = myPresen.getLength() - 1;
 				var index = Math.floor(Math.random() * (max - min + 1)) + min;
+
+				var counter = 0;
+				var before = function(content){
+					counter++;
+				};
+				var after = function(content){
+					counter++;
+				};
+				myPresen.addBeforeFilter(before);
+				myPresen.addAfterFilter(after);
 				myPresen.set(index);
+				if (counter == 2){
+					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - set' );
+				}
 			}
 		});
 

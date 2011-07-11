@@ -53,18 +53,31 @@ var Presentation = this.Presentation = new Class({
 		var current = this.contents.getCurrentContent();
 		var after = this.contents.getAfterContents();
 		var before = this.contents.getBeforeContents();
-		if (after.length > 0) { after.invoke('forward'); }
-		if (before.length > 0) { before.invoke('backward'); }
-		current.center();
-		return this;
+
+		var move = {};
+		if (after.length > 0) { move['forward'] = after; }
+		if (before.length > 0) { move['backward'] = before; }
+		move['center'] = current;
+		this._transrate(move);
+//		current.center();
+
+//		if (after.length > 0) { after.invoke('forward'); }
+//		if (before.length > 0) { before.invoke('backward'); }
+//		current.center();
+		return current;
 	},
 
 	first: function(){
 		var first = this.contents.getFirstContent();
 		var after = this.contents.getAfterContents();
-		first.center();
-		after.invoke('forward');
-		return this;
+		this._transrate({
+			center: first,
+			forward: after
+		});
+
+//		first.center();
+//		after.invoke('forward');
+		return first;
 	},
 
 	prev: function(){
@@ -73,9 +86,13 @@ var Presentation = this.Presentation = new Class({
 		}
 		var current = this.contents.getCurrentContent();
 		var prev = this.contents.getPrevContent();
-		current.forward();
-		prev.center();
-		return this;
+		this._transrate({
+			center: prev,
+			forward: current
+		});
+//		current.forward();
+//		prev.center();
+		return prev;
 	},
 
 	next: function(){
@@ -84,17 +101,45 @@ var Presentation = this.Presentation = new Class({
 		}
 		var current = this.contents.getCurrentContent();
 		var next = this.contents.getNextContent();
-		current.backward();
-		next.center();
-		return this;
+		this._transrate({
+			center: next,
+			backward: current
+		});
+
+//		current.backward();
+//		next.center();
+		return next;
 	},
 
 	last: function(){
 		var last = this.contents.getLastContent();
 		var before = this.contents.getBeforeContents();
+		this._transrate({
+			center: last,
+			backward: before
+		});
+/*		
 		last.center();
 		before.invoke('backward');
-		return this;
+*/
+		return last;
+	},
+
+	_transrate: function(targets){
+		for (var key in targets){
+			var target = targets[key];
+console.log(typeOf(target));
+			switch(typeOf(target)){
+				case 'array':
+					target.invoke(key);
+					break;
+				case 'presentationcontent':
+					target[key]();
+					break;
+				default:
+					throw new TypeError('aaaaa');
+			}
+		}
 	}
 
 });
