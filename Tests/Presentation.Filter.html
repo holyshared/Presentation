@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/depender/build?require=Element.Event,Presentation/Presentation.Filter"></script>
+<script type="text/javascript" src="/depender/build?require=Core/$,Core/Element.Event,Core/Element.Style,Presentation/Presentation.Filter"></script>
 <script type="text/javascript">
 (function(doc){
 
@@ -77,6 +77,21 @@
 			}
 		});
 
+		testcases.push({
+			title: 'applyFilter',
+			description : 'applyFilter method test.',
+			fn: function(){
+
+				var filter1 = function(content){
+					var section = $(content);
+					section.setStyle('background-color', '#cccccc');
+				};
+				var myPresen = new Presentation('container');
+				var content = myPresen.getContent(0);
+				myPresen.addFilter('before', filter1);
+				myPresen.applyFilter('before', content);
+			}
+		});
 
 		makeActions(testcases);
 
@@ -85,5 +100,5 @@
 }(document));
 </script>
 <div id="container">
-	<section></section>
+	<section><h1>section</h1></section>
 </div>

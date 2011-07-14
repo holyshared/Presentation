@@ -32,20 +32,28 @@ var Presentation = this.Presentation = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		slide: 'section'
+		slide: 'section',
+		defaultIndex: 0
 	},
 
 	initialize: function(container, options){
 		this.setOptions(options);
 		this.container = $(container);
 		this.contents = new Presentation.Container();
+		this.applyOptions(options);
+	},
 
-		var elements = this.container.getElements(this.options.slide);
-		elements.each(function(element){
-			var content = new Presentation.Content(element);
-			this.contents.addContent(content);
-		}, this);
-		this.set(0);
+	applyOptions: function(options){
+		var selecter = this.options.slide;
+		if (selecter) {
+			var elements = this.container.getElements(this.options.slide);
+			elements.each(function(element){
+				var content = new Presentation.Content(element);
+				this.contents.addContent(content);
+			}, this);
+		}
+		var index = this.options.defaultIndex;
+		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
 	set: function(index){
@@ -133,7 +141,7 @@ console.log(typeOf(target));
 				case 'array':
 					target.invoke(key);
 					break;
-				case 'presentationcontent':
+				case 'object':
 					target[key]();
 					break;
 				default:
@@ -182,8 +190,8 @@ Presentation.Container = new Class({
 	},
 
 	addContent: function(content){
-		if (!Type.isPresentationContent(content)) {
-			throw new TypeError('It is not PresentationContent.');
+		if (!Type.isObject(content)) {
+			throw new TypeError('It is not object.');
 		}
 		this.contents.push(content);
 		return this;
@@ -197,8 +205,8 @@ Presentation.Container = new Class({
 	},
 
 	removeContent: function(content){
-		if (!Type.isPresentationContent(content)) {
-			throw new TypeError('It is not PresentationContent.');
+		if (!Type.isObject(content)) {
+			throw new TypeError('It is not object.');
 		}
 		this.contents.erase(content);
 		return this;
@@ -321,6 +329,6 @@ Presentation.Content = new Class({
 
 });
 
-new Type('PresentationContent', Presentation.Content);
+//new Type('PresentationContent', Presentation.Content);
 
 }());
