@@ -153,6 +153,12 @@ var Presentation = this.Presentation = new Class({
 					throw new TypeError('aaaaa');
 			}
 		}
+		var args = [
+			this.contents.getCurrentContent(),
+			this.contents.getCurrentIndex(),
+			this.contents.getLength()
+		];
+		this.fireEvent('change', args);
 	}
 
 });
