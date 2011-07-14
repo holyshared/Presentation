@@ -57,86 +57,90 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	set: function(index){
+		var context = this._getContext(index);
+		this._transrate(context);
+	},
+
+	first: function(){
+		var context = this._getFirstContext();
+		this._transrate(context);
+	},
+
+	prev: function(){
+		var context = this._getPrevContext();
+		if (!context) return;
+		this._transrate(context);
+	},
+
+	next: function(){
+		var context = this._getNextContext();
+		if (!context) return;
+		this._transrate(context);
+	},
+
+	last: function(){
+		var context = this._getLastContext();
+		this._transrate(context);
+	},
+
+	_getContext: function(index){
 		this.contents.setCurrentIndex(index);
 		var current = this.contents.getCurrentContent();
 		var after = this.contents.getAfterContents();
 		var before = this.contents.getBeforeContents();
 
-		var move = {};
-		if (after.length > 0) { move['forward'] = after; }
-		if (before.length > 0) { move['backward'] = before; }
-		move['center'] = current;
-		this._transrate(move);
-//		current.center();
-
-//		if (after.length > 0) { after.invoke('forward'); }
-//		if (before.length > 0) { before.invoke('backward'); }
-//		current.center();
-		return current;
+		var context = {};
+		if (after.length > 0) { context['forward'] = after; }
+		if (before.length > 0) { context['backward'] = before; }
+		context['center'] = current;
+		return context;
 	},
 
-	first: function(){
+	_getFirstContext: function(){
 		var first = this.contents.getFirstContent();
 		var after = this.contents.getAfterContents();
-		this._transrate({
+		return {
 			center: first,
 			forward: after
-		});
-
-//		first.center();
-//		after.invoke('forward');
-		return first;
+		};
 	},
 
-	prev: function(){
+	_getPrevContext: function(){
 		if (!this.contents.hasPrevContent()) {
 			return;
 		}
 		var current = this.contents.getCurrentContent();
 		var prev = this.contents.getPrevContent();
-		this._transrate({
+		return {
 			center: prev,
 			forward: current
-		});
-//		current.forward();
-//		prev.center();
-		return prev;
+		};
 	},
 
-	next: function(){
+	_getNextContext: function(){
 		if (!this.contents.hasNextContent()) {
 			return;
 		}
 		var current = this.contents.getCurrentContent();
 		var next = this.contents.getNextContent();
-		this._transrate({
+		return {
 			center: next,
 			backward: current
-		});
-
-//		current.backward();
-//		next.center();
-		return next;
+		}
 	},
 
-	last: function(){
+	_getLastContext: function(){
 		var last = this.contents.getLastContent();
 		var before = this.contents.getBeforeContents();
-		this._transrate({
+		return {
 			center: last,
 			backward: before
-		});
-/*		
-		last.center();
-		before.invoke('backward');
-*/
-		return last;
+		}
 	},
 
 	_transrate: function(targets){
 		for (var key in targets){
 			var target = targets[key];
-console.log(typeOf(target));
 			switch(typeOf(target)){
 				case 'array':
 					target.invoke(key);

@@ -36,21 +36,25 @@ function validateFilters(filters){
 	return filters;
 }
 
-//var previous = {};
 var methods = [ 'set', 'first', 'prev', 'next', 'last' ];
 var OverridePresentation = Presentation.prototype;
 methods.each(function(name){
-	OverridePresentation[name] = wrapFilter(OverridePresentation[name]);
+	OverridePresentation[name] = includeFilter(name);
 });
 
-function wrapFilter(method) {
+function includeFilter(method) {
+
+	var name = (method == 'set') ? '' : method.capitalize();
 
 	return function(){
-
-		var content = method.apply(this, arguments);
+		var context = this['_get' + name + 'Context'].apply(this, arguments);
+		if (!context) return;
+		var content = context.center;
 		if (this.hasFilter('before')) {
 			this.applyFilter('before', content);
 		}
+
+		this._transrate(context);
 
 		if (this.hasFilter('after')) {
 			this.applyFilter('after', content);
@@ -58,8 +62,6 @@ function wrapFilter(method) {
 
 	};
 };
-
-
 
 
 Presentation.Filter = new Class({
@@ -123,42 +125,9 @@ filterTypes.each(function(key){
 });
 
 
-
-
-
-
-
-
-/*
-
-Presentation.BeforeFilter = function(){
-	Presentation.filters['before'] = [];
-	Presentation.implement(createTypeMethod('before'));
-}
-
-Presentation.AfterFilter = function(){
-	Presentation.filters['after'] = [];
-	Presentation.implement(createTypeMethod('after'));
-}
-*/
 Presentation.implement(new Presentation.BeforeFilter());
 Presentation.implement(new Presentation.AfterFilter());
 
-
-/*
-var TypeFilter = {
-	define: function(type){
-		Presentation.filters[type] = [];
-		Presentation.implement(createTypeMethod(type));
-	}
-};
-Presentation.TypeFilter = TypeFilter;
-
-var filterTypes = ['before', 'after'];
-filterTypes.each(function(key){
-	TypeFilter.define(key);
-});
-*/
 function createTypeMethod(type) {
 
 	var methods = {};
