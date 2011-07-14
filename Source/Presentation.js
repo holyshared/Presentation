@@ -40,19 +40,20 @@ var Presentation = this.Presentation = new Class({
 		this.setOptions(options);
 		this.container = $(container);
 		this.contents = new Presentation.Container();
-		this.applyOptions(options);
+		this.applyOptions();
 	},
 
-	applyOptions: function(options){
-		var selecter = this.options.slide;
+	applyOptions: function(){
+		var opts = this.options;
+		var selecter = opts.slide;
 		if (selecter) {
-			var elements = this.container.getElements(this.options.slide);
+			var elements = this.container.getElements(selecter);
 			elements.each(function(element){
 				var content = new Presentation.Content(element);
 				this.contents.addContent(content);
 			}, this);
 		}
-		var index = this.options.defaultIndex;
+		var index = opts.defaultIndex;
 		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
