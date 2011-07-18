@@ -13,15 +13,18 @@ requires:
   - Core/Array
   - Core/Function
   - Core/Type
+  - Core/Object
   - Core/Class
   - Core/Options
   - Core/Events
+  - Core/Element
   - Core/Element.Style
 
 provides:
   - Presentation
   - Presentation.Content
   - Presentation.Container
+  - Presentation.Initializer
 ...
 */
 
@@ -53,8 +56,8 @@ var Presentation = this.Presentation = new Class({
 				this.contents.addContent(content);
 			}, this);
 		}
-		var index = opts.defaultIndex;
-		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
+//		var index = opts.defaultIndex;
+//		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
 	set: function(index){
@@ -82,6 +85,24 @@ var Presentation = this.Presentation = new Class({
 	last: function(){
 		var context = this._getLastContext();
 		this._transrate(context);
+	},
+
+	_setup: function(){
+		var handlers = Presentation.getInitializers();
+		handlers.each(function(handler){
+			if (Type.isFunction(handler)) {
+				handler(this);
+			} else if (Type.isObject(handler)) {
+				handler.invoke(this);
+			}
+		}, this);
+	},
+
+	start: function(){
+		this._setup();
+
+		var index = this.options.defaultIndex;
+		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
 	_getContext: function(index){
@@ -162,6 +183,129 @@ var Presentation = this.Presentation = new Class({
 	}
 
 });
+
+/*
+function validateFilter(filter) {
+	if (!(Type.isFunction(filter) || Type.isObject(filter))){
+		throw new TypeError('invalid filter');
+	}
+	return filter;
+}
+
+function validateFilters(filters){
+	if (!Type.isArray(filters)){
+		throw new TypeError('invalid filters');
+	};
+	return filters;
+}
+
+
+Presentation.Filter = new Class({
+
+	filters: {},
+
+	addFilter: function(type, filter){
+		if (!Type.isArray(this.filters[type])){
+			this.filters[type] = [];
+		}
+		this.filters[type].push(validateFilter(filter));
+	},
+
+	addFilters: function(filters){
+		var values = validateFilters(filters);
+		values.each(function(filter, index){
+			this.addFilter(filter.type, filter.handler);
+		}, this);
+	},
+
+	removeFilter: function(type, filter){
+		if (!this.hasFilter(type)) return this;
+		this.filters[type].erase(validateFilter(filter));
+	},
+
+	removeFilters: function(filters){
+		var type;
+		if (typeOf(filters) == 'object'){
+			for (type in filters) this.removeFilter(type, filters[type]);
+			return this;
+		}
+		type = filters;
+		this.filters[type].each(function(filter){
+			this.removeFilter(type, filter);
+		}, this);
+		return this;
+	},
+
+	hasFilter: function(type){
+		if (!this.filters[type]) {
+			return false;
+		}
+		return (this.filters[type].length > 0) ? true : false;
+	}
+
+});
+
+*/
+
+
+
+
+Presentation.Initializer = new Class({
+
+	initializers: [],
+
+	addInitializer: function(handler){
+		if (!(Type.isFunction(handler) || Type.isFunction(handler.invoke))) {
+			throw new TypeError('Initializer should be an object that mounts function or the invoke method.');
+		}
+		if (this.hasInitializer(handler)) return;
+		this.initializers.push(handler);
+		return this;
+	},
+
+	addInitializers: function(){
+		var handlers = Array.from(arguments);
+		handlers.each(function(handler, index){
+			this.addInitializer(handler);
+		}, this);
+		return this;
+	},
+
+	getInitializer: function(index){
+		if (!this.initializers[index]){
+			throw new Error('There is no specified initializer.');
+		}
+		return this.initializers[index];
+	},
+
+	getInitializers: function(){
+		return this.initializers;
+	},
+
+	removeInitializer: function(handler){
+		if (!this.hasInitializer(handler)) return this;
+		this.initializers.erase(handler);
+		return this;
+	},
+
+	removeInitializers: function(){
+		var handlers = Array.from(arguments);
+		if (handlers.length <= 0) {
+			handlers = this.getInitializers();
+		}
+		handlers.each(function(handler, index){
+			this.removeInitializer(handler);
+		}, this);
+		return this;
+	},
+
+	hasInitializer: function(handler){
+		return (this.initializers.contains(handler)) ? true : false;
+	}
+
+});
+
+Object.append(Presentation, new Presentation.Initializer());
 
 
 var methods = [  
@@ -340,6 +484,6 @@ Presentation.Content = new Class({
 
 });
 
-//new Type('PresentationContent', Presentation.Content);
+
 
 }());

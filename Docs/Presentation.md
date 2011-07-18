@@ -35,10 +35,8 @@ Presentation
 * prev
 * next
 * last
-
-
-
-
+* start
+* set
 
 
 

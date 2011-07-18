@@ -11,10 +11,9 @@ authors:
 
 requires:
   - Core/Class
-  - Presentation/Presentation
+  - Presentation/Presentation.Filter
 
 provides:
-  - Presentation.Filter
   - Presentation.BeforeFilter
   - Presentation.AfterFilter
 ...

@@ -34,51 +34,63 @@
 
 	window.addEventListener('load', function(){
 
-		var myPresen = new Presentation('container');
-		myPresen.start();
 
 		var testcases = [];
 
 		testcases.push({
-			title: 'Next slide',
-			description : 'next method test.',
+			title: 'function initializer',
+			description : 'function initializer',
 			fn: function(){
-				myPresen.next();
+				var checkValue = false;
+				var container = $('container');
+				var myPresen = null;
+
+				var init = function(presen){
+					log ( (myPresen == presen) ? 'assert ok' : 'function - invalud Presentation' );
+					checkValue = true;
+
+					Presentation.removeInitializer(init);
+				};
+
+				Presentation.addInitializer(init);
+
+				myPresen = new Presentation(container);
+				myPresen.start();
+
+				log ( (checkValue) ? 'assert ok' : 'function - The filter is not executed.' );
+
 			}
 		});
 
 		testcases.push({
-			title: 'Prev slide',
-			description : 'prev method test.',
+			title: 'object initializer',
+			description : 'object initializer',
 			fn: function(){
-				myPresen.prev();
-			}
-		});
+				var checkValue = false;
+				var myPresen = null;
+				var init = null;
 
-		testcases.push({
-			title: 'First slide',
-			description : 'first method test.',
-			fn: function(){
-				myPresen.first();
-			}
-		});
+				function MyInitializer(){};
 
-		testcases.push({
-			title: 'Last slide',
-			description : 'last method test.',
-			fn: function(){
-				myPresen.last();
-			}
-		});
+				MyInitializer.prototype.invoke = function(presen){
 
-		testcases.push({
-			title: 'set random',
-			description : 'set method test.',
-			fn: function(){
-				var min = 0;
-				var max = myPresen.getLength() - 1;
-				var index = Math.floor(Math.random() * (max - min + 1)) + min;
-				myPresen.set(index);
+					log ( (myPresen == presen) ? 'assert ok' : 'object - invalud Presentation' );
+					checkValue = true;
+
+					Presentation.removeInitializer(init);
+				};
+
+				init = new MyInitializer();
+
+				Presentation.addInitializer(init);
+
+				var container = $('container');
+
+				myPresen = new Presentation(container);
+				myPresen.start();
+
+				log ( (checkValue) ? 'assert ok' : 'object - The filter is not executed.' );
+
 			}
 		});
 
