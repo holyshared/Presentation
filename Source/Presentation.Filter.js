@@ -11,9 +11,10 @@ authors:
 
 requires:
   - Core/Class
-  - Presentation/Presentation.Filter
+  - Presentation/Presentation
 
 provides:
+  - Presentation.Filter
   - Presentation.BeforeFilter
   - Presentation.AfterFilter
 ...
@@ -154,7 +155,6 @@ defineFilterTypes.each(function(key){
 
 		OverridePresentation.filters[key] = [];
 
-//		Presentation.implement(createTypeMethod(key));
 		Presentation.implement(extend);
 	}
 
