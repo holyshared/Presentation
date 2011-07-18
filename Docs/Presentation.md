@@ -39,6 +39,16 @@ Presentation
 * set
 
 
+### Static Methods
+
+* addInitializer - 
+* addInitializers
+* getInitializer
+* getInitializers
+* removeInitializer
+* removeInitializers
+* hasInitializer
+
 
 
 Presentation.Container

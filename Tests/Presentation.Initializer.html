@@ -94,6 +94,47 @@
 			}
 		});
 
+
+
+
+		testcases.push({
+			title: 'removeInitializer',
+			description : 'removeInitializer method testcase.',
+			fn: function(){
+				var myPresen = null;
+				var counter = 0;
+
+				var init1 = function(presen){
+					counter++;
+				};
+
+				var init2 = function(presen){
+					counter++;
+				};
+
+				Presentation.addInitializers(init1, init2);
+
+				var container = $('container');
+
+				myPresen = new Presentation(container);
+				myPresen.start();
+
+				log ( (counter >= 2) ? 'assert ok' : 'Initializer doesn\'t move correctly.');
+
+				Presentation.removeInitializers(init1, init2);
+
+				myPresen = new Presentation(container);
+				myPresen.start();
+
+				log ( (counter == 2) ? 'assert ok' : 'Initializer has not been deleted.' );
+			}
+		});
+
+
+
+
+
+
 		makeActions(testcases);
 
 	}, false);
