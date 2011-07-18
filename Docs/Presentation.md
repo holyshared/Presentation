@@ -41,7 +41,7 @@ Presentation
 
 ### Static Methods
 
-* addInitializer - 
+* addInitializer
 * addInitializers
 * getInitializer
 * getInitializers
@@ -120,6 +120,7 @@ Presentation.Filter
 * removeFilter
 * removeFilters
 * hasFilter
+* applyFilter
 * hasBeforeFilter
 * hasAfterFilter
 * addBeforeFilter

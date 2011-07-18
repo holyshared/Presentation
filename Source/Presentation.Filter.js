@@ -119,9 +119,10 @@ Presentation.Filter = new Class({
 			return this;
 		}
 		type = filters;
-		this.filters[type].each(function(filter){
-			this.removeFilter(type, filter);
-		}, this);
+		var targets = this.filters[type];
+		while(this.hasFilter(type)) {
+			this.removeFilter(type, targets.getLast());
+		}
 		return this;
 	},
 
@@ -173,7 +174,8 @@ function createTypeMethod(type) {
 		this.addFilter(type, filter);
 	};
 
-	methods['add' + name + 'Filters'] = function(filters){
+	methods['add' + name + 'Filters'] = function(){
+		var filters = Array.from(arguments);
 		var appendFilters = [];
 		filters.each(function(filter){
 			appendFilters.push({
@@ -188,7 +190,8 @@ function createTypeMethod(type) {
 		this.removeFilter(type, filter);
 	};
 
-	methods['remove' + name + 'Filters'] = function(filters){
+	methods['remove' + name + 'Filters'] = function(){
+//console.log(type);
 		this.removeFilters(type);
 	};
 

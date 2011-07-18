@@ -1,144 +1,52 @@
-<style type="text/css">
-	.slideContainer {
-		width: 320px;
-		overflow: hidden;
-		position: relative;
-		margin: 0px auto;
-		padding: 0px;
-		display: block;
-		border: 1px solid #cccccc;	
-		height: 320px;
-	}
-
-	.slideContent {
-		width: 300px;
-		height: 300px;
-		display: block;
-		position: absolute;
-		margin-top: -160px;
-		margin-left: -160px;
-		top: 50%;
-		left: 50%;
-		transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-		-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-		-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-		-o-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-		-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-		background: #cccccc;
-		padding: 10px;
-	}
-</style>
-<script type="text/javascript" src="/depender/build?require=Element.Event,Presentation/Presentation,Presentation/Presentation.Filter"></script>
+<script type="text/javascript" src="/depender/build?require=Core/$,Core/Element.Event,Core/Element.Style,Presentation/Presentation.Filter"></script>
 <script type="text/javascript">
 (function(doc){
 
 	window.addEventListener('load', function(){
 
-		var myPresen = new Presentation('container');
-
 		var testcases = [];
 
 		testcases.push({
-			title: 'Next slide',
-			description : 'next method test.',
+			title: 'addBeforeFilter/addBeforeFilters',
+			description : 'addBeforeFilter, addBeforeFilters method test.',
 			fn: function(){
-				var counter = 0;
-				var before = function(content){
-					counter++;
-				};
-				var after = function(content){
-					counter++;
-				};
-				myPresen.addBeforeFilter(before);
-				myPresen.addAfterFilter(after);
-				myPresen.next();
-				if (counter == 2){
-					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - next' );
-				}
+				var filter1 = function(content){};
+
+				var myPresen1 = new Presentation('container');
+				myPresen1.addBeforeFilter(filter1);
+
+				log( (myPresen1.hasBeforeFilter()) ? 'assert ok' : 'Before is not found.' );
+
+				var filter2 = function(content){};
+				var filter3 = function(content){};
+
+				var myPresen2 = new Presentation('container');
+				myPresen2.addBeforeFilters(filter2, filter3);
+
+				log( (myPresen2.hasBeforeFilter()) ? 'assert ok' : 'Before filter is not found.' );
 			}
 		});
 
 		testcases.push({
-			title: 'Prev slide',
-			description : 'prev method test.',
+			title: 'removeBeforeFilter/removeBeforeFilters',
+			description : 'removeBeforeFilter, removeBeforeFilters method test.',
 			fn: function(){
-				var counter = 0;
-				var before = function(content){
-					counter++;
-				};
-				var after = function(content){
-					counter++;
-				};
-				myPresen.addBeforeFilter(before);
-				myPresen.addAfterFilter(after);
-				myPresen.prev();
-				if (counter == 2){
-					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - prev' );
-				}
-			}
-		});
+				var filter1 = function(content){};
 
-		testcases.push({
-			title: 'First slide',
-			description : 'first method test.',
-			fn: function(){
-				var counter = 0;
-				var before = function(content){
-					counter++;
-				};
-				var after = function(content){
-					counter++;
-				};
-				myPresen.addBeforeFilter(before);
-				myPresen.addAfterFilter(after);
-				myPresen.first();
-				if (counter == 2){
-					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - first' );
-				}
-			}
-		});
+				var myPresen1 = new Presentation('container');
+				myPresen1.addBeforeFilter(filter1);
+				myPresen1.removeBeforeFilter(filter1);
 
-		testcases.push({
-			title: 'Last slide',
-			description : 'last method test.',
-			fn: function(){
-				var counter = 0;
-				var before = function(content){
-					counter++;
-				};
-				var after = function(content){
-					counter++;
-				};
-				myPresen.addBeforeFilter(before);
-				myPresen.addAfterFilter(after);
-				myPresen.last();
-				if (counter == 2){
-					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - last' );
-				}
-			}
-		});
+				log( (!myPresen1.hasBeforeFilter()) ? 'assert ok' : 'Before is found.' );
 
-		testcases.push({
-			title: 'set random',
-			description : 'set method test.',
-			fn: function(){
-				var min = 0;
-				var max = myPresen.getLength() - 1;
-				var index = Math.floor(Math.random() * (max - min + 1)) + min;
+				var filter2 = function(content){};
+				var filter3 = function(content){};
 
-				var counter = 0;
-				var before = function(content){
-					counter++;
-				};
-				var after = function(content){
-					counter++;
-				};
-				myPresen.addBeforeFilter(before);
-				myPresen.addAfterFilter(after);
-				myPresen.set(index);
-				if (counter == 2){
-					log ( (counter == 2) ? 'assert ok' : 'Invalid filter - set' );
-				}
+				var myPresen2 = new Presentation('container');
+				myPresen2.addBeforeFilters(filter2, filter3);
+				myPresen2.removeBeforeFilters();
+
+				log( (!myPresen2.hasBeforeFilter()) ? 'assert ok' : 'Before filter is found.' );
 			}
 		});
 
@@ -148,22 +56,6 @@
 
 }(document));
 </script>
-<article id="container" class="slideContainer">
-
-	<section class="slideContent">
-		<h1>slide-1</h1>
-	</section>
-
-	<section class="slideContent">
-		<h1>slide-2</h1>
-	</section>
-
-	<section class="slideContent">
-		<h1>slide-3</h1>
-	</section>
-
-	<section class="slideContent">
-		<h1>slide-4</h1>
-	</section>
-
-</article>
+<div id="container">
+	<section><h1>section</h1></section>
+</div>
