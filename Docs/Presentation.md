@@ -31,6 +31,7 @@ Presentation
 * setCurrentIndex
 * setCurrentContent
 * getLength
+* getContainer
 * first
 * prev
 * next

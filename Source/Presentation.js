@@ -105,6 +105,10 @@ var Presentation = this.Presentation = new Class({
 		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
+	getContainer: function(){
+		return this.container;
+	},
+
 	_getContext: function(index){
 		this.contents.setCurrentIndex(index);
 		var current = this.contents.getCurrentContent();
