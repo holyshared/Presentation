@@ -1,0 +1,28 @@
+.slideContainer {
+	width: 320px;
+	overflow: hidden;
+	position: relative;
+	margin: 0px auto;
+	padding: 0px;
+	display: block;
+	border: 1px solid #cccccc;	
+	height: 320px;
+}
+	
+.slideContent {
+	width: 300px;
+	height: 300px;
+	display: block;
+	position: absolute;
+	margin-top: -160px;
+	margin-left: -160px;
+	top: 50%;
+	left: 50%;
+	transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-o-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	background: #cccccc;
+	padding: 10px;
+}
