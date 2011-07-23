@@ -45,7 +45,7 @@
 				var myPresen = null;
 
 				var init = function(presen){
-					log ( (myPresen == presen) ? 'assert ok' : 'function - invalud Presentation' );
+					log ( (container == presen.getContainer()) ? 'assert ok' : 'function - invalid Presentation' );
 					checkValue = true;
 
 					Presentation.removeInitializer(init);
@@ -68,12 +68,13 @@
 				var checkValue = false;
 				var myPresen = null;
 				var init = null;
+				var container = $('container');
 
 				function MyInitializer(){};
 
 				MyInitializer.prototype.invoke = function(presen){
 
-					log ( (myPresen == presen) ? 'assert ok' : 'object - invalud Presentation' );
+					log ( (container == presen.getContainer()) ? 'assert ok' : 'object - invalid Presentation' );
 					checkValue = true;
 
 					Presentation.removeInitializer(init);
@@ -82,8 +83,6 @@
 				init = new MyInitializer();
 
 				Presentation.addInitializer(init);
-
-				var container = $('container');
 
 				myPresen = new Presentation(container);
 				myPresen.start();

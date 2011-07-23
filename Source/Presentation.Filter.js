@@ -12,6 +12,7 @@ authors:
 requires:
   - Core/Class
   - Presentation/Presentation
+  - Presentation/Presentation.Slide
 
 provides:
   - Presentation.Filter
@@ -20,7 +21,7 @@ provides:
 ...
 */
 
-(function(Presentation){
+(function(Presentation, Slide){
 
 //Filter types
 var defineFilterTypes = ['before', 'after'];
@@ -67,7 +68,7 @@ function includeFilter(method) {
 
 //It is override as for set, first, prev, next and last.
 //Processing that executes the filter is built in.
-var OverridePresentation = Presentation.prototype;
+var OverridePresentation = Slide.prototype;
 overideMethods.each(function(name){
 	OverridePresentation[name] = includeFilter(name);
 });
@@ -141,7 +142,7 @@ Presentation.Filter = new Class({
 	}
 
 });
-Presentation.implement(new Presentation.Filter());
+Slide.implement(new Presentation.Filter());
 
 
 
@@ -156,14 +157,14 @@ defineFilterTypes.each(function(key){
 
 		OverridePresentation.filters[key] = [];
 
-		Presentation.implement(extend);
+		Slide.implement(extend);
 	}
 
 });
 
 
-Presentation.implement(new Presentation.BeforeFilter());
-Presentation.implement(new Presentation.AfterFilter());
+Slide.implement(new Presentation.BeforeFilter());
+Slide.implement(new Presentation.AfterFilter());
 
 function createTypeMethod(type) {
 
@@ -203,4 +204,4 @@ function createTypeMethod(type) {
 
 };
 
-}(Presentation));
+}(Presentation, Presentation.Slide));

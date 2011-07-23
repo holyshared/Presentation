@@ -22,6 +22,7 @@ requires:
 
 provides:
   - Presentation
+  - Presentation.Slide
   - Presentation.Content
   - Presentation.Container
   - Presentation.Initializer
@@ -30,7 +31,25 @@ provides:
 
 (function(){
 
-var Presentation = this.Presentation = new Class({
+var Presentation = this.Presentation = function(container, options){
+
+	var slide = new Presentation.Slide(container, options);
+
+	var handlers = Presentation.getInitializers();
+	handlers.each(function(handler){
+		if (Type.isFunction(handler)) {
+			handler(slide);
+		} else if (Type.isObject(handler)) {
+			handler.invoke(slide);
+		}
+	});
+
+	return slide;
+
+};
+
+
+Presentation.Slide = new Class({
 
 	Implements: [Events, Options],
 
@@ -86,7 +105,7 @@ var Presentation = this.Presentation = new Class({
 		var context = this._getLastContext();
 		this._transrate(context);
 	},
-
+/*
 	_setup: function(){
 		var handlers = Presentation.getInitializers();
 		handlers.each(function(handler){
@@ -97,10 +116,8 @@ var Presentation = this.Presentation = new Class({
 			}
 		}, this);
 	},
-
+*/
 	start: function(){
-		this._setup();
-
 		var index = this.options.defaultIndex;
 		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
@@ -265,9 +282,7 @@ methods.each(function(method){
 		return this.contents[method].apply(this.contents, arguments);
 	};
 });
-Presentation.implement(mixins);
-
-
+Presentation.Slide.implement(mixins);
 
 
 
@@ -422,7 +437,5 @@ Presentation.Content = new Class({
 	}
 
 });
-
-
 
 }());
