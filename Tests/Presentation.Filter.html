@@ -4,7 +4,6 @@
 
 	window.addEventListener('load', function(){
 
-
 		var testcases = [];
 
 		testcases.push({
@@ -89,6 +88,37 @@
 				var content = myPresen.getContent(0);
 				myPresen.addFilter('before', filter1);
 				myPresen.applyFilter('before', content);
+			}
+		});
+
+
+
+		testcases.push({
+			title: 'filter options',
+			description : 'filter options test.',
+			fn: function(){
+				var before = false;
+				var after = false;
+
+				var bfilter = function(content){
+					before = true;
+				};
+
+				var afilter = function(content){
+					after = true;
+				};
+
+				var myPresen = new Presentation('container', {
+					beforeFilters: [bfilter],
+					afterFilters: [afilter]
+				});
+
+				var content = myPresen.getContent(0);
+
+				myPresen.applyFilter('before', content);
+				myPresen.applyFilter('after', content);
+
+				log ( (before && after) ? 'assert ok' : 'filter is not found.' );
 			}
 		});
 

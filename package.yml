@@ -13,7 +13,7 @@ copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 sources:
   - "Source/Presentation/Presentation.js"
   - "Source/Presentation/Presentation.Filter.js"
-  - "Source/Initializer/Presentation.FontScaler.js"
+  - "Source/Utils/Presentation.FontScaler.js"
 
 author: Noritaka Horio
 
