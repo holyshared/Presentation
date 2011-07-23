@@ -11,9 +11,9 @@ license: "[MIT License](http://holyshared.github.com/Presentation/license.txt)"
 copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
-  - "Source/Presentation.js"
-  - "Source/Presentation.Filter.js"
-  - "Source/Presentation.FontScaler.js"
+  - "Source/Presentation/Presentation.js"
+  - "Source/Presentation/Presentation.Filter.js"
+  - "Source/Initializer/Presentation.FontScaler.js"
 
 author: Noritaka Horio
 
