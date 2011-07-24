@@ -28,29 +28,48 @@ provides:
  *     '$': 'last'
  * });
  */
-Presentation.Keyboard = new Class({
+var defaultKeybind = {
+	'j': 'prev',
+	'k': 'next',
+	'left': 'prev',
+	'right': 'next',
+	'0': 'first',
+	'4': 'last'
+};
 
-	Extends: Helper.Keyboard,
-
-	initialize: function(options){
-		var methods = null;
-		if (options) {
-			var keys = Object.keys(options);
-			var values = Object.values(options);
-			values.each(function(key, index){
-				methods[key] = keys[index];
-			});
+function parseOptions(options) {
+	if (!options) return {};
+	var methods = {};
+	var keys = Object.keys(options);
+	var values = Object.values(options);
+	values.each(function(typeKey, index){
+		switch(typeOf(typeKey)) {
+			case 'string':
+				methods[typeKey] = keys[index];
+				break;
+			case 'array':
+				typeKey.each(function(key){
+					methods[key] = keys[index];
+				});
+				break;
+			default:
+				throw new TypeError('');
 		}
+	});
+	return methods;
+};
 
-		var keybinds = methods || {
-			'j': 'prev',
-			'k': 'next',
-			'0': 'first',
-			'$': 'last'
-		};
-		this.addMethods(keybinds);
-	}
+function createHelper(options) {
 
-});
+	var methods = parseOptions(options);
+	var keybinds = Object.merge(defaultKeybind, methods);
+	var helper = new Helper.Keyboard({
+		methods: keybinds
+	});
+	return helper;
+
+};
+
+Presentation.Keyboard = createHelper;
 
 }(Presentation));
