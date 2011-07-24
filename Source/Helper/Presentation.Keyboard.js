@@ -18,13 +18,14 @@ provides:
 ...
 */
 
-
 (function(Presentation){
 
 /**
  * var helper = new Presentation.Keyboard({
- *     prev: 'p',
- *     next: 'n'
+ *     'j': 'prev',
+ *     'k': 'next',
+ *     '0': 'first',
+ *     '$': 'last'
  * });
  */
 Presentation.Keyboard = new Class({
@@ -42,8 +43,10 @@ Presentation.Keyboard = new Class({
 		}
 
 		var keybinds = methods || {
-			p: 'prev',
-			n: 'next'
+			'j': 'prev',
+			'k': 'next',
+			'0': 'first',
+			'$': 'last'
 		};
 		this.addMethods(keybinds);
 	}
