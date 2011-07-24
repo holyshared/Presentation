@@ -8,12 +8,19 @@ Presentation
 Presentation
 -----------------------------------------------------
 
-	var presen = new Presentation(options);
-	presen.setCurrentIndex(0);
-	
-	var presen = new Presentation(options);
-	presen.setCurrentIndex(content);
-
+	var presentation = new Presentation('container', {
+		slide: 'section',
+		defaultIndex: 0,
+		beforeFilter: [],
+		afterFilter: [],
+		helpers: {
+			keyboard: {
+				prev: 'p',
+				next: 'n'
+			},
+			swipe: true
+		}
+	});
 
 ### Events
 
