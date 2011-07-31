@@ -31,6 +31,7 @@ provides:
 
 (function(){
 
+
 var Presentation = this.Presentation = function(container, options){
 
 	var slide = new Presentation.Slide(container, options);
