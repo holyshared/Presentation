@@ -53,7 +53,7 @@ function parseOptions(options) {
 				});
 				break;
 			default:
-				throw new TypeError('');
+				throw new TypeError('Helper\'s option is an illegal value.');
 		}
 	});
 	return methods;
