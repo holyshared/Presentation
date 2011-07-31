@@ -75,8 +75,6 @@ Presentation.Slide = new Class({
 				this.contents.addContent(content);
 			}, this);
 		}
-//		var index = opts.defaultIndex;
-//		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
 	set: function(index){
@@ -105,18 +103,7 @@ Presentation.Slide = new Class({
 		var context = this._getLastContext();
 		this._transrate(context);
 	},
-/*
-	_setup: function(){
-		var handlers = Presentation.getInitializers();
-		handlers.each(function(handler){
-			if (Type.isFunction(handler)) {
-				handler(this);
-			} else if (Type.isObject(handler)) {
-				handler.invoke(this);
-			}
-		}, this);
-	},
-*/
+
 	start: function(){
 		var index = this.options.defaultIndex;
 		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
@@ -271,8 +258,6 @@ var methods = [
 	'removeContents',
 	'getCurrentIndex',
 	'getCurrentContent',
-//	'setCurrentIndex',
-//	'setCurrentContent',
 	'getContent',
 	'getLength'
 ];
@@ -283,8 +268,6 @@ methods.each(function(method){
 	};
 });
 Presentation.Slide.implement(mixins);
-
-
 
 
 Presentation.Container = new Class({

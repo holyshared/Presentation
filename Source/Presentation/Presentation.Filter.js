@@ -74,24 +74,6 @@ overideMethods.each(function(name){
 	OverridePresentation[name] = includeFilter(name);
 });
 
-//It is override as for applyOptions.
-/*
-var method = 'applyOptions';
-var previous = OverridePresentation[method];
-OverridePresentation[method] = function(){
-
-	previous.call(this);
-
-	var opts = this.options;
-	defineFilterTypes.each(function(type){
-		var filters = opts[type + 'Filters'];
-		var add = 'add' + type.capitalize() + 'Filters';
-		if (filters){
-			this[add](filters);
-		}
-	});
-}
-*/
 
 /*---------------------------------------------
 	Filter Section
@@ -148,7 +130,6 @@ Presentation.Filter = new Class({
 
 });
 Slide.implement(new Presentation.Filter());
-
 
 
 /*---------------------------------------------
@@ -241,6 +222,5 @@ DefaultFilter.implement({
 Presentation.DefaultFilter = DefaultFilter;
 
 Presentation.addInitializer(new Presentation.DefaultFilter());
-
 
 }(Presentation, Presentation.Slide));

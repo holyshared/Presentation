@@ -56,8 +56,6 @@ var Presentation = this.Presentation = new Class({
 				this.contents.addContent(content);
 			}, this);
 		}
-//		var index = opts.defaultIndex;
-//		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
 	},
 
 	set: function(index){
@@ -266,10 +264,6 @@ methods.each(function(method){
 	};
 });
 Presentation.implement(mixins);
-
-
-
-
 
 
 Presentation.Container = new Class({
