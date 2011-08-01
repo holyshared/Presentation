@@ -80,6 +80,88 @@
 			}
 		});
 
+
+		testcases.push({
+			title: 'addContent/addContents/getContent/getLength',
+			description : 'addContent,addContents,getContent,getLength testcase',
+			fn: function(){
+				var element1 = new Element('section', { 'html': 'new content1', 'class': 'slideContent' }),
+					element2 = new Element('section', { 'html': 'new content2', 'class': 'slideContent' }),
+					element3 = new Element('section', { 'html': 'new content3', 'class': 'slideContent' });
+
+				var content1 = new Presentation.Content(element1)
+					content2 = new Presentation.Content(element2);
+					content3 = new Presentation.Content(element3);
+
+				$('container').adopt([element1, element2, element3]);
+
+				var len = myPresen.getLength();
+
+				myPresen.addContent(content1);
+
+				var content = myPresen.getContent(len);
+				log( (content1 == content) ? 'assert ok' : 'invalid content' );
+
+				myPresen.addContents([content2, content3]);
+
+				len++;
+
+				content = myPresen.getContent(len);
+				log( (content2 == content) ? 'assert ok' : 'It is not the first target.' );
+
+				len++;
+
+				content = myPresen.getContent(len);
+				log( (content3 == content) ? 'assert ok' : 'It is not the second target.' );
+			}
+		});
+
+
+		testcases.push({
+			title: 'removeContent/removeContents',
+			description : 'removeContent,removeContents testcase',
+			fn: function(){
+				var element1 = new Element('section', { 'html': 'new content1', 'class': 'slideContent' }),
+					element2 = new Element('section', { 'html': 'new content2', 'class': 'slideContent' }),
+					element3 = new Element('section', { 'html': 'new content3', 'class': 'slideContent' });
+
+				var content1 = new Presentation.Content(element1)
+					content2 = new Presentation.Content(element2);
+					content3 = new Presentation.Content(element3);
+
+				$('container').adopt([element1, element2, element3]);
+
+				var len = myPresen.getLength();
+
+				myPresen.addContent(content1);
+				myPresen.removeContent(content1);
+
+				log( (len == myPresen.getLength()) ? 'assert ok' : 'invalid content' );
+
+				myPresen.addContents([content2, content3]);
+				myPresen.removeContents([content2, content3]);
+
+				log( (len == myPresen.getLength()) ? 'assert ok' : 'It is not the first target.' );
+			}
+		});
+
+		testcases.push({
+			title: 'getCurrentIndex/getCurrentContent',
+			description : 'getCurrentIndex,getCurrentContent testcase',
+			fn: function(){
+				myPresen.set(2);
+				var index = myPresen.getCurrentIndex();
+
+				log( (index == 2) ? 'assert ok' : '' );
+
+				var content1 = myPresen.getCurrentContent();
+				var content2 = myPresen.getContent(index);
+
+				log( (content1 == content2) ? 'assert ok' : '' );
+
+			}
+		});
+
 		makeActions(testcases);
 
 	}, false);

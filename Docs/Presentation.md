@@ -3,8 +3,6 @@ Presentation
 
 
 
-
-
 Presentation
 -----------------------------------------------------
 
@@ -35,6 +33,7 @@ Presentation
 * removeContents
 * getCurrentIndex
 * getCurrentContent
+* getContent
 * setCurrentIndex
 * setCurrentContent
 * getLength
@@ -56,7 +55,6 @@ Presentation
 * removeInitializer
 * removeInitializers
 * hasInitializer
-
 
 
 Presentation.Container
