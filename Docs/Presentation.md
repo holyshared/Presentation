@@ -11,14 +11,14 @@ Presentation
 		defaultIndex: 0,
 		beforeFilter: [],
 		afterFilter: [],
-		helpers: {
-			keyboard: {
-				prev: 'p',
-				next: 'n'
-			},
-			swipe: true
-		}
+		keyboard: {
+			prev: ['j', 'left'],
+			next: ['k', 'right']
+		},
+		swipe: true
 	});
+	presentation.start();
+
 
 ### Events
 

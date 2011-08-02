@@ -11,6 +11,7 @@ authors:
 
 requires:
   - Presentation/Presentation
+  - Presentation/Presentation.Helper
   - Helper/Helper.Keyboard
 
 provides:
@@ -20,15 +21,8 @@ provides:
 
 (function(Presentation){
 
-/**
- * var helper = new Presentation.Keyboard({
- *     'j': 'prev',
- *     'k': 'next',
- *     '0': 'first',
- *     '$': 'last'
- * });
- */
-var defaultKeybind = {
+//Keyboard helper's option is added to options of Presentation.Slide.
+var defaultOptions = {
 	'j': 'prev',
 	'k': 'next',
 	'left': 'prev',
@@ -36,6 +30,10 @@ var defaultKeybind = {
 	'0': 'first',
 	'4': 'last'
 };
+
+Presentation.Slide.implement({
+	options: { keyboard: defaultOptions }
+});
 
 function parseOptions(options) {
 	if (!options) return {};
@@ -62,7 +60,7 @@ function parseOptions(options) {
 function createHelper(options) {
 
 	var methods = parseOptions(options);
-	var keybinds = Object.merge(defaultKeybind, methods);
+	var keybinds = Object.merge(defaultOptions, methods);
 	var helper = new Helper.Keyboard({
 		methods: keybinds
 	});
@@ -71,5 +69,16 @@ function createHelper(options) {
 };
 
 Presentation.Keyboard = createHelper;
+
+
+//Please input sentences that translate into here.
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.keyboard) {
+		return;
+	}
+	slide.addHelper(new Presentation.Keyboard(opts.keyboard));
+});
+
 
 }(Presentation));

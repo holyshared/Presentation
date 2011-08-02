@@ -11,6 +11,7 @@ authors:
 
 requires:
   - Presentation/Presentation
+  - Presentation/Presentation.Helper
   - Helper/Helper.Swipe
 
 provides:
@@ -18,8 +19,12 @@ provides:
 ...
 */
 
-
 (function(Presentation){
+
+//Swipe helper's option is added to options of Presentation.Slide.
+Presentation.Slide.implement({
+	options: { swipe: true }
+});
 
 /**
  * var helper = new Presentation.Swipe();
@@ -35,6 +40,15 @@ Presentation.Swipe = new Class({
 		});
 	}
 
+});
+
+//Please input sentences that translate into here.
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.swipe) {
+		return;
+	}
+	slide.addHelper(new Presentation.Swipe());
 });
 
 }(Presentation));
