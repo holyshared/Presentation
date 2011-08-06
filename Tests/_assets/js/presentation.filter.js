@@ -9,30 +9,27 @@
 			description : 'addFilter, addFilters method test.',
 			fn: function(){
 
-				var filter1 = function(content){};
+				var filter1 = {
+					foucs: function(content){}
+				};
 
 				var myPresen1 = new Presentation('container');
-				myPresen1.addFilter('before', filter1);
+				myPresen1.addFilter(filter1);
 
-				log( (myPresen1.hasFilter('before')) ? 'assert ok' : 'filter is not found.' );
+				log( (myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is not found.' );
 
-				var filter2 = function(content){};
-				var filter3 = function(content){};
+				var filter2 = {
+					foucs: function(content){}
+				};
+				var filter3 = {
+					foucs: function(content){}
+				};
 
 				var myPresen2 = new Presentation('container');
-				myPresen2.addFilters([
-					{
-						'type': 'before',
-						'handler': filter2
-					},
-					{
-						'type': 'after',
-						'handler': filter3
-					}
-				]);
+				myPresen2.addFilters([filter2, filter3]);
 
-				log( (myPresen2.hasFilter('before')) ? 'assert ok' : 'Before filter is not found.' );
-				log( (myPresen2.hasFilter('after')) ? 'assert ok' : 'After filter is not found.' );
+				log( (myPresen2.hasFilter(filter2)) ? 'assert ok' : 'Filter2 is not found.' );
+				log( (myPresen2.hasFilter(filter3)) ? 'assert ok' : 'Filter3 is not found.' );
 			}
 		});
 
@@ -41,36 +38,30 @@
 			description : 'removeFilter, removeFilters method test.',
 			fn: function(){
 
-				var filter1 = function(content){};
+				var filter1 = {
+					foucs: function(content){}
+				};
 
 				var myPresen1 = new Presentation('container');
-				myPresen1.addFilter('before', filter1);
-				myPresen1.removeFilter('before', filter1);
+				myPresen1.addFilter(filter1);
+				myPresen1.removeFilter(filter1);
 
-				log( (!myPresen1.hasFilter('before')) ? 'assert ok' : 'filter is found.');
+				log( (!myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is found.');
 
-				var filter2 = function(content){};
-				var filter3 = function(content){};
+				var filter2 = {
+					foucs: function(content){}
+				};
+				var filter3 = {
+					foucs: function(content){}
+				};
 
 				var myPresen2 = new Presentation('container');
-				myPresen2.addFilters([
-					{
-						'type': 'before',
-						'handler': filter2
-					},
-					{
-						'type': 'after',
-						'handler': filter3
-					}
-				]);
+				myPresen2.addFilters([ filter2, filter3 ]);
 
-				myPresen2.removeFilters({
-					'before': filter2, 
-					'after': filter3
-				});
+				myPresen2.removeFilters([ filter2, filter3 ]);
 
-				log( (!myPresen2.hasFilter('before')) ? 'assert ok' : 'Before filter is found.' );
-				log( (!myPresen2.hasFilter('after')) ? 'assert ok' : 'After filter is found.' );
+				log( (!myPresen2.hasFilter(filter2)) ? 'assert ok' : 'Filter2 is found.' );
+				log( (!myPresen2.hasFilter(filter3)) ? 'assert ok' : 'Filter3 is found.' );
 			}
 		});
 
@@ -78,14 +69,17 @@
 			title: 'applyFilter',
 			description : 'applyFilter method test.',
 			fn: function(){
-				var filter1 = function(content){
-					var section = $(content);
-					section.setStyle('background-color', '#cccccc');
+				var filter1 = {
+					foucs: function(content){
+						var section = $(content);
+						section.setStyle('background-color', '#cccccc');
+					}
 				};
+
 				var myPresen = new Presentation('container');
 				var content = myPresen.getContent(0);
-				myPresen.addFilter('before', filter1);
-				myPresen.applyFilter('before', content);
+				myPresen.addFilter(filter1);
+				myPresen.applyFilter('foucs', content);
 			}
 		});
 
@@ -95,28 +89,30 @@
 			title: 'filter options',
 			description : 'filter options test.',
 			fn: function(){
-				var before = false;
-				var after = false;
+				var blur = false;
+				var foucs = false;
 
-				var bfilter = function(content){
-					before = true;
+				var bfilter = {
+					blur: function(content){
+						blur = true;
+					}
 				};
-
-				var afilter = function(content){
-					after = true;
+				var ffilter = {
+					foucs: function(content){
+						foucs = true;
+					}
 				};
 
 				var myPresen = new Presentation('container', {
-					beforeFilters: [bfilter],
-					afterFilters: [afilter]
+					filters: [bfilter, ffilter]
 				});
 
 				var content = myPresen.getContent(0);
 
-				myPresen.applyFilter('before', content);
-				myPresen.applyFilter('after', content);
+				myPresen.applyFilter('blur', content);
+				myPresen.applyFilter('foucs', content);
 
-				log ( (before && after) ? 'assert ok' : 'filter is not found.' );
+				log ( (blur && foucs) ? 'assert ok' : 'filter is not found.' );
 			}
 		});
 
