@@ -1,23 +1,16 @@
 (function(doc){
 
-	var filterCount = 0;
-	function myFilter(slide){
-		filterCount++;
-	}
-
 	window.addEventListener('load', function(){
 
 		var myPresen = new Presentation('container', {
 			slide: 'section',
 			defaultIndex: 0,
-			beforeFilters: [
-				myFilter,
-				myFilter
-			],
-			afterFilters: [
-				myFilter,
-				myFilter
-			] 
+			onTransitionStart: function(){
+				log('onTransitionStart');
+			},
+			onTransitionEnd: function(){
+				log('onTransitionEnd');
+			}
 		});
 		myPresen.start();
 
@@ -65,21 +58,6 @@
 				myPresen.set(index);
 			}
 		});
-
-		testcases.push({
-			title: 'beforeFilters/afterFilters',
-			description : 'filters test',
-			fn: function(){
-				filterCount = 0;
-				var content = myPresen.getCurrentContent();
-
-				myPresen.applyFilter('before', content);
-				myPresen.applyFilter('after', content);
-
-				log((filterCount >= 4) ? 'assert ok' : 'invalid filter!!');
-			}
-		});
-
 
 		testcases.push({
 			title: 'addContent/addContents/getContent/getLength',
