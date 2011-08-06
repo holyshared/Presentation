@@ -31,7 +31,6 @@ provides:
 
 (function(){
 
-
 var Presentation = this.Presentation = function(container, options){
 
 	var slide = new Presentation.Slide(container, options);
@@ -86,6 +85,11 @@ Presentation.Slide = new Class({
 	first: function(){
 		var context = this._getFirstContext();
 		this._transrate(context);
+
+
+//		var content = this.getCurrentContent();
+//		this.applyFilter('blur', content);
+//		this.change(context);
 	},
 
 	prev: function(){
@@ -397,12 +401,28 @@ Presentation.Container = new Class({
 });
 
 
-Presentation.Content = new Class({
+var Decorater = {
 
-	initialize: function(element){
-		this.element = element;
-		this.element.setStyle('left', '150%');
+	//ie7, ie8
+	Legacy: function(handler) {
+		return function() {
+	    	this.fireEvent('transitionStart', [this]);
+	        handler.call(this);
+	        this.fireEvent('transitionEnd', [this]);
+	    };
 	},
+
+	//firefox, safari, chrome, opera, ie9
+	Modan: function(handler) {
+	    return function() {
+	        this.fireEvent('transitionStart', [this]);
+	        handler.call(this);
+	    };
+	}
+
+};
+
+var Content = {
 
 	forward: function(){
 		this.element.setStyle('left', '150%');
@@ -420,6 +440,52 @@ Presentation.Content = new Class({
 		return this.element;
 	}
 
+};
+
+var decorater, transitionEnd;
+
+if (Browser.chrome || Browser.safari) {
+	transitionEnd = 'webkitTransitionEnd';
+} else if (Browser.firefox) {
+	transitionEnd = 'transitionend';
+} else if (Browser.opera) {
+	transitionEnd = 'oTransitionEnd';
+} else {
+	transitionEnd = 'msTransitionEnd';
+}
+
+if (Browser.ie && Browser.version <= 7) {
+	Object.merge(Content, {
+    	initialize: function(element, options){
+    		this.setOptions(options);
+			this.element = element;
+			this.element.setStyle('left', '150%');
+	    }
+	});
+    decorater = Decorater.Modan;
+} else {
+	Object.merge(Content, {
+	    initialize: function(element, options){
+    		this.setOptions(options);
+			this.element = element;
+			this.element.setStyle('left', '150%');
+	        this.element.addEventListener(transitionEnd, function(){
+				this.fireEvent('transitionEnd', [this]);
+	        }, false);
+	    }
+	});
+	decorater = Decorater.Legacy;
+}
+
+['backward', 'forward', 'center'].each(function(method){
+	Content[method] = decorater(Content[method]);
 });
+
+//Presentation.Content
+Presentation.Content = new Class(Object.merge({
+
+	Implements: [Events, Options]
+
+}, Content));
 
 }());

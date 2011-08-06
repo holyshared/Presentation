@@ -14,7 +14,7 @@
 		var forwardElement = new Element('section', {
 			'class': 'slideContent',
 			'styles': Object.merge({
-				'left': '150%'
+				'left': '0%'
 			}, margin),
 			'html': 'forwardElement'
 		});
@@ -30,15 +30,24 @@
 		var centerElement = new Element('section', {
 			'class': 'slideContent',
 			'styles': Object.merge({
-				'left': '150%'
+				'left': '0%'
 			}, margin),
 			'html': 'centerElement'
+		});
+
+		var eventElement = new Element('section', {
+			'class': 'slideContent',
+			'styles': Object.merge({
+				'left': '0%'
+			}, margin),
+			'html': 'eventElement'
 		});
 
 		container.adopt([
 			forwardElement,
 			backwardElement,
-			centerElement
+			centerElement,
+			eventElement
 		]);
 		container.inject($('mt-content'));
 
@@ -58,6 +67,25 @@
 
 				var content = new Presentation.Content(centerElement);
 				content.center();
+
+			}
+		});
+
+
+		testcases.push({
+			title: 'animation events',
+			description : 'animation events',
+			fn: function(){
+				eventElement.setStyle('left', '0%');
+				var content = new Presentation.Content(eventElement, {
+					onTransitionStart: function(content){
+						log('assert ok');
+					},
+					onTransitionEnd: function(content){
+						log('assert ok');
+					}
+				});
+				content.forward();
 
 			}
 		});
