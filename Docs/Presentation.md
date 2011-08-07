@@ -9,8 +9,7 @@ Presentation
 	var presentation = new Presentation('container', {
 		slide: 'section',
 		defaultIndex: 0,
-		beforeFilter: [],
-		afterFilter: [],
+		filters: [],
 		keyboard: {
 			prev: ['j', 'left'],
 			next: ['k', 'right']
@@ -23,7 +22,8 @@ Presentation
 ### Events
 
 * onChanged
-
+* onTransitionStart
+* onTransitionEnd
 
 ### Methods
 
@@ -62,15 +62,11 @@ Presentation.Container
 
 var container = new Presentation.Container(element);
 
-var last = container.getLastContent();
-var lastBefore = container.getBeforeContents();
-lastBefore.forward();
-last.center();
+var befores = container.getBeforeContents(5);
+befores.invoke('forward')
 
-var first = container.getFirstContent();
-var firstAfter = container.getAfterContents();
-firstAfter.backward();
-first.center();
+var afters = container.getAfterContents(1);
+afters.invoke('backward');
 
 
 ### Methods
@@ -82,10 +78,6 @@ first.center();
 * setCurrentIndex
 * getCurrentIndex
 * getCurrentContent
-* getFirstContent
-* getPrevContent
-* getNextContent
-* getLastContent
 * getBeforeContents
 * getAfterContents
 * getContent
@@ -93,12 +85,21 @@ first.center();
 * isValid
 * hasPrevContent
 * hasNextContent
+* getNextIndex
+* getPrevIndex
+* getFirstIndex
+* getLastIndex
 
 Presentation.Content
 -----------------------------------------------------
 
 	var content = new Presentation.Content(element);
 	content.toForward();
+
+### Events
+
+* onTransitionStart
+* onTransitionEnd
 
 ### Methods
 
@@ -107,17 +108,21 @@ Presentation.Content
 * center
 * toElement
 
+
 Presentation.Filter
 -----------------------------------------------------
 
-	var presen = new Presentation(options);
-	presen.addBeforeFilter(function(content){
-		//do something
-	});
-	presen.addAfterFilter(function(content){
-		//do something
-	});
+	var filter = {
+		blur: function(content) {
+			//do something
+		},
+		focus: function(content){
+			//do something
+		}
+	}
 
+	var presen = new Presentation(options);
+	presen.addFilter(filter);
 
 ### Methods
 
@@ -127,13 +132,3 @@ Presentation.Filter
 * removeFilters
 * hasFilter
 * applyFilter
-* hasBeforeFilter
-* hasAfterFilter
-* addBeforeFilter
-* addBeforeFilters
-* removeBeforeFilter
-* removeBeforeFilters
-* addAfterFilter
-* addAfterFilters
-* removeAfterFilter
-* removeAfterFilters
