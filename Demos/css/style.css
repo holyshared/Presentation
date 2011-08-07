@@ -38,18 +38,17 @@ h1 {
 	font-weight: normal;
 }
 
+/* Contents
+----------------------------------------*/
 .copyright {
 	text-align: right;
 	padding: 0px 15px;
 }
 
-
 .container {
 	width: 100%;
 	height: 320px;
 	height: 768px;
-
-/*	height: 100%; */
 	overflow: hidden;
 	position: relative;
 }
@@ -69,4 +68,18 @@ h1 {
 	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #cccccc;
 	padding: 10px;
+}
+
+
+#presentation header {
+	position: absolute;
+	z-index: 1;
+	left: 15px;
+	top: 15px;
+}
+
+#presentation footer {
+	position: absolute;
+	z-index: 1;
+	right: 15px;
 }
