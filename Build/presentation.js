@@ -22,6 +22,7 @@ requires:
 
 provides:
   - Presentation
+  - Presentation.Slide
   - Presentation.Content
   - Presentation.Container
   - Presentation.Initializer
@@ -30,7 +31,25 @@ provides:
 
 (function(){
 
-var Presentation = this.Presentation = new Class({
+var Presentation = this.Presentation = function(container, options){
+
+	var slide = new Presentation.Slide(container, options);
+
+	var handlers = Presentation.getInitializers();
+	handlers.each(function(handler){
+		if (Type.isFunction(handler)) {
+			handler(slide);
+		} else if (Type.isObject(handler)) {
+			handler.invoke(slide);
+		}
+	});
+
+	return slide;
+
+};
+
+
+Presentation.Slide = new Class({
 
 	Implements: [Events, Options],
 
@@ -53,118 +72,89 @@ var Presentation = this.Presentation = new Class({
 			var elements = this.container.getElements(selecter);
 			elements.each(function(element){
 				var content = new Presentation.Content(element);
-				this.contents.addContent(content);
+				this.addContent(content);
 			}, this);
 		}
 	},
 
-	set: function(index){
-		var context = this._getContext(index);
-		this._transrate(context);
+	addContent: function(content){
+		content.addEvent('transitionEnd', this._onTransitionEnd.bind(this));
+		this.contents.addContent(content);
 	},
 
-	first: function(){
-		var context = this._getFirstContext();
-		this._transrate(context);
-	},
-
-	prev: function(){
-		var context = this._getPrevContext();
-		if (!context) return;
-		this._transrate(context);
-	},
-
-	next: function(){
-		var context = this._getNextContext();
-		if (!context) return;
-		this._transrate(context);
-	},
-
-	last: function(){
-		var context = this._getLastContext();
-		this._transrate(context);
-	},
-
-	_setup: function(){
-		var handlers = Presentation.getInitializers();
-		handlers.each(function(handler){
-			if (Type.isFunction(handler)) {
-				handler(this);
-			} else if (Type.isObject(handler)) {
-				handler.invoke(this);
-			}
+	addContents: function(contents){
+		contents.each(function(content){
+			this.addContent(content);
 		}, this);
 	},
 
-	start: function(){
-		this._setup();
+	set: function(index){
+		var content = this.getCurrentContent(),
+			context = this._getContext(index);
+		this.fireEvent('__blur', [content]);
+		this.contents.setCurrentIndex(index);
+		this._change(context);
+	},
 
+	first: function(){
+		var index = this.contents.getFirstIndex();
+		this.set(index);
+	},
+
+	prev: function(){
+		var index = this.contents.getPrevIndex();
+		if (index == null) {
+			return;
+		}
+		this.set(index);
+	},
+
+	next: function(){
+		var index = this.contents.getNextIndex();
+		if (!index) {
+			return;
+		}
+		this.set(index);
+	},
+
+	last: function(){
+		var index = this.contents.getLastIndex();
+		this.set(index);
+	},
+
+	start: function(){
 		var index = this.options.defaultIndex;
-		(this.getLength() > 0) ? this.set(index) : this.setCurrentIndex(index);
+		if (this.getLength() > 0) {
+			var context = this._getContext(index);
+			this.contents.setCurrentIndex(index);
+			this._change(context);
+		} else {
+			this.setCurrentIndex(index);
+		}
 	},
 
 	getContainer: function(){
 		return this.container;
 	},
 
-	_getContext: function(index){
-		this.contents.setCurrentIndex(index);
-		var current = this.contents.getCurrentContent();
-		var after = this.contents.getAfterContents();
-		var before = this.contents.getBeforeContents();
-
-		var context = {};
-		if (after.length > 0) { context['forward'] = after; }
-		if (before.length > 0) { context['backward'] = before; }
-		context['center'] = current;
-		return context;
-	},
-
-	_getFirstContext: function(){
-		var first = this.contents.getFirstContent();
-		var after = this.contents.getAfterContents();
-		return {
-			center: first,
-			forward: after
-		};
-	},
-
-	_getPrevContext: function(){
-		if (!this.contents.hasPrevContent()) {
-			return;
-		}
-		var current = this.contents.getCurrentContent();
-		var prev = this.contents.getPrevContent();
-		return {
-			center: prev,
-			forward: current
-		};
-	},
-
-	_getNextContext: function(){
-		if (!this.contents.hasNextContent()) {
-			return;
-		}
-		var current = this.contents.getCurrentContent();
-		var next = this.contents.getNextContent();
-		return {
-			center: next,
-			backward: current
+	_onTransitionEnd: function(){
+		if (this._moves++ >= this.getLength() - 1) {
+			this.fireEvent('transitionEnd', [
+				this.getCurrentIndex(),
+				this.getCurrentContent()
+			]);
+			this.fireEvent('__focus', [this.getCurrentContent()]);
 		}
 	},
 
-	_getLastContext: function(){
-		var last = this.contents.getLastContent();
-		var before = this.contents.getBeforeContents();
-		return {
-			center: last,
-			backward: before
-		}
-	},
-
-	_transrate: function(targets){
+	_change: function(targets){
+		this._moves = 0;
+		this.fireEvent('transitionStart', [content]);
 		for (var key in targets){
 			var target = targets[key];
+			if (!target) {
+				continue;
+			}
 			switch(typeOf(target)){
 				case 'array':
 					target.invoke(key);
@@ -173,7 +163,7 @@ var Presentation = this.Presentation = new Class({
 					target[key]();
 					break;
 				default:
-					throw new TypeError('aaaaa');
+					throw new TypeError('Invalid context.');
 			}
 		}
 		var args = [
@@ -182,6 +172,20 @@ var Presentation = this.Presentation = new Class({
 			this.contents.getLength()
 		];
 		this.fireEvent('change', args);
+	},
+
+	_getContext: function(index){
+		var current = this.contents.getContent(index);
+		var after = this.contents.getAfterContents(index);
+		var before = this.contents.getBeforeContents(index);
+
+		var context = {
+			forward: after || null,
+			backward: before || null,
+			center: current
+		};
+
+		return context;
 	}
 
 });
@@ -245,15 +249,11 @@ Presentation.Initializer = new Class({
 Object.append(Presentation, new Presentation.Initializer());
 
 
-var methods = [  
-	'addContent',
-	'addContents',
+var methods = [
 	'removeContent',
 	'removeContents',
 	'getCurrentIndex',
 	'getCurrentContent',
-//	'setCurrentIndex',
-//	'setCurrentContent',
 	'getContent',
 	'getLength'
 ];
@@ -263,7 +263,7 @@ methods.each(function(method){
 		return this.contents[method].apply(this.contents, arguments);
 	};
 });
-Presentation.implement(mixins);
+Presentation.Slide.implement(mixins);
 
 
 Presentation.Container = new Class({
@@ -332,49 +332,21 @@ Presentation.Container = new Class({
 		return this.contents.length;
 	},
 
-	getFirstContent: function(){
-		this.index = 0;
-		return this.getContent(this.index);
-	},
-
-	getLastContent: function(){
-		this.index = this.getLength() - 1;
-		return this.getContent(this.index);
-	},
-
-	getBeforeContents: function(){
+	getBeforeContents: function(index){
 		var contents = [];
-		var end = this.getCurrentIndex();
-		for (var i = 0; i < end; i++) {
+		for (var i = 0; i < index; i++) {
 			contents.push(this.getContent(i));
 		}
-		return contents;
+		return (contents.length > 0) ? contents : null;
 	},
 
-	getAfterContents: function(){
+	getAfterContents: function(index){
 		var contents = [];
-		var start = this.getCurrentIndex();
 		var end = this.getLength();
-		for (var i = start + 1; i < end; i++) {
+		for (var i = index + 1; i < end; i++) {
 			contents.push(this.getContent(i));
 		}
-		return contents;
-	},
-
-	getNextContent: function(){
-		if (!this.isValid(this.index + 1)) {
-			return;
-		}
-		this.index++;
-		return this.getContent(this.index);
-	},
-
-	getPrevContent: function(){
-		if (!this.isValid(this.index - 1)) {
-			return;
-		}
-		this.index--;
-		return this.getContent(this.index);
+		return (contents.length > 0) ? contents : null;
 	},
 
 	isValid: function(index){
@@ -387,17 +359,56 @@ Presentation.Container = new Class({
 
 	hasNextContent: function(){
 		return (this.isValid(this.index + 1)) ? true : false;
+	},
+
+	getFirstIndex: function(){
+		return 0;
+	},
+
+	getPrevIndex: function(){
+		if (!this.hasPrevContent()){
+			return;
+		}
+		return this.index - 1;
+	},
+
+	getNextIndex: function(){
+		if (!this.hasNextContent()){
+			return;
+		}
+		return this.index + 1;
+	},
+
+	getLastIndex: function(){
+		return this.getLength() - 1;
 	}
+
 
 });
 
 
-Presentation.Content = new Class({
+var Decorater = {
 
-	initialize: function(element){
-		this.element = element;
-		this.element.setStyle('left', '150%');
+	//ie7, ie8
+	Legacy: function(handler) {
+		return function() {
+	    	this.fireEvent('transitionStart', [this]);
+	        handler.call(this);
+	        this.fireEvent('transitionEnd', [this]);
+	    };
 	},
+
+	//firefox, safari, chrome, opera, ie9
+	Modan: function(handler) {
+	    return function() {
+	        this.fireEvent('transitionStart', [this]);
+	        handler.call(this);
+	    };
+	}
+
+};
+
+var Content = {
 
 	forward: function(){
 		this.element.setStyle('left', '150%');
@@ -415,9 +426,53 @@ Presentation.Content = new Class({
 		return this.element;
 	}
 
+};
+
+var decorater, transitionEnd;
+
+if (Browser.chrome || Browser.safari) {
+	transitionEnd = 'webkitTransitionEnd';
+} else if (Browser.firefox) {
+	transitionEnd = 'transitionend';
+} else if (Browser.opera) {
+	transitionEnd = 'oTransitionEnd';
+} else {
+	transitionEnd = 'msTransitionEnd';
+}
+
+if (Browser.ie && Browser.version <= 7) {
+	Object.merge(Content, {
+    	initialize: function(element, options){
+    		this.setOptions(options);
+			this.element = element;
+			this.element.setStyle('left', '150%');
+	    }
+	});
+    decorater = Decorater.Modan;
+} else {
+	Object.merge(Content, {
+	    initialize: function(element, options){
+    		this.setOptions(options);
+			this.element = element;
+			this.element.setStyle('left', '150%');
+	        this.element.addEventListener(transitionEnd, function(){
+				this.fireEvent('transitionEnd', [this]);
+	        }, false);
+	    }
+	});
+	decorater = Decorater.Legacy;
+}
+
+['backward', 'forward', 'center'].each(function(method){
+	Content[method] = decorater(Content[method]);
 });
 
+//Presentation.Content
+Presentation.Content = new Class(Object.merge({
 
+	Implements: [Events, Options]
+
+}, Content));
 
 }());
 
@@ -436,25 +491,19 @@ authors:
 requires:
   - Core/Class
   - Presentation/Presentation
+  - Presentation/Presentation.Slide
 
 provides:
   - Presentation.Filter
-  - Presentation.BeforeFilter
-  - Presentation.AfterFilter
+  - Presentation.DefaultFilter
 ...
 */
 
-(function(Presentation){
-
-//Filter types
-var defineFilterTypes = ['before', 'after'];
-
-//Override methods
-var overideMethods = [ 'set', 'first', 'prev', 'next', 'last' ];
+(function(Presentation, Slide){
 
 //Validator of filter
 function validateFilter(filter) {
-	if (!Type.isFunction(filter)){
+	if (!Type.isObject(filter)){
 		throw new TypeError('invalid filter');
 	}
 	return filter;
@@ -467,172 +516,108 @@ function validateFilters(filters){
 	return filters;
 }
 
-//Method of override of building in filter
-function includeFilter(method) {
+/*---------------------------------------------
+	Filter Section
+---------------------------------------------*/
 
-	var name = (method == 'set') ? '' : method.capitalize();
-
-	return function(){
-		var context = this['_get' + name + 'Context'].apply(this, arguments);
-		if (!context) return;
-		var content = context.center;
-		if (this.hasFilter('before')) {
-			this.applyFilter('before', content);
-		}
-
-		this._transrate(context);
-
-		if (this.hasFilter('after')) {
-			this.applyFilter('after', content);
-		}
-
-	};
-};
-
-//It is override as for set, first, prev, next and last.
-//Processing that executes the filter is built in.
-var OverridePresentation = Presentation.prototype;
-overideMethods.each(function(name){
-	OverridePresentation[name] = includeFilter(name);
-});
-
-//It is override as for applyOptions.
-var method = 'applyOptions';
-var previous = OverridePresentation[method];
-OverridePresentation[method] = function(){
-
-	previous.call(this);
-
-	var opts = this.options;
-	defineFilterTypes.each(function(type){
-		var filters = opts[type + 'Filters'];
-		var add = 'add' + type.capitalize() + 'Filters';
-		if (filters){
-			this[add](filters);
-		}
-	});
-}
-
-
-
-
+//Filter interface
 Presentation.Filter = new Class({
 
-	filters: {},
+	filters: [],
 
-	addFilter: function(type, filter){
-		this.filters[type].push(validateFilter(filter));
+	addFilter: function(filter){
+		this.filters.push(validateFilter(filter));
+		return this;
 	},
 
 	addFilters: function(filters){
 		var values = validateFilters(filters);
 		values.each(function(filter, index){
-			this.addFilter(filter.type, filter.handler);
+			this.addFilter(filter);
 		}, this);
-	},
-
-	removeFilter: function(type, filter){
-		if (!this.hasFilter(type)) return this;
-		this.filters[type].erase(validateFilter(filter));
-	},
-
-	removeFilters: function(filters){
-		var type;
-		if (typeOf(filters) == 'object'){
-			for (type in filters) this.removeFilter(type, filters[type]);
-			return this;
-		}
-		type = filters;
-		var targets = this.filters[type];
-		while(this.hasFilter(type)) {
-			this.removeFilter(type, targets.getLast());
-		}
 		return this;
 	},
 
-	hasFilter: function(type){
-		if (!this.filters[type]) {
-			return false;
-		}
-		return (this.filters[type].length > 0) ? true : false;
+	removeFilter: function(filter){
+		if (!this.hasFilter(filter)) return this;
+		this.filters.erase(validateFilter(filter));
+		return this;
+	},
+
+	removeFilters: function(filters){
+		var values = validateFilters(filters);
+		values.each(function(filter, index){
+			this.removeFilter(filter);
+		}, this);
+		return this;
+	},
+
+	hasFilter: function(filter){
+		return this.filters.contains(filter);
 	},
 
 	applyFilter: function(type, content){
-		var filters = this.filters[type];
+		var filters = this.filters;
 		filters.each(function(filter){
-			filter(content);
+			if (filter[type]){
+				filter[type](content);
+			}
 		});
 	}
 
 });
-Presentation.implement(new Presentation.Filter());
+Slide.implement(new Presentation.Filter());
 
 
+/*---------------------------------------------
+	Initializer Section
+---------------------------------------------*/
 
-defineFilterTypes.each(function(key){
-
-	var name = key.capitalize();
-	Presentation[name + 'Filter'] = function(){
-		var options = {};
-		options[key + 'Filters'] = null;
-
-		var extend = Object.merge(createTypeMethod(key), options);
-
-		OverridePresentation.filters[key] = [];
-
-		Presentation.implement(extend);
+//The initialization filter that registers the filter of the option is registered.
+function DefaultFilter(types){
+	this.eventTypes = ['blur', 'foucs'];
+	if (Type.isArray(types)){
+		this.eventTypes.append(types);
 	}
-
-});
-
-
-Presentation.implement(new Presentation.BeforeFilter());
-Presentation.implement(new Presentation.AfterFilter());
-
-function createTypeMethod(type) {
-
-	var methods = {};
-	var name = type.capitalize();
-
-	methods['add' + name + 'Filter'] = function(filter){
-		this.addFilter(type, filter);
-	};
-
-	methods['add' + name + 'Filters'] = function(){
-		var filters = Array.from(arguments);
-		var appendFilters = [];
-		filters.each(function(filter){
-			appendFilters.push({
-				type: type,
-				handler: filter
-			});
-		});
-		this.addFilters(appendFilters);
-	};
-
-	methods['remove' + name + 'Filter'] = function(filter){
-		this.removeFilter(type, filter);
-	};
-
-	methods['remove' + name + 'Filters'] = function(){
-//console.log(type);
-		this.removeFilters(type);
-	};
-
-	methods['has' + name + 'Filter'] = function(){
-		return this.hasFilter(type);
-	};
-
-	return methods;
-
 };
 
-}(Presentation));
+DefaultFilter.implement({
+
+	_createEventListeners: function(slide){
+		var events = {};
+		this.eventTypes.each(function(name){
+			events['__' + name] = function(content){
+				slide.applyFilter(name, content);
+			}
+		});
+		return events;
+	},
+
+	invoke: function(slide){
+		var opts = slide.options, events;
+		if (!opts.filters) {
+			return;
+		}
+		events = this._createEventListeners(slide);
+
+		slide.addFilters(opts.filters)
+			.addEvents(events);
+
+		delete opts.fliters;
+	}
+
+});
+
+Presentation.DefaultFilter = DefaultFilter;
+
+Presentation.addInitializer(new Presentation.DefaultFilter());
+
+}(Presentation, Presentation.Slide));
 
 
 /*
 ---
-name: Presentation.FontScaler
+name: Presentation.Helper
 
 description: 
 
@@ -643,44 +628,158 @@ authors:
 
 requires:
   - Presentation/Presentation
+  - Helper/Helper
 
 provides:
-  - Presentation.FontScaler
+  - Presentation.Helper
 ...
 */
 
-(function(win, doc, Presentation){
+(function(Presentation){
 
-function FontScaler(ratio) {
-	this.ratio = ratio || 1.3;
+Presentation.Slide.implement(new Helper());
+
+}(Presentation));
+
+
+/*
+---
+name: Presentation.Keyboard
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+  - Presentation/Presentation.Helper
+  - Helper/Helper.Keyboard
+
+provides:
+  - Presentation.Keyboard
+...
+*/
+
+(function(Presentation){
+
+//Keyboard helper's option is added to options of Presentation.Slide.
+var defaultOptions = {
+	'j': 'prev',
+	'k': 'next',
+	'left': 'prev',
+	'right': 'next',
+	'0': 'first',
+	'4': 'last'
 };
 
-FontScaler.implement({
+Presentation.Slide.implement({
+	options: { keyboard: defaultOptions }
+});
 
-	invoke: function(presentation){
-		var height = 0, width = 0;
-
-		if (win.innerHeight) {
-			height = win.innerHeight;
-			width = win.innerWidth;
-		} else if (doc.documentElement.clientHeight) {
-			height = doc.documentElement.clientHeight;
-			width = doc.documentElement.clientWidth;
-		} else if (doc.body.clientHeight) {
-			height = doc.body.clientHeight;
-			width = doc.body.clientWidth;
+function parseOptions(options) {
+	if (!options) return {};
+	var methods = {};
+	var keys = Object.keys(options);
+	var values = Object.values(options);
+	values.each(function(typeKey, index){
+		switch(typeOf(typeKey)) {
+			case 'string':
+				methods[typeKey] = keys[index];
+				break;
+			case 'array':
+				typeKey.each(function(key){
+					methods[key] = keys[index];
+				});
+				break;
+			default:
+				throw new TypeError('Helper\'s option is an illegal value.');
 		}
-		var dimension = (width > height * this.ratio) ? height : width / this.ratio;
-		var fontsize = dimension / 42;
+	});
+	return methods;
+};
 
-		$(document.body).setStyle('font-size', fontsize + 'px');
+function createHelper(options) {
+
+	var methods = parseOptions(options);
+	var keybinds = Object.merge(defaultOptions, methods);
+	var helper = new Helper.Keyboard({
+		methods: keybinds
+	});
+	return helper;
+
+};
+
+Presentation.Keyboard = createHelper;
+
+
+//Please input sentences that translate into here.
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.keyboard) {
+		return;
+	}
+	slide.addHelper(new Presentation.Keyboard(opts.keyboard));
+});
+
+
+}(Presentation));
+
+
+/*
+---
+name: Presentation.Swipe
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+  - Presentation/Presentation.Helper
+  - Helper/Helper.Swipe
+
+provides:
+  - Presentation.Swipe
+...
+*/
+
+(function(Presentation){
+
+//Swipe helper's option is added to options of Presentation.Slide.
+Presentation.Slide.implement({
+	options: { swipe: true }
+});
+
+/**
+ * var helper = new Presentation.Swipe();
+ */
+Presentation.Swipe = new Class({
+
+	Extends: Helper.Swipe,
+
+	initialize: function(){
+		this.addMethods({
+			left: 'next',
+			right: 'prev'
+		});
 	}
 
 });
 
-Presentation.FontScaler = FontScaler;
+//Please input sentences that translate into here.
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.swipe) {
+		return;
+	}
+	slide.addHelper(new Presentation.Swipe());
+});
 
-Presentation.addInitializer(new Presentation.FontScaler(1024 / 768));
-
-}(window, document, Presentation));
+}(Presentation));
 

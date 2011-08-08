@@ -1,3 +1,16 @@
+/*
+Copyright (c) 2008, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0pr2
+*/
+
+/* reset */
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+
+/* fonts */
+body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -7,6 +20,7 @@ body {
 	font-family: Sylfaen, "Time New Roman", serif; 
 	width: 100%;
 	height: 100%;
+	background: #333333;
 }
 
 /* Layout
@@ -17,19 +31,7 @@ header, footer, section {
 
 header, footer {
 	color: #ffffff;
-	background: #333333;
-	padding: 15px 0px;
-}
-
-header {
-	padding: 15px;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+	background: #222222;
 }
 
 /* Header
@@ -42,13 +44,11 @@ h1 {
 ----------------------------------------*/
 .copyright {
 	text-align: right;
-	padding: 0px 15px;
 }
 
 .container {
 	width: 100%;
-	height: 320px;
-	height: 768px;
+	height: 982px;
 	overflow: hidden;
 	position: relative;
 }
@@ -56,18 +56,27 @@ h1 {
 .content {
 	position: absolute;
 	width: 100%;
-	height: 320px;
-	margin-top: -160px;
+	height: 78%;
+	padding: 3%;
+	margin-top: -23%;
 	margin-left: -50%;
 	top: 50%;
 	left: 50%;
-	transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-o-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-webkit-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #cccccc;
-	padding: 10px;
+}
+
+.content hgroup h2 {
+	font-size: 461%;
+	margin-bottom: 1%;
+}
+
+.content hgroup h3 {
+	font-size: 231%;
 }
 
 
@@ -78,8 +87,21 @@ h1 {
 	top: 15px;
 }
 
-#presentation footer {
+#presentation header h1 {
+	font-size: 108%;
+	line-height: 100%;
+}
+
+#presentation footer p {
+	font-size: 108%;
 	position: absolute;
 	z-index: 1;
 	right: 15px;
+	bottom: 15px;
+}
+
+#control {
+	position: absolute;
+	z-index: 1;
+	top: 80%;
 }

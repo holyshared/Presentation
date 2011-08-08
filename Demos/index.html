@@ -8,32 +8,11 @@
 		<meta name="author" content="Noritaka Horio" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 		<link rel="stylesheet" href="css/style.css" media="screen,print" />
-		<script src="js/lib/mootools-core.js"></script>
+		<script src="js/lib/mootools-compressed.js"></script>
+		<script src="js/lib/powertools-compressed.js"></script>
+		<script src="js/lib/helper-compressed.js"></script>
 		<script src="js/lib/presentation.js"></script>
-		<script>
-			window.addEvent('domready', function(){
-
-				var presentation = new Presentation('presentation');
-				presentation.start();
-
-				$('first').addEvent('click', function(event){
-					presentation.first();
-				});
-
-				$('prev').addEvent('click', function(event){
-					presentation.prev();
-				});
-
-				$('next').addEvent('click', function(event){
-					presentation.next();
-				});
-
-				$('last').addEvent('click', function(event){
-					presentation.last();
-				});
-
-			});
-		</script>
+		<script src="js/runner.js"></script>
 	</head>
 
 	<body>
@@ -73,7 +52,7 @@
 			</section>
 
 			</div>
-			<p><button id="first" type="button">first</button><button id="prev" type="button">prev</button><button id="next" type="button">next</button><button id="last" type="button">last</button></p>
+			<p id="control"><button id="first" type="button">first</button><button id="prev" type="button">prev</button><button id="next" type="button">next</button><button id="last" type="button">last</button></p>
 
 			<footer>
 				<p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
