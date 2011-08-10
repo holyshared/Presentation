@@ -86,10 +86,7 @@ ol li {
 .content {
 	position: absolute;
 	width: 100%;
-	height: 80%;
-	padding: 3%;
-	margin-top: -27%;
-/*	margin-top: -491px; */
+	padding: 0px 3%;
 	margin-left: -50%;
 	top: 50%;
 	left: 50%;
@@ -113,8 +110,8 @@ ol li {
 	left: 15px;
 	top: 15px;
 */
-	left: 1.2%;
-	top: 1.2%;
+	left: 1.5%;
+	top: 1.5%;
 }
 
 #presentation header h1 {
@@ -128,8 +125,8 @@ ol li {
 	z-index: 1;
 /*	right: 15px;
 	bottom: 15px; */
-	right: 1.2%;
-	bottom: 1.2%;
+	right: 1.5%;
+	bottom: 1.5%;
 }
 
 #control {
