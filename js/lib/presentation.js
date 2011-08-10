@@ -75,6 +75,7 @@ try {
 				var content = new Presentation.Content(element);
 				this.addContent(content);
 } catch(e) {
+	alert('applyOptions');
 	alert(e);
 }
 
@@ -160,7 +161,7 @@ try {
 
 	_change: function(targets){
 		this._moves = 0;
-		this.fireEvent('transitionStart', [content]);
+		this.fireEvent('transitionStart', [this.getCurrentContent()]);
 		for (var key in targets){
 			var target = targets[key];
 			if (!target) {
