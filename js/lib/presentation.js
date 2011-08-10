@@ -71,27 +71,15 @@ Presentation.Slide = new Class({
 		if (selecter) {
 			var elements = this.container.getElements(selecter);
 			elements.each(function(element){
-try {
 				var content = new Presentation.Content(element);
 				this.addContent(content);
-} catch(e) {
-	alert('applyOptions');
-	alert(e);
-}
-
 			}, this);
 		}
 	},
 
 	addContent: function(content){
-try {
-
 		content.addEvent('transitionEnd', this._onTransitionEnd.bind(this));
 		this.contents.addContent(content);
-} catch(e){
-	alert('this.contents.addContent');
-	alert(e);
-} 
 	},
 
 	addContents: function(contents){
