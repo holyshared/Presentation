@@ -83,8 +83,14 @@ try {
 	},
 
 	addContent: function(content){
+try {
+
 		content.addEvent('transitionEnd', this._onTransitionEnd.bind(this));
 		this.contents.addContent(content);
+} catch(e){
+	alert('this.contents.addContent');
+	alert(e);
+} 
 	},
 
 	addContents: function(contents){
