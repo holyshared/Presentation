@@ -13,6 +13,8 @@
 			}
 
 			var content = $('presentation').getElement('.container');
+			alert(content);
+
 //			var contents = content.getElements('.content');
 			content.setStyle('height', height);
 /*			contents.setStyle('height', height);
