@@ -86,7 +86,7 @@ ol li {
 .content {
 	position: absolute;
 	width: 100%;
-	padding: 0px 3%;
+	padding: 3% 3%;
 	margin-left: -50%;
 	top: 50%;
 	left: 50%;
