@@ -12,13 +12,7 @@
 			}
 
 			var content = $('presentation').getElement('.container');
-			alert(content);
-
-//			var contents = content.getElements('.content');
 			content.setStyle('height', height);
-/*			contents.setStyle('height', height);
-*/
-		try {
 
 			var presentation = new Presentation('presentation', {
 				keyboard: {
@@ -30,9 +24,6 @@
 				swipe: true
 			});
 			presentation.start();
-		} catch(e) {
-			alert(e);
-		}
 
 	});
 

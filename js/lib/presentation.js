@@ -71,8 +71,13 @@ Presentation.Slide = new Class({
 		if (selecter) {
 			var elements = this.container.getElements(selecter);
 			elements.each(function(element){
+try {
 				var content = new Presentation.Content(element);
 				this.addContent(content);
+} catch(e) {
+	alert(e);
+}
+
 			}, this);
 		}
 	},
