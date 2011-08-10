@@ -2,7 +2,6 @@
 
 	win.addEvent('domready', function(){
 
-		try {
 			var height = 0;
 			if (win.innerHeight) {
 				height = win.innerHeight;
@@ -19,6 +18,8 @@
 			content.setStyle('height', height);
 /*			contents.setStyle('height', height);
 */
+		try {
+
 			var presentation = new Presentation('presentation', {
 				keyboard: {
 					prev: ['j', 'left'],
