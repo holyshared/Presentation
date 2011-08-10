@@ -86,16 +86,12 @@ ol li {
 .content {
 	position: absolute;
 	width: 100%;
-	height: 79%;
+	height: 80%;
 	padding: 3%;
-	margin-top: -30%;
-
-/*	margin-top: -23.2%; */
-	margin-top: 2.5%;
-
+	margin-top: -23.5%;
+/*	margin-top: -491px; */
 	margin-left: -50%;
-	top: 0px;
-/*	top: 50%; */
+	top: 50%;
 	left: 50%;
 	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
@@ -113,8 +109,12 @@ ol li {
 #presentation header {
 	position: absolute;
 	z-index: 1;
+/*
 	left: 15px;
 	top: 15px;
+*/
+	left: 1.2%;
+	top: 1.2%;
 }
 
 #presentation header h1 {
@@ -126,8 +126,10 @@ ol li {
 	font-size: 108%;
 	position: absolute;
 	z-index: 1;
-	right: 15px;
-	bottom: 15px;
+/*	right: 15px;
+	bottom: 15px; */
+	right: 1.2%;
+	bottom: 1.2%;
 }
 
 #control {
