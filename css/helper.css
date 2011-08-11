@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+/**
+ * Presentation.js helper style.
+ * @version: 1.0
+ * @author: Noritaka Horio<holy.shared.design@gmail.com>
+ * @licence: public domain
+ */
+
+/* Status Helper
+-----------------------------------------------------*/
+
+.status {
+	position: fixed;
+	top: 88%;
+	right: 1%;
+}
+
+.status .current {
+	font-size: 230%;
+}
+
+.status .total {
+	font-size: 108%;
+}
+
+
+/* Controller Helper
+-----------------------------------------------------*/
+.controller {
+	position: fixed;
+	top: 85%;
+	left: 50%;
+	margin-left: -10%;
+	width: 20%;
+	text-align: center;
+}
+
+.controller button {
+	border-radius: 100%;
+	padding: 5.5% 3%;
+	margin: 0px 1.4%;
+	background-color: #222222;
+	color: #F9A200;
+	border: 5px solid #333333;
+	display: inline-block;
+	width: 20%;
+}
+
+.controller button:hover {
+	background-color: #444444;
+	color: #FFFF00;
+}
+
+.controller .first {
+}
+
+.controller .prev {
+}
+
+.controller .next {
+}
+
+.controller .last {
+}
