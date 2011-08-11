@@ -11,15 +11,10 @@
 				height = doc.body.clientHeight;
 			}
 
-			var pht = (height/100) * 90;
-			var phm = (height/100) * 80;
-
 			var container = $('presentation').getElement('.container');
 			var contents = container.getElements('.content');
 			container.setStyle('height', height);
-			contents.setStyle('height', phm);
-
-			contents.setStyle('margin-top', -pht/2);
+			contents.setStyle('height', height);
 
 			var presentation = new Presentation('presentation', {
 				keyboard: {
