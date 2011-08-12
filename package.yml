@@ -16,6 +16,7 @@ sources:
   - "Source/Helper/Presentation.Helper.js"
   - "Source/Helper/Presentation.Swipe.js"
   - "Source/Helper/Presentation.Keyboard.js"
+  - "Source/Helper/Presentation.Controller.js"
   - "Source/Utils/Presentation.FontScaler.js"
 
 author: Noritaka Horio
