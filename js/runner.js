@@ -25,6 +25,7 @@
 				},
 				swipe: true
 			});
+
 			presentation.start();
 
 	});
