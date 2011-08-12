@@ -28,38 +28,42 @@
 /* Controller Helper
 -----------------------------------------------------*/
 .controller {
+	font-size: 108%;
 	position: fixed;
 	top: 85%;
 	left: 50%;
-	margin-left: -10%;
-	width: 20%;
+	margin-left: -12%;
+	width: 28%;
 	text-align: center;
 }
 
 .controller button {
 	border-radius: 100%;
-	padding: 5.5% 3%;
+	-webkit-border-radius: 100%;
+	padding: 2.6% 1.4%;
 	margin: 0px 1.4%;
-	background-color: #222222;
-	color: #F9A200;
-	border: 5px solid #333333;
+	background-color: #000000;
 	display: inline-block;
-	width: 20%;
+	color: #FFFFFF;
+	border: 2px solid #FFFFFF;
+	background: #4971A0;
+	background: -moz-linear-gradient(
+	center bottom,
+	     #000000 0%,
+	     #666666 80%,
+	     #666666 100%
+	);
+	background: -webkit-gradient(
+	     linear,
+	     left 80%,
+	     left top,
+	     color-stop(0, #000000),
+	     color-stop(1, #666666),
+	     color-stop(1, #666666)
+	);
 }
 
 .controller button:hover {
-	background-color: #444444;
 	color: #FFFF00;
-}
-
-.controller .first {
-}
-
-.controller .prev {
-}
-
-.controller .next {
-}
-
-.controller .last {
+	cursor: pointer;
 }
