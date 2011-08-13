@@ -167,8 +167,8 @@ Presentation.Slide = new Class({
 			}
 		}
 		var args = [
-			this.contents.getCurrentContent(),
 			this.contents.getCurrentIndex(),
+			this.contents.getCurrentContent(),
 			this.contents.getLength()
 		];
 		this.fireEvent('change', args);

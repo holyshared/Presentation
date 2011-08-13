@@ -11,7 +11,7 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Controller
+  - Presentation/Presentation.Helper
 
 provides:
   - Presentation.Controller
