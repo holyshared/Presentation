@@ -12,8 +12,8 @@
 
 .status {
 	position: fixed;
-	top: 88%;
 	right: 1%;
+	bottom: 5%;
 }
 
 .status .current {

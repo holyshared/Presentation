@@ -103,6 +103,7 @@ a:hover {
 .copyright {
 	text-align: right;
 	margin-bottom: 0px;
+	margin-right: 1%;
 }
 
 
@@ -112,7 +113,7 @@ a:hover {
 /* Slide Header
 --------------------------*/
 .presentation header {
-	width: 99%;
+	width: 100%;
 	position: fixed;
 	z-index: 1;
 	left: 0px;
@@ -128,7 +129,7 @@ a:hover {
 /* Slide Footer
 --------------------------*/
 .presentation footer {
-	width: 99%;
+	width: 100%;
 	position: fixed;
 	z-index: 1;
 	left: 0px;
