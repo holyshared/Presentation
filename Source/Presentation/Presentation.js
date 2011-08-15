@@ -91,7 +91,7 @@ Presentation.Slide = new Class({
 	set: function(index){
 		var content = this.getCurrentContent(),
 			context = this._getContext(index);
-		this.fireEvent('__blur', [content]);
+		this.fireEvent('__deactivate', [content]);
 		this.contents.setCurrentIndex(index);
 		this._change(context);
 	},
@@ -143,7 +143,7 @@ Presentation.Slide = new Class({
 				this.getCurrentIndex(),
 				this.getCurrentContent()
 			]);
-			this.fireEvent('__focus', [this.getCurrentContent()]);
+			this.fireEvent('__activate', [this.getCurrentContent()]);
 		}
 	},
 

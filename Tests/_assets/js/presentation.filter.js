@@ -10,7 +10,7 @@
 			fn: function(){
 
 				var filter1 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 
 				var myPresen1 = new Presentation('container');
@@ -19,10 +19,10 @@
 				log( (myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is not found.' );
 
 				var filter2 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 				var filter3 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 
 				var myPresen2 = new Presentation('container');
@@ -39,7 +39,7 @@
 			fn: function(){
 
 				var filter1 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 
 				var myPresen1 = new Presentation('container');
@@ -49,10 +49,10 @@
 				log( (!myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is found.');
 
 				var filter2 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 				var filter3 = {
-					foucs: function(content){}
+					activate: function(content){}
 				};
 
 				var myPresen2 = new Presentation('container');
@@ -70,7 +70,7 @@
 			description : 'applyFilter method test.',
 			fn: function(){
 				var filter1 = {
-					foucs: function(content){
+					activate: function(content){
 						var section = $(content);
 						section.setStyle('background-color', '#cccccc');
 					}
@@ -79,7 +79,7 @@
 				var myPresen = new Presentation('container');
 				var content = myPresen.getContent(0);
 				myPresen.addFilter(filter1);
-				myPresen.applyFilter('foucs', content);
+				myPresen.applyFilter('activate', content);
 			}
 		});
 
@@ -89,30 +89,30 @@
 			title: 'filter options',
 			description : 'filter options test.',
 			fn: function(){
-				var blur = false;
-				var foucs = false;
+				var deactivate = false;
+				var activate = false;
 
-				var bfilter = {
-					blur: function(content){
+				var deactivateFilter = {
+					deactivate: function(content){
 						blur = true;
 					}
 				};
-				var ffilter = {
-					foucs: function(content){
+				var activateFilter = {
+					activate: function(content){
 						foucs = true;
 					}
 				};
 
 				var myPresen = new Presentation('container', {
-					filters: [bfilter, ffilter]
+					filters: [deactivateFilter, activateFilter]
 				});
 
 				var content = myPresen.getContent(0);
 
-				myPresen.applyFilter('blur', content);
-				myPresen.applyFilter('foucs', content);
+				myPresen.applyFilter('deactivate', content);
+				myPresen.applyFilter('activate', content);
 
-				log ( (blur && foucs) ? 'assert ok' : 'filter is not found.' );
+				log ( (deactivate && activate) ? 'assert ok' : 'filter is not found.' );
 			}
 		});
 

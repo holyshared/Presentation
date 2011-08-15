@@ -96,7 +96,7 @@ Slide.implement(new Presentation.Filter());
 
 //The initialization filter that registers the filter of the option is registered.
 function DefaultFilter(types){
-	this.eventTypes = ['blur', 'foucs'];
+	this.eventTypes = ['deactivate', 'activate'];
 	if (Type.isArray(types)){
 		this.eventTypes.append(types);
 	}

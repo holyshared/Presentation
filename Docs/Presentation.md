@@ -113,10 +113,10 @@ Presentation.Filter
 -----------------------------------------------------
 
 	var filter = {
-		blur: function(content) {
+		deactivate: function(content) {
 			//do something
 		},
-		focus: function(content){
+		activate: function(content){
 			//do something
 		}
 	}
