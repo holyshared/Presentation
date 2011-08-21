@@ -31,6 +31,14 @@ body {
 	background: #333333;
 }
 
+select, input, button, textarea {
+	font-family: Sylfaen, "Time New Roman", serif; 
+}
+
+button {
+	text-transform: capitalize;
+}
+
 /* Flow Content
 --------------------------*/
 article, header, footer, section, hgroup {
@@ -78,6 +86,15 @@ ol li {
 	padding-left: 0.3%;
 }
 
+/* Links
+--------------------------*/
+a {
+	color: #F9A200;
+}
+
+a:hover {
+	color: #FFFF00;
+}
 
 
 
@@ -130,6 +147,7 @@ ol li {
 	width: 100%;
 	overflow: hidden;
 	position: relative;
+	background: #cccccc;
 }
 
 /* Slide Content
@@ -153,9 +171,9 @@ ol li {
 	margin: 5% 0px 30px 0px;
 }
 
-
+/*
 #control {
 	position: absolute;
 	z-index: 1;
 	top: 80%;
-}
+}*/
