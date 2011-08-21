@@ -23,7 +23,13 @@
 					first: '0',
 					last: '4' //$
 				},
-				swipe: true
+				swipe: true,
+				page: {
+					current: 'current',
+					total: 'total'
+				},
+				controller: {
+				}
 			});
 			presentation.start();
 

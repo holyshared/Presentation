@@ -23,6 +23,8 @@ provides:
 Presentation.Slide.implement({
 	options: {
 		page: {
+			current: 'current',
+			total: 'total'
 		}
 	}
 });
@@ -56,7 +58,7 @@ Presentation.Page = new Class({
 	},
 
 	_onChange: function(index, content, total){
-		this._current.set('html', index);
+		this._current.set('html', index + 1);
 		this._total.set('html', total);
 	}
 

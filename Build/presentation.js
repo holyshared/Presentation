@@ -91,7 +91,7 @@ Presentation.Slide = new Class({
 	set: function(index){
 		var content = this.getCurrentContent(),
 			context = this._getContext(index);
-		this.fireEvent('__blur', [content]);
+		this.fireEvent('__deactivate', [content]);
 		this.contents.setCurrentIndex(index);
 		this._change(context);
 	},
@@ -143,7 +143,7 @@ Presentation.Slide = new Class({
 				this.getCurrentIndex(),
 				this.getCurrentContent()
 			]);
-			this.fireEvent('__focus', [this.getCurrentContent()]);
+			this.fireEvent('__activate', [this.getCurrentContent()]);
 		}
 	},
 
@@ -167,8 +167,8 @@ Presentation.Slide = new Class({
 			}
 		}
 		var args = [
-			this.contents.getCurrentContent(),
 			this.contents.getCurrentIndex(),
+			this.contents.getCurrentContent(),
 			this.contents.getLength()
 		];
 		this.fireEvent('change', args);
@@ -575,7 +575,7 @@ Slide.implement(new Presentation.Filter());
 
 //The initialization filter that registers the filter of the option is registered.
 function DefaultFilter(types){
-	this.eventTypes = ['blur', 'foucs'];
+	this.eventTypes = ['deactivate', 'activate'];
 	if (Type.isArray(types)){
 		this.eventTypes.append(types);
 	}
@@ -638,6 +638,62 @@ provides:
 (function(Presentation){
 
 Presentation.Slide.implement(new Helper());
+
+}(Presentation));
+
+
+/*
+---
+name: Presentation.Swipe
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+  - Presentation/Presentation.Helper
+  - Helper/Helper.Swipe
+
+provides:
+  - Presentation.Swipe
+...
+*/
+
+(function(Presentation){
+
+//Swipe helper's option is added to options of Presentation.Slide.
+Presentation.Slide.implement({
+	options: { swipe: true }
+});
+
+/**
+ * var helper = new Presentation.Swipe();
+ */
+Presentation.Swipe = new Class({
+
+	Extends: Helper.Swipe,
+
+	initialize: function(){
+		this.addMethods({
+			left: 'next',
+			right: 'prev'
+		});
+	}
+
+});
+
+//Please input sentences that translate into here.
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.swipe) {
+		return;
+	}
+	slide.addHelper(new Presentation.Swipe());
+});
 
 }(Presentation));
 
@@ -730,7 +786,7 @@ Presentation.addInitializer(function(slide) {
 
 /*
 ---
-name: Presentation.Swipe
+name: Presentation.Controller
 
 description: 
 
@@ -742,44 +798,216 @@ authors:
 requires:
   - Presentation/Presentation
   - Presentation/Presentation.Helper
-  - Helper/Helper.Swipe
 
 provides:
-  - Presentation.Swipe
+  - Presentation.Controller
 ...
 */
 
-(function(Presentation){
+(function($, Presentation){
 
-//Swipe helper's option is added to options of Presentation.Slide.
 Presentation.Slide.implement({
-	options: { swipe: true }
+	options: {
+		controller: {
+			first: 'first',
+			prev: 'prev',
+			next: 'next',
+			last: 'last'
+		}
+	}
 });
 
-/**
- * var helper = new Presentation.Swipe();
- */
-Presentation.Swipe = new Class({
+Presentation.Controller = new Class({
 
-	Extends: Helper.Swipe,
+	Extends: Helper.HelperObject,
 
-	initialize: function(){
-		this.addMethods({
-			left: 'next',
-			right: 'prev'
-		});
+	_name: 'controller',
+	_keys: [ 'first', 'prev', 'next', 'last' ],
+	_methods: {
+		first: 'first',
+		prev: 'prev',
+		next: 'next',
+		last: 'last'
+	},
+	_handlers: {},
+
+	setup: function(){
+		var container = this.getTarget().getContainer();
+		this._keys.each(function(key){
+			this['_' + key] = container.getElement('.' + this.options[key]);
+		}, this);
+		this._createHandlers();
+	},
+
+	enable: function(){
+		this._keys.each(function(key){
+			this['_' + key].addEvent('click', this._getHandler(key));
+		}, this);
+	},
+
+	disable: function(){
+		this._keys.each(function(key){
+			this['_' + key].removeEvent('click', this._getHandler(key));
+		}, this);
+	},
+
+	_getHandler: function(key){
+		return this._handlers[key];
+	},
+
+	_createHandlers: function(){
+		this._keys.each(function(key){
+			this._handlers[key] = this._createHandler(key);
+		}, this);
+		return this._handlers;
+	},
+
+	_createHandler: function(key){
+		var that = this;
+		return function(event){
+			that.delegate(key);
+		};
 	}
 
 });
 
-//Please input sentences that translate into here.
+
 Presentation.addInitializer(function(slide) {
 	var opts = slide.options;
-	if (!opts.swipe) {
+	if (!opts.controller) {
 		return;
 	}
-	slide.addHelper(new Presentation.Swipe());
+	slide.addHelper(new Presentation.Controller(opts.controller));
 });
 
-}(Presentation));
+}(document.id, Presentation));
+
+/*
+---
+name: Presentation.Page
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+  - Presentation/Presentation.Helper
+
+provides:
+  - Presentation.Page
+...
+*/
+
+(function($, Presentation){
+
+Presentation.Slide.implement({
+	options: {
+		page: {
+		}
+	}
+});
+
+Presentation.Page = new Class({
+
+	Extends: Helper.HelperObject,
+
+	_name: 'page',
+	_current:null,
+	_total: null,
+	_handler: null,
+
+	setup: function(){
+		var container = this.getTarget().getContainer(),
+			opts = this.options;
+
+		this._current = container.getElement('.' + opts.current);
+		this._total = container.getElement('.' + opts.total);
+		this._handler = this._onChange.bind(this);
+	},
+
+	enable: function(){
+		var slide = this.getTarget();
+		slide.addEvent('change', this._handler);
+	},
+
+	disable: function(){
+		var slide = this.getTarget();
+		slide.removeEvent('change', this._handler);
+	},
+
+	_onChange: function(index, content, total){
+		this._current.set('html', index);
+		this._total.set('html', total);
+	}
+
+});
+
+
+Presentation.addInitializer(function(slide) {
+	var opts = slide.options;
+	if (!opts.page) {
+		return;
+	}
+	slide.addHelper(new Presentation.Page(opts.page));
+});
+
+}(document.id, Presentation));
+
+/*
+---
+name: Presentation.FontScaler
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+
+provides:
+  - Presentation.FontScaler
+...
+*/
+
+(function(win, doc, Presentation){
+
+function FontScaler(ratio) {
+	this.ratio = ratio || 1.3;
+};
+
+FontScaler.implement({
+
+	invoke: function(slide){
+		var height = 0, width = 0;
+
+		if (win.innerHeight) {
+			height = win.innerHeight;
+			width = win.innerWidth;
+		} else if (doc.documentElement.clientHeight) {
+			height = doc.documentElement.clientHeight;
+			width = doc.documentElement.clientWidth;
+		} else if (doc.body.clientHeight) {
+			height = doc.body.clientHeight;
+			width = doc.body.clientWidth;
+		}
+		var dimension = (width > height * this.ratio) ? height : width / this.ratio;
+		var fontsize = dimension / 42;
+
+		$(document.body).setStyle('font-size', fontsize + 'px');
+	}
+
+});
+
+Presentation.FontScaler = FontScaler;
+
+Presentation.addInitializer(new Presentation.FontScaler(1024 / 768));
+
+}(window, document, Presentation));
 
