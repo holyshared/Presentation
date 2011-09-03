@@ -11,14 +11,16 @@ license: "[MIT License](http://holyshared.github.com/Presentation/license.txt)"
 copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
-  - "Source/Presentation/Presentation.js"
-  - "Source/Presentation/Presentation.Filter.js"
-  - "Source/Helper/Presentation.Helper.js"
-  - "Source/Helper/Presentation.Swipe.js"
-  - "Source/Helper/Presentation.Keyboard.js"
-  - "Source/Helper/Presentation.Controller.js"
-  - "Source/Helper/Presentation.Page.js"
-  - "Source/Utils/Presentation.FontScaler.js"
+  - "Source/Core/Presentation.js"
+  - "Source/Filter/Filter.js"
+  - "Source/Helper/Helper.js"
+  - "Source/Bootstrap/FontScaler.js"
+  - "Source/Bootstrap/Filter.js"
+  - "Source/Bootstrap/Helper.js"
+  - "Source/Helper/Swipe.js"
+  - "Source/Helper/Keyboard.js"
+  - "Source/Helper/Controller.js"
+  - "Source/Helper/Page.js"
 
 author: Noritaka Horio
 
