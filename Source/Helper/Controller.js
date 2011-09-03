@@ -19,18 +19,6 @@ provides:
 */
 
 (function($, Presentation, HelperNamespace){
-/*
-Presentation.Slide.implement({
-	options: {
-		controller: {
-			first: 'first',
-			prev: 'prev',
-			next: 'next',
-			last: 'last'
-		}
-	}
-});
-*/
 
 HelperNamespace.Controller = new Class({
 
@@ -85,15 +73,5 @@ HelperNamespace.Controller = new Class({
 	}
 
 });
-
-/*
-Presentation.addInitializer(function(slide) {
-	var opts = slide.options;
-	if (!opts.controller) {
-		return;
-	}
-	slide.addHelper(new Presentation.Controller(opts.controller));
-});
-*/
 
 }(document.id, Presentation, Presentation.Helper));

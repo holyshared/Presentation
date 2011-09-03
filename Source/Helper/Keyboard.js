@@ -30,11 +30,6 @@ var defaultOptions = {
 	'0': 'first',
 	'4': 'last'
 };
-/*
-Presentation.Slide.implement({
-	options: { keyboard: defaultOptions }
-});
-*/
 
 function parseOptions(options) {
 	if (!options) return {};

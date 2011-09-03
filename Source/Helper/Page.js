@@ -19,16 +19,6 @@ provides:
 */
 
 (function($, Presentation, HelperNamespace){
-/*
-Presentation.Slide.implement({
-	options: {
-		page: {
-			current: 'current',
-			total: 'total'
-		}
-	}
-});
-*/
 
 HelperNamespace.Page = new Class({
 

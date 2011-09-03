@@ -36,10 +36,6 @@ function validateFilters(filters){
 	return filters;
 }
 
-/*---------------------------------------------
-	Filter Section
----------------------------------------------*/
-
 //Filter interface
 Presentation.Filter = new Class({
 
