@@ -11,6 +11,7 @@ authors:
 
 requires:
   - Presentation/Presentation
+  - Presentation/Presentation.Bootstrap
 
 provides:
   - Presentation.Bootstrap.FontScaler

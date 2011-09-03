@@ -14,6 +14,7 @@ sources:
   - "Source/Core/Presentation.js"
   - "Source/Filter/Filter.js"
   - "Source/Helper/Helper.js"
+  - "Source/Bootstrap/FullScreen.js"
   - "Source/Bootstrap/FontScaler.js"
   - "Source/Bootstrap/Filter.js"
   - "Source/Bootstrap/Helper.js"
