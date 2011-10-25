@@ -28,7 +28,7 @@
 /* Controller Helper
 -----------------------------------------------------*/
 .controller {
-	font-size: 108%;
+	font-size: 127%;
 	position: fixed;
 	top: 85%;
 	left: 50%;
@@ -38,9 +38,9 @@
 }
 
 .controller button {
-	border-radius: 100%;
-	-webkit-border-radius: 100%;
-	padding: 2.6% 1.4%;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 1.6% 6%;
 	margin: 0px 1.4%;
 	background-color: #000000;
 	display: inline-block;
