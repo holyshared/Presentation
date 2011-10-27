@@ -22,17 +22,25 @@ provides:
 
 HelperNamespace.Page = new Class({
 
-	Extends: Helper.HelperObject,
+	Implements: [Helper.Pluggable],
+
+	options: {
+		current: 'current',
+		total: 'total'
+	},
 
 	_name: 'page',
-	_current:null,
+	_current: null,
 	_total: null,
 	_handler: null,
+
+	initialize: function(options) {
+		this.setOptions(options);
+	},
 
 	setup: function(){
 		var container = this.getTarget().getContainer(),
 			opts = this.options;
-
 		this._current = container.getElement('.' + opts.current);
 		this._total = container.getElement('.' + opts.total);
 		this._handler = this._onChange.bind(this);

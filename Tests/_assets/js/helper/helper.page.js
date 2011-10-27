@@ -5,8 +5,8 @@
 		var container = $('container');
 
 		var helper = new Presentation.Helper.Page({
-			current: 'current',
-			total: 'total'
+			current: 'currentPage',
+			total: 'totalPages'
 		});
 		var controller = new Controller(container);
 		controller.addHelper(helper);

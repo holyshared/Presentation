@@ -12,6 +12,7 @@ authors:
 requires:
   - Presentation/Presentation
   - Presentation/Presentation.Helper
+  - Helper/Helper.Delegator
 
 provides:
   - Presentation.Helper.Controller
@@ -22,7 +23,14 @@ provides:
 
 HelperNamespace.Controller = new Class({
 
-	Extends: Helper.HelperObject,
+	Extends: Helper.Delegator,
+
+	options: {
+		first: 'first',
+		prev: 'prev',
+		next: 'next',
+		last: 'last'
+	},
 
 	_name: 'controller',
 	_keys: [ 'first', 'prev', 'next', 'last' ],

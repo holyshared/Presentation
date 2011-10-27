@@ -31,7 +31,16 @@ var defaultOptions = {
 	'4': 'last'
 };
 
-function parseOptions(options) {
+function KeyboardHelper(options){
+	var methods = convertToDelegateMethods(options);
+	var keybinds = Object.merge(defaultOptions, methods);
+	var helperOptions = {
+		methods: keybinds
+	};
+	return new Helper.Keyboard(helperOptions);
+}
+
+function convertToDelegateMethods(options){
 	if (!options) return {};
 	var methods = {};
 	var keys = Object.keys(options);
@@ -51,19 +60,8 @@ function parseOptions(options) {
 		}
 	});
 	return methods;
-};
+}
 
-function createHelper(options) {
-
-	var methods = parseOptions(options);
-	var keybinds = Object.merge(defaultOptions, methods);
-	var helper = new Helper.Keyboard({
-		methods: keybinds
-	});
-	return helper;
-
-};
-
-HelperNamespace.Keyboard = createHelper;
+HelperNamespace.Keyboard = KeyboardHelper;
 
 }(Presentation, Presentation.Helper));

@@ -5,10 +5,10 @@
 		var container = $('container');
 
 		var helper = new Presentation.Helper.Controller({
-			first: 'first',
-			prev: 'prev',
-			next: 'next',
-			last: 'last'
+			first: 'firstButton',
+			prev: 'prevButton',
+			next: 'nextButton',
+			last: 'lastButton'
 		});
 		var controller = new Controller(container);
 		controller.addHelper(helper);
