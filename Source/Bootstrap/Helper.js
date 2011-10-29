@@ -18,36 +18,29 @@ provides:
 ...
 */
 
-(function(Presentation, Bootstrap){
+(function(Presentation, Bootstrap, Helper){
 
-function HelperBootstrap() {
-}
+Bootstrap.register('helpers', {
 
-HelperBootstrap.implement({
+	handler: function(presentation, configurations){
 
-	invoke: function(slide){
-		var opts = slide.options;
-		if (!opts.helpers) {
-			return;
-		}
+		Object.each(configurations, function(configuration, key){
 
-		for (var key in helpers) {
-			var hopts = helpers[key];
-			var hname = key.capitalize();
+			try {
+				var name = key.capitalize();
+				var helper = (Type.isBoolean(configuration))
+				? new Helper[name]()
+				: new Helper[name](configuration);
+			} catch(error){
+				this.failure(error);
+			}
 
-			var helper = Type.isBoolean(hopts)
-			? new Helper[hname]()
-			: new Helper[hname](hopts);
+			presentation.addHelper(helper);
+		});
 
-			slide.addHelper(helper);
-		}
-		delete opts.helpers;
+		this.success();
 	}
 
 });
 
-Bootstrap.Helper = HelperBootstrap;
-
-Presentation.addInitializer(new Bootstrap.Helper());
-
-}(Presentation, Presentation.Bootstrap));
+}(Presentation, Presentation.Bootstrap, Presentation.Helper));

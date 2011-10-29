@@ -22,6 +22,6 @@ provides:
 
 Presentation.Helper = {};
 
-Presentation.Slide.implement(new Helper());
+Presentation.Controller.implement(new Helper());
 
 }(Presentation));

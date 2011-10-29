@@ -19,10 +19,12 @@ requires:
   - Core/Events
   - Core/Element
   - Core/Element.Style
+  - Bootstrap/Bootstrap.Module
+  - Bootstrap/Bootstrap.Executer.Async
 
 provides:
   - Presentation
-  - Presentation.Slide
+  - Presentation.Controller
   - Presentation.Content
   - Presentation.Container
   - Presentation.Bootstrap
@@ -31,7 +33,47 @@ provides:
 
 (function(){
 
-var Presentation = this.Presentation = function(container, options){
+
+/*
+ * var p = new Presentation({
+ *     configrations: {
+ *          filters: {
+ *          },
+ *          helpers: {
+ *             swipeable: true,
+ *             controller: {
+ * 	              'next': 'nextButton'
+ *             }
+ *         }
+ *     }
+ * });
+ * p.start();
+ */
+
+
+
+
+
+
+
+var Presentation = this.Presentation = function(options){
+
+//	var presentation = new Presentation.Controller(container);
+//	var presentation = new Presentation.Slide(container, options);
+
+//	var executer = new Bootstrap.Strategy.Async();
+//	var bootstrap = new Bootstrap({
+//		module: Presentation.Bootstrap,
+	//	executer: executer,
+	//	configurations: configurations
+	//});
+
+//	presentation.start();
+	var p = new Presentation.Controller(options);
+
+	return p;
+
+/*
 
 	var slide = new Presentation.Slide(container, options);
 
@@ -45,36 +87,24 @@ var Presentation = this.Presentation = function(container, options){
 	});
 
 	return slide;
+*/
 
 };
 
 
-Presentation.Slide = new Class({
+
+
+
+
+
+Presentation.Controller = new Class({
 
 	Implements: [Events, Options],
 
-	options: {
-		slide: 'section',
-		defaultIndex: 0
-	},
-
-	initialize: function(container, options){
+	initialize: function(options){
 		this.setOptions(options);
-		this.container = $(container);
 		this.contents = new Presentation.Container();
-		this.applyOptions();
-	},
-
-	applyOptions: function(){
-		var opts = this.options;
-		var selecter = opts.slide;
-		if (selecter) {
-			var elements = this.container.getElements(selecter);
-			elements.each(function(element){
-				var content = new Presentation.Content(element);
-				this.addContent(content);
-			}, this);
-		}
+		this._attachRoles();
 	},
 
 	addContent: function(content){
@@ -93,7 +123,7 @@ Presentation.Slide = new Class({
 			context = this._getContext(index);
 		this.fireEvent('__deactivate', [content]);
 		this.contents.setCurrentIndex(index);
-		this._change(context);
+		this._changeContent(context);
 	},
 
 	first: function(){
@@ -122,15 +152,46 @@ Presentation.Slide = new Class({
 		this.set(index);
 	},
 
+	/*
+	 * <article data-presentation-role="container">
+	 *     <section data-presentation-role="content">
+	 *     </section>
+	 *     <section data-presentation-role="content">
+	 *     </section>
+	 * </article>
+	 */
+	_attachRoles: function(){
+		var container = this.container = $(document.body).getElement('[data-presentation-role="container"]');
+		var index = this.getCurrentIndex();
+		var elements = container.getElements('[data-presentation-role="content"]');
+		elements.each(function(element){
+			var content = new Presentation.Content(element);
+			this.addContent(content);
+		}, this);
+		this._changeContent(this._getContext(index));
+	},
+
+	_executeBootstrap: function(){
+
+		var executer = 'async',
+			module = Presentation.Bootstrap,
+			options = this.options;
+
+		var that = this; 
+
+		var delegateEvents = {};
+		['start', 'progress', 'success', 'failure'].each(function(key){
+			delegateEvents['on' + key.capitalize()] = function(){
+				that.fireEvent.apply(that, [key, arguments]);
+			}
+		});
+		var bootstrap = new Bootstrap(executer, module, Object.merge(options, delegateEvents));
+
+		bootstrap.execute(this);
+	},
+
 	start: function(){
-		var index = this.options.defaultIndex;
-		if (this.getLength() > 0) {
-			var context = this._getContext(index);
-			this.contents.setCurrentIndex(index);
-			this._change(context);
-		} else {
-			this.setCurrentIndex(index);
-		}
+		this._executeBootstrap();
 	},
 
 	getContainer: function(){
@@ -147,7 +208,7 @@ Presentation.Slide = new Class({
 		}
 	},
 
-	_change: function(targets){
+	_changeContent: function(targets){
 		this._moves = 0;
 		this.fireEvent('transitionStart', [content]);
 		for (var key in targets){
@@ -190,7 +251,7 @@ Presentation.Slide = new Class({
 
 });
 
-
+/*
 Presentation.Bootstrap = new Class({
 
 	initializers: [],
@@ -248,6 +309,36 @@ Presentation.Bootstrap = new Class({
 
 Object.append(Presentation, new Presentation.Bootstrap());
 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+Presentation.Bootstrap = new Bootstrap.Module();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var methods = [
 	'removeContent',
@@ -263,7 +354,7 @@ methods.each(function(method){
 		return this.contents[method].apply(this.contents, arguments);
 	};
 });
-Presentation.Slide.implement(mixins);
+Presentation.Controller.implement(mixins);
 
 
 Presentation.Container = new Class({

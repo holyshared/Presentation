@@ -1,4 +1,4 @@
-.slideContainer {
+*[data-presentation-role="container"] {
 	width: 320px;
 	overflow: hidden;
 	position: relative;
@@ -9,7 +9,7 @@
 	height: 320px;
 }
 	
-.slideContent {
+*[data-presentation-role="content"] {
 	width: 300px;
 	height: 300px;
 	display: block;

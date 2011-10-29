@@ -2,36 +2,35 @@
 
 	window.addEventListener('load', function(){
 
+		var filter = {
+			activate: function(content){
+				$(content).setStyle('background', '#ff0000');
+			}
+		};
+
+		var myPresen = new Presentation({
+			configurations: {
+				filters: [filter]
+			},
+			onStart: function(){
+console.log('start');
+			},
+			onProgress: function(key, index, total){
+console.log(key);
+console.log(index);
+console.log(total);
+			}
+		});
+		myPresen.start();
+
+
 		var testcases = [];
 
 		testcases.push({
 			title: 'filter options',
 			description : 'filter options test.',
 			fn: function(){
-				var deactivate = false;
-				var activate = false;
-
-				var deactivateFilter = {
-					deactivate: function(content){
-						deactivate = true;
-					}
-				};
-				var activateFilter = {
-					activate: function(content){
-						activate = true;
-					}
-				};
-
-				var myPresen = new Presentation('container', {
-					filters: [deactivateFilter, activateFilter]
-				});
-
-				var content = myPresen.getContent(0);
-
-				myPresen.applyFilter('deactivate', content);
-				myPresen.applyFilter('activate', content);
-
-				log ( (deactivate && activate) ? 'assert ok' : 'filter is not found.' );
+				myPresen.next();
 			}
 		});
 

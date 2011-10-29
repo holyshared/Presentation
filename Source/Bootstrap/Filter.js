@@ -20,44 +20,25 @@ provides:
 
 (function(Presentation, Bootstrap){
 
-//The initialization filter that registers the filter of the option is registered.
-function FilterBootstrap(types){
-	this.eventTypes = ['deactivate', 'activate'];
-	if (Type.isArray(types)){
-		this.eventTypes.append(types);
-	}
-};
+Bootstrap.register('filters', {
 
-FilterBootstrap.implement({
+	handler: function(presentation, configurations){
 
-	_createEventListeners: function(slide){
-		var events = {};
-		this.eventTypes.each(function(name){
-			events['__' + name] = function(content){
-				slide.applyFilter(name, content);
+		presentation.addFilters(configurations);
+
+		presentation.addEvents({
+			'__deactivate': function(content){
+				presentation.applyFilter('deactivate', content);
+			},
+			'__activate': function(content){
+				presentation.applyFilter('activate', content);
 			}
 		});
-		return events;
-	},
 
-	invoke: function(slide){
-		var opts = slide.options, events;
-		if (!opts.filters) {
-			return;
-		}
-
-		events = this._createEventListeners(slide);
-
-		slide.addFilters(opts.filters)
-			.addEvents(events);
-
-		delete opts.fliters;
+		this.success();
 	}
 
 });
 
-Bootstrap.Filter = FilterBootstrap;
-
-Presentation.addInitializer(new Bootstrap.Filter());
-
 }(Presentation, Presentation.Bootstrap));
+

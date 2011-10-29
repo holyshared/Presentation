@@ -13,7 +13,7 @@
 					activate: function(content){}
 				};
 
-				var myPresen1 = new Presentation('container');
+				var myPresen1 = new Presentation({});
 				myPresen1.addFilter(filter1);
 
 				log( (myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is not found.' );
@@ -25,7 +25,7 @@
 					activate: function(content){}
 				};
 
-				var myPresen2 = new Presentation('container');
+				var myPresen2 = new Presentation({});
 				myPresen2.addFilters([filter2, filter3]);
 
 				log( (myPresen2.hasFilter(filter2)) ? 'assert ok' : 'Filter2 is not found.' );
@@ -42,7 +42,7 @@
 					activate: function(content){}
 				};
 
-				var myPresen1 = new Presentation('container');
+				var myPresen1 = new Presentation({});
 				myPresen1.addFilter(filter1);
 				myPresen1.removeFilter(filter1);
 
@@ -55,7 +55,7 @@
 					activate: function(content){}
 				};
 
-				var myPresen2 = new Presentation('container');
+				var myPresen2 = new Presentation({});
 				myPresen2.addFilters([ filter2, filter3 ]);
 
 				myPresen2.removeFilters([ filter2, filter3 ]);
@@ -76,7 +76,7 @@
 					}
 				};
 
-				var myPresen = new Presentation('container');
+				var myPresen = new Presentation({});
 				var content = myPresen.getContent(0);
 				myPresen.addFilter(filter1);
 				myPresen.applyFilter('activate', content);
