@@ -13,12 +13,12 @@
 				filters: [filter]
 			},
 			onStart: function(){
-console.log('start');
+//console.log('start');
 			},
 			onProgress: function(key, index, total){
-console.log(key);
-console.log(index);
-console.log(total);
+//console.log(key);
+//console.log(index);
+//console.log(total);
 			}
 		});
 		myPresen.start();
@@ -27,8 +27,8 @@ console.log(total);
 		var testcases = [];
 
 		testcases.push({
-			title: 'filter options',
-			description : 'filter options test.',
+			title: 'filter test',
+			description : 'filter test.',
 			fn: function(){
 				myPresen.next();
 			}

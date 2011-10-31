@@ -17,7 +17,7 @@
 	margin-top: -160px;
 	margin-left: -160px;
 	top: 50%;
-	left: 50%;
+	left: 150%;
 	transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
 	-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
 	-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
@@ -25,4 +25,8 @@
 	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #cccccc;
 	padding: 10px;
+}
+
+*[data-presentation-role="content"]:first-child {
+	left: 50%;
 }

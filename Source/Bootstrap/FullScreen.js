@@ -20,14 +20,11 @@ provides:
 
 (function(win, doc, Presentation, Bootstrap){
 
-function FullScreen(){};
+Bootstrap.FullScreen = {
 
-FullScreen.implement({
+	handler: function(presentation, configuration){
 
-	invoke: function(slide){
-		var opts = slide.options;
-		var full = opts.fullScreen || false;
-		if (!full){
+		if (configuration === false) {
 			return;
 		}
 
@@ -40,17 +37,15 @@ FullScreen.implement({
 			height = doc.body.clientHeight;
 		}
 
-//		var container = slide.getContainer();
-		for (var i = 0; l = slide.getLength(), i < l; i++){
-			var content = slide.getContent(i).toElement();
+		for (var i = 0; l = presentation.getLength(), i < l; i++){
+			var content = presentation.getContent(i).toElement();
 			content.setStyle('height', height);
 		}
+
 	}
 
-});
+};
 
-Bootstrap.FullScreen = FullScreen;
-
-Presentation.addInitializer(new Bootstrap.FullScreen());
+Bootstrap.register('fullscreen', Bootstrap.FullScreen);
 
 }(window, document, Presentation, Presentation.Bootstrap));

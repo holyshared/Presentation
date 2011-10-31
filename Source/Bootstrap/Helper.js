@@ -20,7 +20,7 @@ provides:
 
 (function(Presentation, Bootstrap, Helper){
 
-Bootstrap.register('helpers', {
+Bootstrap.Helper = {
 
 	handler: function(presentation, configurations){
 
@@ -41,6 +41,8 @@ Bootstrap.register('helpers', {
 		this.success();
 	}
 
-});
+};
+
+Bootstrap.register('helpers', Bootstrap.Helper);
 
 }(Presentation, Presentation.Bootstrap, Presentation.Helper));

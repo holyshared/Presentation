@@ -168,7 +168,6 @@ Presentation.Controller = new Class({
 			var content = new Presentation.Content(element);
 			this.addContent(content);
 		}, this);
-		this._changeContent(this._getContext(index));
 	},
 
 	_executeBootstrap: function(){
@@ -178,16 +177,43 @@ Presentation.Controller = new Class({
 			options = this.options;
 
 		var that = this; 
+		var bootstrap = new Bootstrap(executer, module, options);
 
-		var delegateEvents = {};
-		['start', 'progress', 'success', 'failure'].each(function(key){
-			delegateEvents['on' + key.capitalize()] = function(){
-				that.fireEvent.apply(that, [key, arguments]);
+		var events = {
+			start: this.__delgater,
+			progress: this.__delgater,
+			success: [this.__startup, this.__delgater],
+			failure: this.__delgater
+		};
+
+		Object.each(events, function(handler, key){
+			if (Type.isArray(handler)){
+				handler.each(function(handler){
+					bootstrap.addEvent(key, handler.call(that, key));
+				});
+			} else {
+				bootstrap.addEvent(key, handler.call(that, key));
 			}
 		});
-		var bootstrap = new Bootstrap(executer, module, Object.merge(options, delegateEvents));
 
 		bootstrap.execute(this);
+	},
+
+	__startup: function(key){
+		var that = this;
+		var startup = function(){
+			that.set(that.getCurrentIndex());
+			that.fireEvent.apply(that, [key, arguments]);
+		};
+		return startup;
+	},
+
+	__delgater: function(key){
+		var that = this;
+		var delgater = function(){
+			that.fireEvent.apply(that, [key, arguments]);
+		};
+		return delgater;
 	},
 
 	start: function(){
@@ -251,93 +277,8 @@ Presentation.Controller = new Class({
 
 });
 
-/*
-Presentation.Bootstrap = new Class({
-
-	initializers: [],
-
-	addInitializer: function(handler){
-		if (!(Type.isFunction(handler) || Type.isFunction(handler.invoke))) {
-			throw new TypeError('Initializer should be an object that mounts function or the invoke method.');
-		}
-		if (this.hasInitializer(handler)) return;
-		this.initializers.push(handler);
-		return this;
-	},
-
-	addInitializers: function(){
-		var handlers = Array.from(arguments);
-		handlers.each(function(handler, index){
-			this.addInitializer(handler);
-		}, this);
-		return this;
-	},
-
-	getInitializer: function(index){
-		if (!this.initializers[index]){
-			throw new Error('There is no specified initializer.');
-		}
-		return this.initializers[index];
-	},
-
-	getInitializers: function(){
-		return this.initializers;
-	},
-
-	removeInitializer: function(handler){
-		if (!this.hasInitializer(handler)) return this;
-		this.initializers.erase(handler);
-		return this;
-	},
-
-	removeInitializers: function(){
-		var handlers = Array.from(arguments);
-		if (handlers.length <= 0) {
-			handlers = this.getInitializers();
-		}
-		handlers.each(function(handler, index){
-			this.removeInitializer(handler);
-		}, this);
-		return this;
-	},
-
-	hasInitializer: function(handler){
-		return (this.initializers.contains(handler)) ? true : false;
-	}
-
-});
-
-Object.append(Presentation, new Presentation.Bootstrap());
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 Presentation.Bootstrap = new Bootstrap.Module();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var methods = [

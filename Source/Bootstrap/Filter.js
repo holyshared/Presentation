@@ -20,7 +20,7 @@ provides:
 
 (function(Presentation, Bootstrap){
 
-Bootstrap.register('filters', {
+Bootstrap.Filter = {
 
 	handler: function(presentation, configurations){
 
@@ -38,7 +38,8 @@ Bootstrap.register('filters', {
 		this.success();
 	}
 
-});
+};
+
+Bootstrap.register('filters', Bootstrap.Filter);
 
 }(Presentation, Presentation.Bootstrap));
-
