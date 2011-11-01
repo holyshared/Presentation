@@ -2,21 +2,13 @@
 
 	window.addEventListener('load', function(){
 
-		var testcases = [];
-
-		testcases.push({
-			title: 'fullscreen options',
-			description : 'fullscreen options test.',
-			fn: function(){
-
-				var myPresen = new Presentation('container', {
-					fullScreen: true
-				});
-
+		var myPresen = new Presentation({
+			configurations: {
+				fullscreen: true
 			}
 		});
+		myPresen.start();
 
-		makeActions(testcases);
 
 	}, false);
 

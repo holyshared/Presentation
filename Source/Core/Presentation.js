@@ -236,7 +236,7 @@ Presentation.Controller = new Class({
 
 	_changeContent: function(targets){
 		this._moves = 0;
-		this.fireEvent('transitionStart', [content]);
+		this.fireEvent('transitionStart', [this.getCurrentContent()]);
 		for (var key in targets){
 			var target = targets[key];
 			if (!target) {

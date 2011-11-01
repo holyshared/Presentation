@@ -41,7 +41,9 @@ Bootstrap.FullScreen = {
 			var content = presentation.getContent(i).toElement();
 			content.setStyle('height', height);
 		}
+		$(presentation).setStyle('height', height);
 
+		this.success();
 	}
 
 };
