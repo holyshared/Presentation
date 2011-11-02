@@ -12,14 +12,13 @@ authors:
 requires:
   - Core/Class
   - Presentation/Presentation
-  - Presentation/Presentation.Controller
 
 provides:
   - Presentation.Filter
 ...
 */
 
-(function(Presentation, Controller){
+(function(Presentation){
 
 //Validator of filter
 function validateFilter(filter) {
@@ -82,6 +81,6 @@ Presentation.Filter = new Class({
 	}
 
 });
-Controller.implement(new Presentation.Filter());
+Presentation.implement(new Presentation.Filter());
 
-}(Presentation, Presentation.Controller));
+}(Presentation));

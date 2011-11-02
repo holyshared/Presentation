@@ -70,8 +70,8 @@
 
 
 		testcases.push({
-			title: 'getNextContent/getPrevContent/getLastContent/getFirstContent',
-			description : 'getNextContent, getPrevContent, getLastContent, getFirstContent method testcase',
+			title: 'getNextIndex/getPrevIndex/getLastIndex/getFirstIndex',
+			description : 'getNextIndex, getPrevIndex, getLastIndex, getFirstIndex method testcase',
 			fn: function(){
 
 				var container = new Presentation.Container();
@@ -90,16 +90,23 @@
 					content3
 				]);
 
-				var nextContent = container.getNextContent();
+				var index = container.getNextIndex();
+				var nextContent = container.getContent(index);
 				log ( (nextContent == content2) ? 'assert ok' : 'It is not the next contents.' );
 
-				var lastContent = container.getLastContent();
+				var index = container.getLastIndex();
+				var lastContent = container.getContent(index);
 				log ( (lastContent == content3) ? 'assert ok' : 'It is not the last contents.' );
 
-				var prevContent = container.getPrevContent();
-				log ( (prevContent == content2) ? 'assert ok' : 'It is not the previous contents.' );
 
-				var firstContent = container.getFirstContent();
+				container.setCurrentIndex(1);
+
+				var index = container.getPrevIndex();
+				var prevContent = container.getContent(index);
+				log ( (prevContent == content1) ? 'assert ok' : 'It is not the previous contents.' );
+
+				var index = container.getFirstIndex();
+				var firstContent = container.getContent(index);
 				log ( (firstContent == content1) ? 'assert ok' : 'It is not the first contents.' );
 			}
 		});
@@ -127,15 +134,19 @@
 					content3
 				]);
 
-				var lastContent = container.getLastContent();
-				var beforeContents = container.getBeforeContents();
+
+				var lastIndex = container.getLastIndex();
+				var lastContent = container.getContent(lastIndex);
+				var beforeContents = container.getBeforeContents(lastIndex);
 
 				log ( (beforeContents.contains(content1)) ? 'assert ok' : 'content1 is not included.' );
 				log ( (beforeContents.contains(content2)) ? 'assert ok' : 'content2 is not included.' );
 				log ( (!beforeContents.contains(content3)) ? 'assert ok' : 'content3 is included.' );
 
-				var firstContent = container.getFirstContent();
-				var afterContents = container.getAfterContents();
+
+				var firstIndex = container.getFirstIndex();
+				var firstContent = container.getContent(firstIndex);
+				var afterContents = container.getAfterContents(firstIndex);
 
 				log ( (afterContents.contains(content2)) ? 'assert ok' : 'content2 is not included.' );
 				log ( (afterContents.contains(content3)) ? 'assert ok' : 'content3 is not included.' );

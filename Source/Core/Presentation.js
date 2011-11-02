@@ -24,7 +24,6 @@ requires:
 
 provides:
   - Presentation
-  - Presentation.Controller
   - Presentation.Content
   - Presentation.Container
   - Presentation.Bootstrap
@@ -32,7 +31,6 @@ provides:
 */
 
 (function(){
-
 
 /*
  * var p = new Presentation({
@@ -50,54 +48,7 @@ provides:
  * p.start();
  */
 
-
-
-
-
-
-
-var Presentation = this.Presentation = function(options){
-
-//	var presentation = new Presentation.Controller(container);
-//	var presentation = new Presentation.Slide(container, options);
-
-//	var executer = new Bootstrap.Strategy.Async();
-//	var bootstrap = new Bootstrap({
-//		module: Presentation.Bootstrap,
-	//	executer: executer,
-	//	configurations: configurations
-	//});
-
-//	presentation.start();
-	var p = new Presentation.Controller(options);
-
-	return p;
-
-/*
-
-	var slide = new Presentation.Slide(container, options);
-
-	var handlers = Presentation.getInitializers();
-	handlers.each(function(handler){
-		if (Type.isFunction(handler)) {
-			handler(slide);
-		} else if (Type.isObject(handler)) {
-			handler.invoke(slide);
-		}
-	});
-
-	return slide;
-*/
-
-};
-
-
-
-
-
-
-
-Presentation.Controller = new Class({
+var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
@@ -121,6 +72,7 @@ Presentation.Controller = new Class({
 	set: function(index){
 		var content = this.getCurrentContent(),
 			context = this._getContext(index);
+
 		this.fireEvent('__deactivate', [content]);
 		this.contents.setCurrentIndex(index);
 		this._changeContent(context);
@@ -200,6 +152,7 @@ Presentation.Controller = new Class({
 	},
 
 	__startup: function(key){
+
 		var that = this;
 		var startup = function(){
 			that.set(that.getCurrentIndex());
@@ -262,6 +215,7 @@ Presentation.Controller = new Class({
 	},
 
 	_getContext: function(index){
+
 		var current = this.contents.getContent(index);
 		var after = this.contents.getAfterContents(index);
 		var before = this.contents.getBeforeContents(index);
@@ -273,6 +227,10 @@ Presentation.Controller = new Class({
 		};
 
 		return context;
+	},
+
+	toElement: function(){
+		return this.container;
 	}
 
 });
@@ -295,7 +253,7 @@ methods.each(function(method){
 		return this.contents[method].apply(this.contents, arguments);
 	};
 });
-Presentation.Controller.implement(mixins);
+Presentation.implement(mixins);
 
 
 Presentation.Container = new Class({
@@ -477,7 +435,7 @@ if (Browser.ie && Browser.version <= 7) {
     	initialize: function(element, options){
     		this.setOptions(options);
 			this.element = element;
-			this.element.setStyle('left', '150%');
+//			this.element.setStyle('left', '150%');
 	    }
 	});
     decorater = Decorater.Modan;
@@ -486,7 +444,7 @@ if (Browser.ie && Browser.version <= 7) {
 	    initialize: function(element, options){
     		this.setOptions(options);
 			this.element = element;
-			this.element.setStyle('left', '150%');
+//			this.element.setStyle('left', '150%');
 	        this.element.addEventListener(transitionEnd, function(){
 				this.fireEvent('transitionEnd', [this]);
 	        }, false);
