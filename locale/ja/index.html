@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Presentation.js</title>
+		<meta name="description" content="Presentation.js" />
+		<meta name="author" content="Noritaka Horio" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<link rel="stylesheet" href="css/core.css" media="screen,print" />
+		<link rel="stylesheet" href="css/helper.css" media="screen,print" />
+		<script src="js/lib/mootools-compressed.js"></script>
+		<script src="js/lib/powertools-compressed.js"></script>
+		<script src="js/lib/helper-compressed.js"></script>
+		<script src="js/lib/presentation.js"></script>
+		<script src="js/Presentation.Controller.js"></script>
+		<script src="js/runner.js"></script>
+	</head>
+
+	<body>
+		<article id="presentation" class="presentation">
+			<header>
+				<h1>Presentation.js v1.0</h1>
+			</header>
+
+			<div class="container">
+
+			<section class="content">
+				<hgroup>
+					<h2>Presentation.js</h2>
+					<h3>このライブラリについて</h3>
+				</hgroup>
+
+
+<p>Presentation.jsは<strong>html、css、javascript</strong>を利用したプレゼンテーション用のスライドを作成できるjavascriptライブラリです。  <br/>
+<strong>「ユーザーの自由を奪わないこと」</strong>をコンセプトとして、拡張可能であることを前提に設計しています。</p>
+
+<h4>ライブリの特徴</h4>
+<p>大きな特徴として次のものがあります。</p>
+
+<ul>
+    <li>ヘルパーを利用したプラグイン拡張の提供</li>
+    <li>コンテンツの最適化機能の提供</li>
+    <li>スライドの初期化機能の提供</li>
+    <li>サードパーティ性のライブラリを利用したiPad対応</li>
+</ul>
+
+			</section>
+
+			<section class="content">
+				<hgroup>
+					<h2>ヘルパーを利用したプラグイン</h2>
+					<h3>プラグインの組み込みによる拡張</h3>
+				</hgroup>
+
+<p>ヘルパープラグインはプレゼンテーションの内容に合わせて自由に組み込むことができる拡張機能です。<br/>
+最初から用意されているプラグインは下記の通りです。</p>
+
+<ul>
+<li><strong>Controller</strong> - スライドを操作できるGUIインターフェースを提供します。</li>
+<li><strong>Page</strong> - 現在表示しているページ情報を表示します。</li>
+<li><strong>Keyboard</strong> - キーボード入力によるスライドの操作を可能にします。</li>
+<li><strong>Swipe</strong> - スライドをモバイル端末でのタップ操作に対応させます。</li>
+</ul>
+
+<p>プラグイン自体も非常に簡単に作成できます。</p>
+
+			</section>
+
+			<section class="content">
+				<hgroup>
+					<h2>強力なコンテンツフィルター</h2>
+					<h3>フィルターを利用したコンテンツの最適化</h3>
+				</hgroup>
+<p>
+フィルターを利用すると自由にコンテンツを最適化することができます。  <br />
+<strong>フィルターは該当するコンテンツを表示する時と、非表示にする時に適用されます。</strong></p>
+
+<p>このタイミングで、コンテンツの一部を差し替えたり、新しい内容を追加することができます。</p>
+
+            </section>
+
+			<section class="content">
+				<hgroup>
+					<h2>自由にスライドを最適化する</h2>
+					<h3>ブートストラップによるスライドの初期化</h3>
+				</hgroup>
+                <p>ブートストラップ機能を利用すると、スライドの初期化を自由に行うことができます。<br/>
+例えばスライドの内容をAjaxで動的に読み込んだり、フルスクリーン表示を行えるようになります。</p>
+
+                <p>また、初期化処理をモジュール化できるので、利用するケース毎のスライド設定を作成することが可能です。</p>
+			</section>
+
+			</div>
+			<p id="controller" class="controller"><button id="first" class="first" type="button">first</button><button id="prev" class="prev" type="button">prev</button><button id="next" class="next" type="button">next</button><button id="last" class="last" type="button">last</button></p>
+			<p class="status"><strong class="current">16</strong> / <span class="total">36</span></p>
+
+			<footer>
+				<p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+			</footer>
+		</article>
+	</body>
+</html>
