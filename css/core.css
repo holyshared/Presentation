@@ -25,14 +25,9 @@ body{font:80% arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}s
 }
 
 body {
-	font-family: Sylfaen, "Time New Roman", serif; 
 	width: 100%;
 	height: 100%;
 	background: #333333;
-}
-
-select, input, button, textarea {
-	font-family: Sylfaen, "Time New Roman", serif; 
 }
 
 button {
