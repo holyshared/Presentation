@@ -56,6 +56,12 @@ HelperNamespace.Page = new Class({
 		slide.removeEvent('change', this._handler);
 	},
 
+	destroy: function(){
+		delete this._current;
+		delete this._total;
+		delete this._handler;
+	},
+
 	_onChange: function(index, content, total){
 		this._current.set('html', index + 1);
 		this._total.set('html', total);

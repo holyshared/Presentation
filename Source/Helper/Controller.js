@@ -43,9 +43,14 @@ HelperNamespace.Controller = new Class({
 	_handlers: {},
 
 	setup: function(){
-		var container = this.getTarget().getContainer();
+		var container = this.getTarget().getContainer(),
+			trigger = null;
 		this._keys.each(function(key){
-			this['_' + key] = container.getElement('.' + this.options[key]);
+			trigger = container.getElement('.' + this.options[key]);
+			if (!trigger){
+				throw new Error('The button ' + key + ' is not found.');
+			}
+			this['_' + key] = trigger;
 		}, this);
 		this._createHandlers();
 	},
@@ -59,6 +64,12 @@ HelperNamespace.Controller = new Class({
 	disable: function(){
 		this._keys.each(function(key){
 			this['_' + key].removeEvent('click', this._getHandler(key));
+		}, this);
+	},
+
+	destroy: function(){
+		this._keys.each(function(key){
+			delete this['_' + key];
 		}, this);
 	},
 

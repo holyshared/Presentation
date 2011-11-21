@@ -123,7 +123,6 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	_executeBootstrap: function(){
-
 		var executer = 'async',
 			module = Presentation.Bootstrap,
 			options = this.options;
@@ -132,10 +131,10 @@ var Presentation = this.Presentation = new Class({
 		var bootstrap = new Bootstrap(executer, module, options);
 
 		var events = {
-			start: this.__delgater,
-			progress: this.__delgater,
-			success: [this.__startup, this.__delgater],
-			failure: this.__delgater
+			start: this.__delegator,
+			progress: this.__delegator,
+			success: [this.__startup, this.__delegator],
+			failure: this.__delegator
 		};
 
 		Object.each(events, function(handler, key){
@@ -152,7 +151,6 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	__startup: function(key){
-
 		var that = this;
 		var startup = function(){
 			that.set(that.getCurrentIndex());
@@ -161,12 +159,13 @@ var Presentation = this.Presentation = new Class({
 		return startup;
 	},
 
-	__delgater: function(key){
+	__delegator: function(key){
+
 		var that = this;
-		var delgater = function(){
+		var delegator = function(){
 			that.fireEvent.apply(that, [key, arguments]);
 		};
-		return delgater;
+		return delegator;
 	},
 
 	start: function(){

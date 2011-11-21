@@ -24,21 +24,24 @@ Bootstrap.Helper = {
 
 	handler: function(presentation, configurations){
 
+		var bootstrap = this,
+			name = null,
+			helper = null;
+
 		Object.each(configurations, function(configuration, key){
-
-			try {
-				var name = key.capitalize();
-				var helper = (Type.isBoolean(configuration))
-				? new Helper[name]()
-				: new Helper[name](configuration);
-			} catch(error){
-				this.failure(error);
+			name = key.capitalize();
+			if (!Helper[name]){
+				throw new Error('Presection.Helper.' + name + ' is not found.');
 			}
-
+			try {
+				helper = (Type.isBoolean(configuration)) ? new Helper[name]() : new Helper[name](configuration);
+			} catch(error){
+				bootstrap.failure(error);
+			}
 			presentation.addHelper(helper);
 		});
 
-		this.success();
+		bootstrap.success();
 	}
 
 };

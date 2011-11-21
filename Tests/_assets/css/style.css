@@ -30,3 +30,17 @@
 *[data-presentation-role="content"]:first-child {
 	left: 50%;
 }
+
+.page {
+	position: absolute;
+	z-index: 1;
+	right: 15px;
+	bottom: 15px;
+}
+
+.controller {
+	position: absolute;
+	z-index: 1;
+	left: 15px;
+	bottom: 15px;
+}
