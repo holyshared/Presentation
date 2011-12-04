@@ -52,6 +52,8 @@ var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
+	_startup: false,
+
 	initialize: function(options){
 		this.setOptions(options);
 		this.contents = new Presentation.Container();
@@ -73,7 +75,9 @@ var Presentation = this.Presentation = new Class({
 		var content = this.getCurrentContent(),
 			context = this._getContext(index);
 
-		this.fireEvent('__deactivate', [content]);
+		if (this._startup){
+			this.fireEvent('__deactivate', [content]);
+		}
 		this.contents.setCurrentIndex(index);
 		this._changeContent(context);
 	},
@@ -155,12 +159,12 @@ var Presentation = this.Presentation = new Class({
 		var startup = function(){
 			that.set(that.getCurrentIndex());
 			that.fireEvent.apply(that, [key, arguments]);
+			that._startup = true;
 		};
 		return startup;
 	},
 
 	__delegator: function(key){
-
 		var that = this;
 		var delegator = function(){
 			that.fireEvent.apply(that, [key, arguments]);
