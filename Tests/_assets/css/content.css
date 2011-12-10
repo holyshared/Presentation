@@ -18,11 +18,11 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-moz-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-webkit-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-o-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
-	-ms-transition: left 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-webkit-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #cccccc;
 	padding: 10px;
 }

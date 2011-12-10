@@ -2,48 +2,33 @@
 
 this.addEventListener('load', function(){
 
-var p = new Presentation({
+var p = new Presentation('presentation', {
 
-	configurations: {
-
-		helpers: {
-
-			//Keyboard options
-			keyboard: {
-				prev: ['j', 'left'],
-				next: ['k', 'right'],
-				first: '0',
-				last: '4' //$
-			},
-
-			//Swipe options
-			swipe: true,
-
-			//Page options
-			page: {
-				current: 'current',
-				total: 'total'
-			},
-
-			//Controller options
-			controller: {
-				first: 'first',
-				prev: 'prev',
-				next: 'next',
-				last: 'last'
-			}
-
-		}
-
-	},
 	onStart: function(){
-console.log('onStart');
+		log('onStart');
 	},
-	onFailure: function(){
-console.log('onFailure');
+
+	onChange: function(index, length, content){
+		log('index');
+		log('length');
+		log('onChange');
+	},
+
+	onTransitionStart: function(content){
+		log('onTransitionStart');
+	},
+
+	onTransitionEnd: function(content){
+		log('onTransitionEnd');
 	}
 
-}); 
+});
+
+p.addHelper(new Presentation.Helper.Controller())
+	.addHelper(new Presentation.Helper.Keyboard())
+	.addHelper(new Presentation.Helper.Page())
+	.addHelper(new Presentation.Helper.Swipe());
+
 p.start();
 
 });

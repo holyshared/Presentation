@@ -19,32 +19,18 @@ requires:
   - Core/Events
   - Core/Element
   - Core/Element.Style
-  - Bootstrap/Bootstrap.Module
-  - Bootstrap/Bootstrap.Executer.Async
 
 provides:
   - Presentation
   - Presentation.Content
   - Presentation.Container
-  - Presentation.Bootstrap
 ...
 */
 
-(function(){
+(function($){
 
 /*
- * var p = new Presentation({
- *     configrations: {
- *          filters: {
- *          },
- *          helpers: {
- *             swipeable: true,
- *             controller: {
- * 	              'next': 'nextButton'
- *             }
- *         }
- *     }
- * });
+ * var p = new Presentation('presentation');
  * p.start();
  */
 
@@ -53,16 +39,22 @@ var Presentation = this.Presentation = new Class({
 	Implements: [Events, Options],
 
 	_startup: false,
+	_containerRole: '[data-presentation-role="container"]',
+	_contentsRole: '[data-presentation-role="content"]',
 
-	initialize: function(options){
+	initialize: function(element, options){
+		var applyElement = $(element);
+		if (!applyElement){
+			throw new Error('The element of the object which applies a function is not found.');
+		}
 		this.setOptions(options);
-		this.contents = new Presentation.Container();
-		this._attachRoles();
+		this._contents = new Presentation.Container();
+		this._setup(applyElement);
 	},
 
 	addContent: function(content){
 		content.addEvent('transitionEnd', this._onTransitionEnd.bind(this));
-		this.contents.addContent(content);
+		this._contents.addContent(content);
 	},
 
 	addContents: function(contents){
@@ -72,23 +64,29 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	set: function(index){
-		var content = this.getCurrentContent(),
-			context = this._getContext(index);
+		var content = null,
+			context = null;
 
-		if (this._startup){
-			this.fireEvent('__deactivate', [content]);
+		if (!this.isStarted()){
+			this.start();
 		}
-		this.contents.setCurrentIndex(index);
+
+		content = this.getCurrentContent(),
+		context = this._getContext(index);
+
+		this.fireEvent('__deactivate', [content]);
+		this._contents.setCurrentIndex(index);
 		this._changeContent(context);
+		this._notifyChange();
 	},
 
 	first: function(){
-		var index = this.contents.getFirstIndex();
+		var index = this._contents.getFirstIndex();
 		this.set(index);
 	},
 
 	prev: function(){
-		var index = this.contents.getPrevIndex();
+		var index = this._contents.getPrevIndex();
 		if (index == null) {
 			return;
 		}
@@ -96,7 +94,7 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	next: function(){
-		var index = this.contents.getNextIndex();
+		var index = this._contents.getNextIndex();
 		if (!index) {
 			return;
 		}
@@ -104,80 +102,45 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	last: function(){
-		var index = this.contents.getLastIndex();
+		var index = this._contents.getLastIndex();
 		this.set(index);
 	},
 
-	/*
-	 * <article data-presentation-role="container">
-	 *     <section data-presentation-role="content">
-	 *     </section>
-	 *     <section data-presentation-role="content">
-	 *     </section>
-	 * </article>
-	 */
-	_attachRoles: function(){
-		var container = this.container = $(document.body).getElement('[data-presentation-role="container"]');
-		var index = this.getCurrentIndex();
-		var elements = container.getElements('[data-presentation-role="content"]');
+	start: function(){
+		var index = this.getCurrentIndex(),
+			context = this._getContext(index);
+
+		this._contents.setCurrentIndex(index);
+		this._changeContent(context);
+		this._notifyChange();
+		this._startup = true;
+		this.fireEvent('start');
+	},
+
+	isStarted: function(){
+		return this._startup;
+	},
+
+	_setup: function(element){
+		var container = $(element).getElement(this._containerRole);
+		if (!container){
+			throw new Error('The container element of contents is not found.');
+		}
+
+		var elements = container.getElements(this._contentsRole);
+		if (!elements){
+			throw new Error('The element of contents is not found.');
+		}
 		elements.each(function(element){
 			var content = new Presentation.Content(element);
 			this.addContent(content);
 		}, this);
-	},
-
-	_executeBootstrap: function(){
-		var executer = 'async',
-			module = Presentation.Bootstrap,
-			options = this.options;
-
-		var that = this; 
-		var bootstrap = new Bootstrap(executer, module, options);
-
-		var events = {
-			start: this.__delegator,
-			progress: this.__delegator,
-			success: [this.__startup, this.__delegator],
-			failure: this.__delegator
-		};
-
-		Object.each(events, function(handler, key){
-			if (Type.isArray(handler)){
-				handler.each(function(handler){
-					bootstrap.addEvent(key, handler.call(that, key));
-				});
-			} else {
-				bootstrap.addEvent(key, handler.call(that, key));
-			}
-		});
-
-		bootstrap.execute(this);
-	},
-
-	__startup: function(key){
-		var that = this;
-		var startup = function(){
-			that.set(that.getCurrentIndex());
-			that.fireEvent.apply(that, [key, arguments]);
-			that._startup = true;
-		};
-		return startup;
-	},
-
-	__delegator: function(key){
-		var that = this;
-		var delegator = function(){
-			that.fireEvent.apply(that, [key, arguments]);
-		};
-		return delegator;
-	},
-
-	start: function(){
-		this._executeBootstrap();
+		this._container = container;
+		this._elements = elements;
 	},
 
 	getContainer: function(){
-		return this.container;
+		return this._container;
 	},
 
 	_onTransitionEnd: function(){
@@ -209,19 +172,22 @@ var Presentation = this.Presentation = new Class({
 					throw new TypeError('Invalid context.');
 			}
 		}
+	},
+
+	_notifyChange: function(){
 		var args = [
-			this.contents.getCurrentIndex(),
-			this.contents.getCurrentContent(),
-			this.contents.getLength()
+			this._contents.getCurrentIndex(),
+			this._contents.getLength(),
+			this._contents.getCurrentContent()
 		];
 		this.fireEvent('change', args);
 	},
 
 	_getContext: function(index){
 
-		var current = this.contents.getContent(index);
-		var after = this.contents.getAfterContents(index);
-		var before = this.contents.getBeforeContents(index);
+		var current = this._contents.getContent(index);
+		var after = this._contents.getAfterContents(index);
+		var before = this._contents.getBeforeContents(index);
 
 		var context = {
 			forward: after || null,
@@ -233,14 +199,10 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	toElement: function(){
-		return this.container;
+		return this._container;
 	}
 
 });
-
-
-Presentation.Bootstrap = new Bootstrap.Module();
-
 
 var methods = [
 	'removeContent',
@@ -253,7 +215,7 @@ var methods = [
 var mixins = {};
 methods.each(function(method){
 	mixins[method] = function(){
-		return this.contents[method].apply(this.contents, arguments);
+		return this._contents[method].apply(this._contents, arguments);
 	};
 });
 Presentation.implement(mixins);
@@ -261,8 +223,8 @@ Presentation.implement(mixins);
 
 Presentation.Container = new Class({
 
-	index: 0,
-	contents: [],
+	_index: 0,
+	_contents: [],
 
 	initialize: function(contents){
 		if (contents){
@@ -274,7 +236,7 @@ Presentation.Container = new Class({
 		if (!Type.isObject(content)) {
 			throw new TypeError('It is not object.');
 		}
-		this.contents.push(content);
+		this._contents.push(content);
 		return this;
 	},
 
@@ -289,7 +251,7 @@ Presentation.Container = new Class({
 		if (!Type.isObject(content)) {
 			throw new TypeError('It is not object.');
 		}
-		this.contents.erase(content);
+		this._contents.erase(content);
 		return this;
 	},
 
@@ -304,12 +266,12 @@ Presentation.Container = new Class({
 		if (!this.isValid(index)) {
 			throw new RangeError('The index has come first at the end.');
 		}
-		this.index = index;
+		this._index = index;
 		return this;
 	},
 
 	getCurrentIndex: function(){
-		return this.index;
+		return this._index;
 	},
 
 	getCurrentContent: function(){
@@ -318,11 +280,11 @@ Presentation.Container = new Class({
 	},
 
 	getContent: function(index){
-		return this.contents[index];
+		return this._contents[index];
 	},
 
 	getLength: function(){
-		return this.contents.length;
+		return this._contents.length;
 	},
 
 	getBeforeContents: function(index){
@@ -347,11 +309,11 @@ Presentation.Container = new Class({
 	},
 
 	hasPrevContent: function(){
-		return (this.isValid(this.index - 1)) ? true : false;
+		return (this.isValid(this._index - 1)) ? true : false;
 	},
 
 	hasNextContent: function(){
-		return (this.isValid(this.index + 1)) ? true : false;
+		return (this.isValid(this._index + 1)) ? true : false;
 	},
 
 	getFirstIndex: function(){
@@ -362,20 +324,19 @@ Presentation.Container = new Class({
 		if (!this.hasPrevContent()){
 			return;
 		}
-		return this.index - 1;
+		return this._index - 1;
 	},
 
 	getNextIndex: function(){
 		if (!this.hasNextContent()){
 			return;
 		}
-		return this.index + 1;
+		return this._index + 1;
 	},
 
 	getLastIndex: function(){
 		return this.getLength() - 1;
 	}
-
 
 });
 
@@ -404,19 +365,19 @@ var Decorater = {
 var Content = {
 
 	forward: function(){
-		this.element.setStyle('left', '150%');
+		this._element.setStyle('left', '150%');
 	},
 
 	backward: function(){
-		this.element.setStyle('left', '0%');
+		this._element.setStyle('left', '0%');
 	},
 
 	center: function(){
-		this.element.setStyle('left', '50%');
+		this._element.setStyle('left', '50%');
 	},
 
 	toElement: function(){
-		return this.element;
+		return this._element;
 	}
 
 };
@@ -437,8 +398,7 @@ if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
     	initialize: function(element, options){
     		this.setOptions(options);
-			this.element = element;
-//			this.element.setStyle('left', '150%');
+			this._element = element;
 	    }
 	});
     decorater = Decorater.Modan;
@@ -446,9 +406,8 @@ if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
 	    initialize: function(element, options){
     		this.setOptions(options);
-			this.element = element;
-//			this.element.setStyle('left', '150%');
-	        this.element.addEventListener(transitionEnd, function(){
+			this._element = element;
+	        this._element.addEventListener(transitionEnd, function(){
 				this.fireEvent('transitionEnd', [this]);
 	        }, false);
 	    }
@@ -467,4 +426,4 @@ Presentation.Content = new Class(Object.merge({
 
 }, Content));
 
-}());
+}(document.id));

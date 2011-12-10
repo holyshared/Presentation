@@ -6,21 +6,13 @@ Presentation
 Presentation
 -----------------------------------------------------
 
-	var presentation = new Presentation('container', {
-		slide: 'section',
-		defaultIndex: 0,
-		filters: [],
-		keyboard: {
-			prev: ['j', 'left'],
-			next: ['k', 'right']
-		},
-		swipe: true
-	});
+	var presentation = new Presentation('container');
 	presentation.start();
 
 
 ### Events
 
+* onStart
 * onChanged
 * onTransitionStart
 * onTransitionEnd
@@ -38,6 +30,7 @@ Presentation
 * setCurrentContent
 * getLength
 * getContainer
+* isStarted
 * first
 * prev
 * next
@@ -46,21 +39,10 @@ Presentation
 * set
 
 
-### Static Methods
-
-* addInitializer
-* addInitializers
-* getInitializer
-* getInitializers
-* removeInitializer
-* removeInitializers
-* hasInitializer
-
-
 Presentation.Container
 -----------------------------------------------------
 
-var container = new Presentation.Container(element);
+var container = new Presentation.Container();
 
 var befores = container.getBeforeContents(5);
 befores.invoke('forward')
@@ -94,7 +76,7 @@ Presentation.Content
 -----------------------------------------------------
 
 	var content = new Presentation.Content(element);
-	content.toForward();
+	content.forward();
 
 ### Events
 
@@ -121,7 +103,7 @@ Presentation.Filter
 		}
 	}
 
-	var presen = new Presentation(options);
+	var presen = new Presentation('container');
 	presen.addFilter(filter);
 
 ### Methods
@@ -138,12 +120,12 @@ Presentation.Filter
 
 
 
-Presentation.Keyboard
+Presentation.Helper.Keyboard
 -----------------------------------------------------
 
 	var presentation = new Presentation('container');
 
-	var helper = new Presentation.Keyboard({
+	var helper = new Presentation.Helper.Keyboard({
 		prev: ['left', 'j'],
 		next: ['right', 'k'],
 		first: '0',
@@ -154,13 +136,12 @@ Presentation.Keyboard
 
 ### Methods
 
-
-Presentation.Swipe
+Presentation.Helper.Swipe
 -----------------------------------------------------
 
 	var presentation = new Presentation('container');
 
-	var helper = new Presentation.Swipe({
+	var helper = new Presentation.Helper.Swipe({
 		left: 'prev',
 		right: 'next'
 	});
@@ -169,13 +150,13 @@ Presentation.Swipe
 ### Methods
 
 
-Presentation.Controller
+Presentation.Helper.Controller
 -----------------------------------------------------
 
 	#javascriot
 	var presentation = new Presentation('container');
 
-	var helper = new Presentation.Controller({
+	var helper = new Presentation.Helper.Controller({
 		first: 'first',
 		prev: 'prev',
 		next: 'next',
@@ -194,13 +175,13 @@ Presentation.Controller
 ### Methods
 
 
-Presentation.Page
+Presentation.Helper.Page
 -----------------------------------------------------
 
 	#javascript
 	var presentation = Presentation('container');
 
-	var helper = new Presentation.Page({
+	var helper = new Presentation.Helper.Page({
 		current: 'current',
 		total: 'total'
 	});

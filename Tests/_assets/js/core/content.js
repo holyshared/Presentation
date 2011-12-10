@@ -8,11 +8,11 @@
 		}; 
 
 		var container = new Element('section', {
-			'class': 'slideContainer'
+			'data-presentation-role': 'container'
 		});
 
 		var forwardElement = new Element('section', {
-			'class': 'slideContent',
+			'data-presentation-role': 'content',
 			'styles': Object.merge({
 				'left': '0%'
 			}, margin),
@@ -20,7 +20,7 @@
 		});
 
 		var backwardElement = new Element('section', {
-			'class': 'slideContent',
+			'data-presentation-role': 'content',
 			'styles': Object.merge({
 				'left': '150%'
 			}, margin),
@@ -28,7 +28,7 @@
 		});
 
 		var centerElement = new Element('section', {
-			'class': 'slideContent',
+			'data-presentation-role': 'content',
 			'styles': Object.merge({
 				'left': '0%'
 			}, margin),
@@ -36,7 +36,7 @@
 		});
 
 		var eventElement = new Element('section', {
-			'class': 'slideContent',
+			'data-presentation-role': 'content',
 			'styles': Object.merge({
 				'left': '0%'
 			}, margin),
@@ -86,7 +86,6 @@
 					}
 				});
 				content.forward();
-
 			}
 		});
 

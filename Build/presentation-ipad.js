@@ -1,587 +1,5 @@
 /*
 ---
-name: Bootstrap
-
-description: The core module of Bootstrap
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Core/Core
-  - Core/Object
-  - Core/Type
-  - Core/Options
-  - Core/Events
-
-provides:
-  - Bootstrap
-  - Bootstrap.Bootstrapper
-  - Bootstrap.Module
-  - Bootstrap.Executer
-...
-*/
-
-(function(){
-
-var Bootstrap = this.Bootstrap = function(executer, module, options){
-
-	var executerType = executer.capitalize();
-		executerClass = null;
-		instance = null;
-
-	if (!Bootstrap.Executer[executerType]){
-		throw new Error(executerType + 'is not found');
-	}
-	executerClass = Bootstrap.Executer[executerType];
-
-	instance = new executerClass(options);
-	instance.setModule(module).init();
-
-	return instance;
-
-};
-
-Bootstrap.Module = new Class({
-
-	_executeOrder: [],
-	_bootstrappers: {},
-
-	register: function(key, options){
-		if (this.isRegistered(key) === true){
-			throw new Error(key + ' is already registered');
-		}
-		var bootstrapper = new Bootstrap.Bootstrapper(options);
-		this._bootstrappers[key] = bootstrapper;
-		this._executeOrder.push(key);
-		return this;
-	},
-
-	unregister: function(key){
-		if (this.isRegistered(key) === false){
-			throw new Error(key + ' is not registered');
-		}
-		delete this._bootstrappers[key];
-		this._executeOrder.erase(key);
-		return this;
-	},
-
-	isRegistered: function(key){
-		if (!this._bootstrappers[key]){
-			return false;
-		}
-		return true;
-	},
-
-	getBootstrapper: function(key){
-		if (this.isRegistered(key) === false){
-			throw new Error(key + ' is not registered');
-		}
-		return this._bootstrappers[key];
-	},
-
-	getBootstrappers: function(){
-		return this._bootstrappers;
-	},
-
-	getLength: function(){
-		return this._executeOrder.length;
-	},
-
-	getRegisteredKeys: function(){
-		var iterator = {
-			_cursor: 0,
-			_collection: this._executeOrder,
-			hasNext: function(){
-				return (this._collection.length - 1 >= this._cursor);
-			},
-			current: function(){
-				return this._collection[this._cursor];
-			},
-			next: function(){
-		        if (this.hasNext() === false){
-					return;
-		        }
-				this._cursor++;
-			},
-			index: function(){
-				return this._cursor;
-			},
-			length: function(){
-				return this._collection.length;
-			}
-		};
-		return iterator;
-	}
-
-});
-
-new Type('BootstrapModule', Bootstrap.Module);
-
-
-Bootstrap.Executer = {};
-
-Bootstrap.NONE = 0;
-Bootstrap.SUCCESS = 1;
-Bootstrap.FAILURE = 2;
-
-Bootstrap.Bootstrapper = new Class({
-
-	Implements: [Events, Options],
-
-	_title: null,
-	_resource: null,
-	_configuration: null,
-	_handler: null,
-
-	_status: null,
-	_started: false,
-
-	initialize: function(options){
-		this.setOptions(this._prepare(options));
-	},
-
-	_prepare: function(options){
-		var bootstrapper = this;
-			method = null,
-            setter = null,
-			handler = null;
-
-		['title', 'resource', 'configuration', 'handler'].each(function(key){
-			if (!options[key]){
-				return;
-			}
-
-			method = key.capitalize();
-            setter = 'set' + method;
-
-			handler = bootstrapper[setter];
-            handler.call(bootstrapper, options[key]);
-
-            delete options[key];
-		});
-		return options;
-	},
-
-	success: function(){
-		this._setResultStatus(Bootstrap.SUCCESS);
-		this.fireEvent('complete');
-		this.fireEvent('success');
-	},
-
-	failure: function(){
-		this._setResultStatus(Bootstrap.FAILURE);
-		this.fireEvent('complete');
-		this.fireEvent('failure');
-	},
-
-	setTitle: function(title){
-		if (!Type.isString(title)){
-			throw new TypeError('The specified title is not valid.');
-		}
-		this._title = title;
-	},
-
-	getTitle: function(){
-		return this._title;
-	},
-
-	setResource: function(resource){
-		if (!Type.isObject(resource)){
-			throw new TypeError('The specified resource is not valid.');
-		}
-		this._resource = resource;
-		return this;
-	},
-
-	getResource: function(){
-		return this._resource;
-	},
-
-	getConfiguration: function(){
-		return this._configuration;
-	},
-
-	setConfiguration: function(value){
-		if (!value){
-			throw new TypeError('The specified configuration is not valid.');
-		}
-		switch(typeOf(value)){
-			case 'object':
-				this._configuration = Object.merge(this._configuration || {}, value);
-				break;
-			case 'array':
-				if (!this._configuration){
-					this._configuration = [];
-				}
-				this._configuration.combine(value);
-				break;
-			default:
-				this._configuration = value;
-				break;
-		}
-		return this;
-	},
-
-	setHandler: function(handler){
-		if (!Type.isFunction(handler)){
-			throw new TypeError('The specified value is not function');
-		}
-		this._handler = handler;
-	},
-
-	_setResultStatus: function(type){
-		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
-		if (!status.contains(type)) {
-			throw new TypeError('The specified status is not valid.');
-		}
-		this._status = type;
-	},
-
-	getResultStatus: function(){
-		return this._status;
-	},
-
-	isSuccessed: function(){
-		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
-	},
-
-	isFailured: function(){
-		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
-	},
-
-	isCompleted: function(){
-		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
-	},
-
-	isStarted: function(){
-		return this._started;
-	},
-
-	execute: function(){
-		this._started = true;
-		this.fireEvent('start');
-
-		this._handler.call(this, this.getResource(), this.getConfiguration());
-	}
-
-});
-
-new Type('Bootstrapper', Bootstrap.Bootstrapper);
-
-}());
-
-/*
----
-name: Bootstrap.Executer.Executer
-
-description: The core class which performs an initialization module
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Bootstrap.Module
-  - Bootstrap.Executer
-
-provides:
-  - Bootstrap.Executer.Executer
-...
-*/
-
-(function(namespace){
-
-namespace.Executer = new Class({
-
-	Implements: [Events, Options],
-
-	/* properties */
-	_resource: null,
-	_module: null,
-	_configurations: {},
-
-	_completed: 0,
-	_started: false,
-	_status: Bootstrap.NONE,
-
-	initialize: function(options){
-		this.setOptions(this._prepare(options));
-	},
-
-	_prepare: function(options){
-		var executer = this,
-			method = '',
-			setter = '',
-			handler = null;
-
-		if (!options) {
-			return;
-		}
-
-		['resource', 'configurations', 'module'].each(function(key){
-			if (!options[key]){
-				return;
-			}
-            method = key.capitalize();
-            setter = 'set' + method;
-
-			handler = executer[setter];
-            handler.call(executer, options[key]);
-
-            delete options[key];
-		});
-		return options;
-	},
-
-	init: function(){
-		var model = this,
-			module = this.getModule(),
-			bootstrappers = null;
-
-		bootstrappers = module.getBootstrappers();
-
-		if (model.getResource()) {
-			Object.each(bootstrappers, function(bootstrapper, key){
-				bootstrapper.setResource(model.getResource());
-			});
-		}
-		Object.each(bootstrappers, function(bootstrapper, key){
-			model._setupBootstrapper(key, bootstrapper);
-		});
-	},
-
-	setModule: function(module){
-		if (!Type.isBootstrapModule(module)) {
-			throw new TypeError('The specified module is not valid.');
-		}
-		this._module = module;
-		return this;
-	},
-
-	getModule: function(){
-		return this._module;
-	},
-
-	setResource: function(resource){
-		if (!Type.isObject(resource)) {
-			throw new TypeError('The specified resource is not valid.');
-		}
-		this._resource = resource;
-		return this;
-	},
-
-	getResource: function(){
-		return this._resource;
-	},
-
-	setConfigurations: function(configurations){
-		if (!Type.isObject(configurations)) {
-			throw new TypeError('The specified configurations is not valid.');
-		}
-		this._configurations = configurations;
-		return this;
-	},
-
-	getConfigurations: function(){
-		return this._configurations;
-	},
-
-	getConfiguration: function(key){
-		if (!this._configurations[key]) {
-			return;
-		}
-		return this._configurations[key];
-	},
-
-	getExecuteOrder: function(){
-		if (this._executeOrder){
-			return this._executeOrder;
-		}
-		this._executeOrder = this.getModule().getRegisteredKeys();
-		return this._executeOrder;
-	},
-
-	_setResultStatus: function(type){
-		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
-		if (!status.contains(type)) {
-			throw new TypeError('The specified status is not valid.');
-		}
-		this._status = type;
-	},
-
-	getResultStatus: function(){
-		return this._status;
-	},
-
-	isStarted: function(){
-		return this._started;
-	},
-
-	isSuccessed: function(){
-		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
-	},
-
-	isFailured: function(){
-		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
-	},
-
-	isCompleted: function(){
-		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
-	},
-
-	getCompletedCount: function(){
-		return this._completed;
-	},
-
-	_notifyBootstrap: function(type, key){
-		var args = [],
-			order = this.getExecuteOrder(),
-			module = this.getModule(),
-			handler = null;
-
-		handler = module.getBootstrapper(key);
-
-		args = [
-			key,
-			handler.getTitle(),
-			order.index() + 1,
-			module.getLength()
-		];
-		this.fireEvent(type, args);
-	},
-
-	_beforeBootstrap: function(key){
-		this._notifyBootstrap('beforeBootstrap', key);
-	},
-
-	_afterBootstrap: function(key){
-		this._notifyBootstrap('afterBootstrap', key);
-		if (this.getCompletedCount() >= this.getModule().getLength() - 1) {
-			if (this.isFailured()) {
-				return;
-			}
-			this._setResultStatus(Bootstrap.SUCCESS);
-			this.fireEvent('complete');
-			this.fireEvent('success');
-			return;
-		}
-		this._completed++;
-	},
-
-	execute: function(resource){
-		var module = this.getModule(),
-			bootstrappers = {};
-
-		if (this.isCompleted()){
-			return;
-		}
-
-		if (!this.isStarted()){
-			this._started = true;
-		}
-
-		if (resource){
-			bootstrappers = module.getBootstrappers();
-			Object.each(bootstrappers, function(bootstrapper, key){
-				bootstrapper.setResource(resource);
-			});
-			this.setResource(resource);
-		}
-		this.fireEvent('start');
-		this.bootstrap();
-	},
-
-	//abstract
-	bootstrap: function(){
-	},
-
-	onFailure: function(key){
-		this._setResultStatus(Bootstrap.FAILURE);
-		this.fireEvent('complete');
-		this.fireEvent('failure');
-	}
-
-});
-
-}(Bootstrap.Executer));
-
-/*
----
-name: Bootstrap.Executer.Async
-
-description: The execution module which carries out asynchronous execution of the initialization module
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Bootstrap.Executer.Executer
-
-provides:
-  - Bootstrap.Executer.Async
-...
-*/
-
-(function(namespace){
-
-namespace.Async = new Class({
-
-	Extends: namespace.Executer,
-
-	bootstrap: function(){
-		var key = null,
-			handler = null,
-			module = this.getModule(),
-			executeOrder = this.getExecuteOrder();
-
-		while(executeOrder.hasNext()){
-			if (this.isCompleted()){
-				return;
-			}
-			key = executeOrder.current();
-			handler = module.getBootstrapper(key);
-
-			this._beforeBootstrap(key);
-
-			handler.execute();
-			executeOrder.next();
-		};
-	},
-
-	_setupBootstrapper: function(key, bootstrapper){
-		var args = [key],
-			events = {},
-			configuration = null;
-
-		Object.append(events, {
-			success: this.onSuccess.bind(this, args),
-			failure: this.onFailure.bind(this, args)
-		});
-
-		configuration = this.getConfiguration(key) || null;
-		if (configuration){
-			bootstrapper.setConfiguration(configuration);
-		}
-		bootstrapper.addEvents(events);
-	},
-
-	onSuccess: function(key){
-		this._afterBootstrap(key);
-	}
-
-});
-
-}(Bootstrap.Executer));
-
-
-/*
----
 name: Presentation
 
 description: 
@@ -601,32 +19,18 @@ requires:
   - Core/Events
   - Core/Element
   - Core/Element.Style
-  - Bootstrap/Bootstrap.Module
-  - Bootstrap/Bootstrap.Executer.Async
 
 provides:
   - Presentation
   - Presentation.Content
   - Presentation.Container
-  - Presentation.Bootstrap
 ...
 */
 
 (function(){
 
 /*
- * var p = new Presentation({
- *     configrations: {
- *          filters: {
- *          },
- *          helpers: {
- *             swipeable: true,
- *             controller: {
- * 	              'next': 'nextButton'
- *             }
- *         }
- *     }
- * });
+ * var p = new Presentation('presentation');
  * p.start();
  */
 
@@ -634,15 +38,23 @@ var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
-	initialize: function(options){
+	_startup: false,
+	_containerRole: '[data-presentation-role="container"]',
+	_contentsRole: '[data-presentation-role="content"]',
+
+	initialize: function(element, options){
+		var applyElement = $(element);
+		if (!applyElement){
+			throw new Error('The element of the object which applies a function is not found.');
+		}
 		this.setOptions(options);
-		this.contents = new Presentation.Container();
-		this._attachRoles();
+		this._contents = new Presentation.Container();
+		this._setup(applyElement);
 	},
 
 	addContent: function(content){
 		content.addEvent('transitionEnd', this._onTransitionEnd.bind(this));
-		this.contents.addContent(content);
+		this._contents.addContent(content);
 	},
 
 	addContents: function(contents){
@@ -652,21 +64,29 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	set: function(index){
-		var content = this.getCurrentContent(),
-			context = this._getContext(index);
+		var content = null,
+			context = null;
+
+		if (!this.isStarted()){
+			this.start();
+		}
+
+		content = this.getCurrentContent(),
+		context = this._getContext(index);
 
 		this.fireEvent('__deactivate', [content]);
-		this.contents.setCurrentIndex(index);
+		this._contents.setCurrentIndex(index);
 		this._changeContent(context);
+		this._notifyChange();
 	},
 
 	first: function(){
-		var index = this.contents.getFirstIndex();
+		var index = this._contents.getFirstIndex();
 		this.set(index);
 	},
 
 	prev: function(){
-		var index = this.contents.getPrevIndex();
+		var index = this._contents.getPrevIndex();
 		if (index == null) {
 			return;
 		}
@@ -674,7 +94,7 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	next: function(){
-		var index = this.contents.getNextIndex();
+		var index = this._contents.getNextIndex();
 		if (!index) {
 			return;
 		}
@@ -682,80 +102,45 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	last: function(){
-		var index = this.contents.getLastIndex();
+		var index = this._contents.getLastIndex();
 		this.set(index);
 	},
 
-	/*
-	 * <article data-presentation-role="container">
-	 *     <section data-presentation-role="content">
-	 *     </section>
-	 *     <section data-presentation-role="content">
-	 *     </section>
-	 * </article>
-	 */
-	_attachRoles: function(){
-		var container = this.container = $(document.body).getElement('[data-presentation-role="container"]');
-		var index = this.getCurrentIndex();
-		var elements = container.getElements('[data-presentation-role="content"]');
+	start: function(){
+		var index = this.getCurrentIndex(),
+			context = this._getContext(index);
+
+		this._contents.setCurrentIndex(index);
+		this._changeContent(context);
+		this._notifyChange();
+		this._startup = true;
+		this.fireEvent('start');
+	},
+
+	isStarted: function(){
+		return this._startup;
+	},
+
+	_setup: function(element){
+		var container = $(element).getElement(this._containerRole);
+		if (!container){
+			throw new Error('The container element of contents is not found.');
+		}
+
+		var elements = container.getElements(this._contentsRole);
+		if (!elements){
+			throw new Error('The element of contents is not found.');
+		}
 		elements.each(function(element){
 			var content = new Presentation.Content(element);
 			this.addContent(content);
 		}, this);
-	},
-
-	_executeBootstrap: function(){
-		var executer = 'async',
-			module = Presentation.Bootstrap,
-			options = this.options;
-
-		var that = this; 
-		var bootstrap = new Bootstrap(executer, module, options);
-
-		var events = {
-			start: this.__delegator,
-			progress: this.__delegator,
-			success: [this.__startup, this.__delegator],
-			failure: this.__delegator
-		};
-
-		Object.each(events, function(handler, key){
-			if (Type.isArray(handler)){
-				handler.each(function(handler){
-					bootstrap.addEvent(key, handler.call(that, key));
-				});
-			} else {
-				bootstrap.addEvent(key, handler.call(that, key));
-			}
-		});
-
-		bootstrap.execute(this);
-	},
-
-	__startup: function(key){
-		var that = this;
-		var startup = function(){
-			that.set(that.getCurrentIndex());
-			that.fireEvent.apply(that, [key, arguments]);
-		};
-		return startup;
-	},
-
-	__delegator: function(key){
-
-		var that = this;
-		var delegator = function(){
-			that.fireEvent.apply(that, [key, arguments]);
-		};
-		return delegator;
-	},
-
-	start: function(){
-		this._executeBootstrap();
+		this._container = container;
+		this._elements = elements;
 	},
 
 	getContainer: function(){
-		return this.container;
+		return this._container;
 	},
 
 	_onTransitionEnd: function(){
@@ -787,19 +172,22 @@ var Presentation = this.Presentation = new Class({
 					throw new TypeError('Invalid context.');
 			}
 		}
+	},
+
+	_notifyChange: function(){
 		var args = [
-			this.contents.getCurrentIndex(),
-			this.contents.getCurrentContent(),
-			this.contents.getLength()
+			this._contents.getCurrentIndex(),
+			this._contents.getLength(),
+			this._contents.getCurrentContent()
 		];
 		this.fireEvent('change', args);
 	},
 
 	_getContext: function(index){
 
-		var current = this.contents.getContent(index);
-		var after = this.contents.getAfterContents(index);
-		var before = this.contents.getBeforeContents(index);
+		var current = this._contents.getContent(index);
+		var after = this._contents.getAfterContents(index);
+		var before = this._contents.getBeforeContents(index);
 
 		var context = {
 			forward: after || null,
@@ -811,14 +199,10 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	toElement: function(){
-		return this.container;
+		return this._container;
 	}
 
 });
-
-
-Presentation.Bootstrap = new Bootstrap.Module();
-
 
 var methods = [
 	'removeContent',
@@ -831,7 +215,7 @@ var methods = [
 var mixins = {};
 methods.each(function(method){
 	mixins[method] = function(){
-		return this.contents[method].apply(this.contents, arguments);
+		return this._contents[method].apply(this._contents, arguments);
 	};
 });
 Presentation.implement(mixins);
@@ -839,8 +223,8 @@ Presentation.implement(mixins);
 
 Presentation.Container = new Class({
 
-	index: 0,
-	contents: [],
+	_index: 0,
+	_contents: [],
 
 	initialize: function(contents){
 		if (contents){
@@ -852,7 +236,7 @@ Presentation.Container = new Class({
 		if (!Type.isObject(content)) {
 			throw new TypeError('It is not object.');
 		}
-		this.contents.push(content);
+		this._contents.push(content);
 		return this;
 	},
 
@@ -867,7 +251,7 @@ Presentation.Container = new Class({
 		if (!Type.isObject(content)) {
 			throw new TypeError('It is not object.');
 		}
-		this.contents.erase(content);
+		this._contents.erase(content);
 		return this;
 	},
 
@@ -882,12 +266,12 @@ Presentation.Container = new Class({
 		if (!this.isValid(index)) {
 			throw new RangeError('The index has come first at the end.');
 		}
-		this.index = index;
+		this._index = index;
 		return this;
 	},
 
 	getCurrentIndex: function(){
-		return this.index;
+		return this._index;
 	},
 
 	getCurrentContent: function(){
@@ -896,11 +280,11 @@ Presentation.Container = new Class({
 	},
 
 	getContent: function(index){
-		return this.contents[index];
+		return this._contents[index];
 	},
 
 	getLength: function(){
-		return this.contents.length;
+		return this._contents.length;
 	},
 
 	getBeforeContents: function(index){
@@ -925,11 +309,11 @@ Presentation.Container = new Class({
 	},
 
 	hasPrevContent: function(){
-		return (this.isValid(this.index - 1)) ? true : false;
+		return (this.isValid(this._index - 1)) ? true : false;
 	},
 
 	hasNextContent: function(){
-		return (this.isValid(this.index + 1)) ? true : false;
+		return (this.isValid(this._index + 1)) ? true : false;
 	},
 
 	getFirstIndex: function(){
@@ -940,20 +324,19 @@ Presentation.Container = new Class({
 		if (!this.hasPrevContent()){
 			return;
 		}
-		return this.index - 1;
+		return this._index - 1;
 	},
 
 	getNextIndex: function(){
 		if (!this.hasNextContent()){
 			return;
 		}
-		return this.index + 1;
+		return this._index + 1;
 	},
 
 	getLastIndex: function(){
 		return this.getLength() - 1;
 	}
-
 
 });
 
@@ -982,19 +365,19 @@ var Decorater = {
 var Content = {
 
 	forward: function(){
-		this.element.setStyle('left', '150%');
+		this._element.setStyle('left', '150%');
 	},
 
 	backward: function(){
-		this.element.setStyle('left', '0%');
+		this._element.setStyle('left', '0%');
 	},
 
 	center: function(){
-		this.element.setStyle('left', '50%');
+		this._element.setStyle('left', '50%');
 	},
 
 	toElement: function(){
-		return this.element;
+		return this._element;
 	}
 
 };
@@ -1015,8 +398,7 @@ if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
     	initialize: function(element, options){
     		this.setOptions(options);
-			this.element = element;
-//			this.element.setStyle('left', '150%');
+			this._element = element;
 	    }
 	});
     decorater = Decorater.Modan;
@@ -1024,9 +406,8 @@ if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
 	    initialize: function(element, options){
     		this.setOptions(options);
-			this.element = element;
-//			this.element.setStyle('left', '150%');
-	        this.element.addEventListener(transitionEnd, function(){
+			this._element = element;
+	        this._element.addEventListener(transitionEnd, function(){
 				this.fireEvent('transitionEnd', [this]);
 	        }, false);
 	    }
@@ -1860,7 +1241,7 @@ HelperNamespace.Page = new Class({
 		delete this._handler;
 	},
 
-	_onChange: function(index, content, total){
+	_onChange: function(index, total, content){
 		this._current.set('html', index + 1);
 		this._total.set('html', total);
 	}
@@ -1965,158 +1346,3 @@ HelperNamespace.Controller = new Class({
 });
 
 }(document.id, Presentation, Presentation.Helper));
-
-/*
----
-name: Presentation.Bootstrap.Helper
-
-description: 
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Presentation.Bootstrap
-  - Presentation.Helper
-
-provides:
-  - Presentation.Bootstrap.Helper
-...
-*/
-
-(function(Presentation, Bootstrap, Helper){
-
-Bootstrap.Helper = {
-
-	handler: function(presentation, configurations){
-
-		var bootstrap = this,
-			name = null,
-			helper = null;
-
-		Object.each(configurations, function(configuration, key){
-			name = key.capitalize();
-			if (!Helper[name]){
-				throw new Error('Presection.Helper.' + name + ' is not found.');
-			}
-			try {
-				helper = (Type.isBoolean(configuration)) ? new Helper[name]() : new Helper[name](configuration);
-			} catch(error){
-				bootstrap.failure(error);
-			}
-			presentation.addHelper(helper);
-		});
-
-		bootstrap.success();
-	}
-
-};
-
-Bootstrap.register('helpers', Bootstrap.Helper);
-
-}(Presentation, Presentation.Bootstrap, Presentation.Helper));
-
-
-/*
----
-name: Presentation.Bootstrap.Filter
-
-description: 
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Presentation.Bootstrap
-  - Presentation.Filter
-
-provides:
-  - Presentation.Bootstrap.Filter
-...
-*/
-
-(function(Presentation, Bootstrap){
-
-Bootstrap.Filter = {
-
-	handler: function(presentation, configurations){
-
-		presentation.addFilters(configurations);
-
-		presentation.addEvents({
-			'__deactivate': function(content){
-				presentation.applyFilter('deactivate', content);
-			},
-			'__activate': function(content){
-				presentation.applyFilter('activate', content);
-			}
-		});
-
-		this.success();
-	}
-
-};
-
-Bootstrap.register('filters', Bootstrap.Filter);
-
-}(Presentation, Presentation.Bootstrap));
-
-
-/*
----
-name: Presentation.Bootstrap.FullScreen
-
-description: 
-
-license: MIT-style
-
-authors:
-- Noritaka Horio
-
-requires:
-  - Presentation/Presentation
-  - Presentation/Presentation.Bootstrap
-
-provides:
-  - Presentation.Bootstrap.FullScreen
-...
-*/
-
-(function(win, doc, Presentation, Bootstrap){
-
-Bootstrap.FullScreen = {
-
-	handler: function(presentation, configuration){
-
-		if (configuration === false) {
-			return;
-		}
-
-		var height = 0;
-		if (win.innerHeight) {
-			height = win.innerHeight;
-		} else if (doc.documentElement.clientHeight) {
-			height = doc.documentElement.clientHeight;
-		} else if (doc.body.clientHeight) {
-			height = doc.body.clientHeight;
-		}
-
-		for (var i = 0; l = presentation.getLength(), i < l; i++){
-			var content = presentation.getContent(i).toElement();
-			content.setStyle('height', height);
-		}
-		$(presentation).setStyle('height', height);
-
-		this.success();
-	}
-
-};
-
-Bootstrap.register('fullscreen', Bootstrap.FullScreen);
-
-}(window, document, Presentation, Presentation.Bootstrap));
-

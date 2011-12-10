@@ -62,7 +62,7 @@ HelperNamespace.Page = new Class({
 		delete this._handler;
 	},
 
-	_onChange: function(index, content, total){
+	_onChange: function(index, total, content){
 		this._current.set('html', index + 1);
 		this._total.set('html', total);
 	}
