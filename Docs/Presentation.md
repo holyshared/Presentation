@@ -29,7 +29,8 @@ Presentation
 * setCurrentIndex
 * setCurrentContent
 * getLength
-* getContainer
+* getLayoutElement
+* getContainerElement
 * isStarted
 * first
 * prev

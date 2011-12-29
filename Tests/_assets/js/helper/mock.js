@@ -49,7 +49,7 @@
 				this.fireEvent('change', args);
 			},
 
-			getContainer: function(){
+			getLayoutElement: function(){
 				return this.container;
 			}
 

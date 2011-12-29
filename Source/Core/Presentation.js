@@ -137,9 +137,14 @@ var Presentation = this.Presentation = new Class({
 		}, this);
 		this._container = container;
 		this._elements = elements;
+		this._layout = element;
 	},
 
-	getContainer: function(){
+    getLayoutElement: function(){
+		return this._layout;
+	},
+
+	getContainerElement: function(){
 		return this._container;
 	},
 
@@ -199,7 +204,7 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	toElement: function(){
-		return this._container;
+		return this.getLayoutElement();
 	}
 
 });

@@ -43,7 +43,7 @@ HelperNamespace.Controller = new Class({
 	_handlers: {},
 
 	setup: function(){
-		var container = this.getTarget().getContainer(),
+		var container = this.getTarget().getLayoutElement(),
 			trigger = null;
 		this._keys.each(function(key){
 			trigger = container.getElement('.' + this.options[key]);

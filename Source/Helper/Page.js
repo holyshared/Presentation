@@ -39,7 +39,7 @@ HelperNamespace.Page = new Class({
 	},
 
 	setup: function(){
-		var container = this.getTarget().getContainer(),
+		var container = this.getTarget().getLayoutElement(),
 			opts = this.options;
 		this._current = container.getElement('.' + opts.current);
 		this._total = container.getElement('.' + opts.total);
