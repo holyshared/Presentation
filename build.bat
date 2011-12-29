@@ -1,3 +1,3 @@
 cd C:\var\www\tools\packager
-php packager build Presentation/Presentation Presentation/Presentation.Filter Presentation/Presentation.Helper Presentation/Presentation.Helper.Keyboard Presentation/Presentation.Helper.Page Presentation/Presentation.Helper.Controller > C:\var\www\git\Presentation\Build\presentation-standard.js
-php packager build Presentation/Presentation Presentation/Presentation.Filter Presentation/Presentation.Helper Presentation/Presentation.Helper.Swipe Presentation/Presentation.Helper.Keyboard Presentation/Presentation.Helper.Page Presentation/Presentation.Helper.Controller > C:\var\www\git\Presentation\Build\presentation-ipad.js
+php packager build Presentation/Presentation Presentation/Filter Presentation/Helper Presentation/Helper.Keyboard Presentation/Helper.Page Presentation/Helper.Controller > presentation-standard.js
+php packager build Presentation/Presentation Presentation/Filter Presentation/Helper Presentation/Helper.Swipe Presentation/Helper.Keyboard Presentation/Helper.Page Presentation/Helper.Controller > presentation-ipad.js

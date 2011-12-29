@@ -11,11 +11,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Keyboard
 
 provides:
-  - Presentation.Helper.Keyboard
+  - Helper.Keyboard
 ...
 */
 

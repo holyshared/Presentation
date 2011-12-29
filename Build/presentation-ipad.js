@@ -22,12 +22,12 @@ requires:
 
 provides:
   - Presentation
-  - Presentation.Content
-  - Presentation.Container
+  - Content
+  - Container
 ...
 */
 
-(function(){
+(function($){
 
 /*
  * var p = new Presentation('presentation');
@@ -137,9 +137,14 @@ var Presentation = this.Presentation = new Class({
 		}, this);
 		this._container = container;
 		this._elements = elements;
+		this._layout = element;
 	},
 
-	getContainer: function(){
+	getLayoutElement: function(){
+		return this._layout;
+	},
+
+	getContainerElement: function(){
 		return this._container;
 	},
 
@@ -199,7 +204,7 @@ var Presentation = this.Presentation = new Class({
 	},
 
 	toElement: function(){
-		return this._container;
+		return this.getLayoutElement();
 	}
 
 });
@@ -346,18 +351,18 @@ var Decorater = {
 	//ie7, ie8
 	Legacy: function(handler) {
 		return function() {
-	    	this.fireEvent('transitionStart', [this]);
-	        handler.call(this);
-	        this.fireEvent('transitionEnd', [this]);
-	    };
+			this.fireEvent('transitionStart', [this]);
+			handler.call(this);
+			this.fireEvent('transitionEnd', [this]);
+		};
 	},
 
 	//firefox, safari, chrome, opera, ie9
 	Modan: function(handler) {
-	    return function() {
-	        this.fireEvent('transitionStart', [this]);
-	        handler.call(this);
-	    };
+		return function() {
+			this.fireEvent('transitionStart', [this]);
+			handler.call(this);
+		};
 	}
 
 };
@@ -396,21 +401,21 @@ if (Browser.chrome || Browser.safari) {
 
 if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
-    	initialize: function(element, options){
-    		this.setOptions(options);
+		initialize: function(element, options){
+			this.setOptions(options);
 			this._element = element;
-	    }
+		}
 	});
-    decorater = Decorater.Modan;
+	decorater = Decorater.Modan;
 } else {
 	Object.merge(Content, {
-	    initialize: function(element, options){
-    		this.setOptions(options);
+		initialize: function(element, options){
+			this.setOptions(options);
 			this._element = element;
-	        this._element.addEventListener(transitionEnd, function(){
+			this._element.addEventListener(transitionEnd, function(){
 				this.fireEvent('transitionEnd', [this]);
-	        }, false);
-	    }
+			}, false);
+		}
 	});
 	decorater = Decorater.Legacy;
 }
@@ -426,7 +431,7 @@ Presentation.Content = new Class(Object.merge({
 
 }, Content));
 
-}());
+}(document.id));
 
 
 /*
@@ -445,7 +450,7 @@ requires:
   - Presentation/Presentation
 
 provides:
-  - Presentation.Filter
+  - Filter
 ...
 */
 
@@ -804,7 +809,7 @@ requires:
   - Helper/Helper
 
 provides:
-  - Presentation.Helper
+  - Helper
 ...
 */
 
@@ -1024,11 +1029,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Swipe
 
 provides:
-  - Presentation.Helper.Swipe
+  - Helper.Swipe
 ...
 */
 
@@ -1121,11 +1126,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Keyboard
 
 provides:
-  - Presentation.Helper.Keyboard
+  - Helper.Keyboard
 ...
 */
 
@@ -1190,10 +1195,10 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
 
 provides:
-  - Presentation.Helper.Page
+  - Helper.Page
 ...
 */
 
@@ -1218,7 +1223,7 @@ HelperNamespace.Page = new Class({
 	},
 
 	setup: function(){
-		var container = this.getTarget().getContainer(),
+		var container = this.getTarget().getLayoutElement(),
 			opts = this.options;
 		this._current = container.getElement('.' + opts.current);
 		this._total = container.getElement('.' + opts.total);
@@ -1263,11 +1268,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Delegator
 
 provides:
-  - Presentation.Helper.Controller
+  - Helper.Controller
 ...
 */
 
@@ -1295,7 +1300,7 @@ HelperNamespace.Controller = new Class({
 	_handlers: {},
 
 	setup: function(){
-		var container = this.getTarget().getContainer(),
+		var container = this.getTarget().getLayoutElement(),
 			trigger = null;
 		this._keys.each(function(key){
 			trigger = container.getElement('.' + this.options[key]);

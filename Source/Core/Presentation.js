@@ -22,8 +22,8 @@ requires:
 
 provides:
   - Presentation
-  - Presentation.Content
-  - Presentation.Container
+  - Content
+  - Container
 ...
 */
 
@@ -140,7 +140,7 @@ var Presentation = this.Presentation = new Class({
 		this._layout = element;
 	},
 
-    getLayoutElement: function(){
+	getLayoutElement: function(){
 		return this._layout;
 	},
 
@@ -351,18 +351,18 @@ var Decorater = {
 	//ie7, ie8
 	Legacy: function(handler) {
 		return function() {
-	    	this.fireEvent('transitionStart', [this]);
-	        handler.call(this);
-	        this.fireEvent('transitionEnd', [this]);
-	    };
+			this.fireEvent('transitionStart', [this]);
+			handler.call(this);
+			this.fireEvent('transitionEnd', [this]);
+		};
 	},
 
 	//firefox, safari, chrome, opera, ie9
 	Modan: function(handler) {
-	    return function() {
-	        this.fireEvent('transitionStart', [this]);
-	        handler.call(this);
-	    };
+		return function() {
+			this.fireEvent('transitionStart', [this]);
+			handler.call(this);
+		};
 	}
 
 };
@@ -401,21 +401,21 @@ if (Browser.chrome || Browser.safari) {
 
 if (Browser.ie && Browser.version <= 7) {
 	Object.merge(Content, {
-    	initialize: function(element, options){
-    		this.setOptions(options);
+		initialize: function(element, options){
+			this.setOptions(options);
 			this._element = element;
-	    }
+		}
 	});
-    decorater = Decorater.Modan;
+	decorater = Decorater.Modan;
 } else {
 	Object.merge(Content, {
-	    initialize: function(element, options){
-    		this.setOptions(options);
+		initialize: function(element, options){
+			this.setOptions(options);
 			this._element = element;
-	        this._element.addEventListener(transitionEnd, function(){
+			this._element.addEventListener(transitionEnd, function(){
 				this.fireEvent('transitionEnd', [this]);
-	        }, false);
-	    }
+			}, false);
+		}
 	});
 	decorater = Decorater.Legacy;
 }

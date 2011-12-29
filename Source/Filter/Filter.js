@@ -14,7 +14,7 @@ requires:
   - Presentation/Presentation
 
 provides:
-  - Presentation.Filter
+  - Filter
 ...
 */
 

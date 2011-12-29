@@ -11,11 +11,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Delegator
 
 provides:
-  - Presentation.Helper.Controller
+  - Helper.Controller
 ...
 */
 

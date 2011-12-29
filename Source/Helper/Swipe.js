@@ -11,11 +11,11 @@ authors:
 
 requires:
   - Presentation/Presentation
-  - Presentation/Presentation.Helper
+  - Presentation/Helper
   - Helper/Helper.Swipe
 
 provides:
-  - Presentation.Helper.Swipe
+  - Helper.Swipe
 ...
 */
 

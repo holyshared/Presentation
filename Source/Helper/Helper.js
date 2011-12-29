@@ -14,7 +14,7 @@ requires:
   - Helper/Helper
 
 provides:
-  - Presentation.Helper
+  - Helper
 ...
 */
 
