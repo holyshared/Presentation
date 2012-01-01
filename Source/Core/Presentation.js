@@ -67,11 +67,7 @@ var Presentation = this.Presentation = new Class({
 		var content = null,
 			context = null;
 
-		if (!this.isStarted()){
-			this.start();
-		}
-
-		content = this.getCurrentContent(),
+		content = this.getCurrentContent();
 		context = this._getContext(index);
 
 		this.fireEvent('__deactivate', [content]);
