@@ -29,6 +29,18 @@ p.addHelper(new Presentation.Helper.Controller())
 	.addHelper(new Presentation.Helper.Page())
 	.addHelper(new Presentation.Helper.Swipe());
 
+p.addFilter({
+
+	activate: function(content){
+		log('filter activate');
+	},
+
+	deactivate: function(content){
+		log('filter deactivate');
+	}
+
+});
+
 p.start();
 
 });

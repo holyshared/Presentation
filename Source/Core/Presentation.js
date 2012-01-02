@@ -38,6 +38,13 @@ var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
+	options: {
+		//onStart
+		//onTransitionStart
+		//onTransitionEnd
+		//onChange
+	},
+
 	_startup: false,
 	_containerRole: '[data-presentation-role="container"]',
 	_contentsRole: '[data-presentation-role="content"]',
@@ -70,7 +77,7 @@ var Presentation = this.Presentation = new Class({
 		content = this.getCurrentContent();
 		context = this._getContext(index);
 
-		this.fireEvent('__deactivate', [content]);
+		this.fireEvent('__deactivate__', [content]);
 		this._contents.setCurrentIndex(index);
 		this._changeContent(context);
 		this._notifyChange();
@@ -150,7 +157,7 @@ var Presentation = this.Presentation = new Class({
 				this.getCurrentIndex(),
 				this.getCurrentContent()
 			]);
-			this.fireEvent('__activate', [this.getCurrentContent()]);
+			this.fireEvent('__activate__', [this.getCurrentContent()]);
 		}
 	},
 

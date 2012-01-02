@@ -18,13 +18,26 @@
 
 				myPresen1.addFilter(filter1);
 
-				log( (myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is not found.' );
+				log( (myPresen1.hasFilter(filter1)) ? 'addFilter - assert ok' : 'filter is not found.' );
+
+				var filter2Result = 0,
+					filter3Result = 0;
 
 				var filter2 = {
-					activate: function(content){}
+					activate: function(content){
+						filter2Result++;
+					},
+					deactivate: function(content){
+						filter2Result++;
+					}
 				};
 				var filter3 = {
-					activate: function(content){}
+					activate: function(content){
+						filter3Result++;
+					},
+					deactivate: function(content){
+						filter3Result++;
+					}
 				};
 
 				var myPresen2 = new Presentation('presentation');
@@ -32,8 +45,14 @@
 
 				myPresen2.addFilters([filter2, filter3]);
 
-				log( (myPresen2.hasFilter(filter2)) ? 'assert ok' : 'Filter2 is not found.' );
-				log( (myPresen2.hasFilter(filter3)) ? 'assert ok' : 'Filter3 is not found.' );
+				log( (myPresen2.hasFilter(filter2)) ? 'addFilters1 - assert ok' : 'Filter2 is not found.' );
+				log( (myPresen2.hasFilter(filter3)) ? 'addFilters2 - assert ok' : 'Filter3 is not found.' );
+
+				myPresen2.next();
+
+				log( (filter2Result == 2) ? 'Filter2 enable - assert ok' : 'Filter2 is not enable.' );
+				log( (filter3Result == 2) ? 'Filter3 enable - assert ok' : 'Filter3 is not enable.' );
+
 			}
 		});
 
@@ -52,7 +71,10 @@
 				myPresen1.addFilter(filter1);
 				myPresen1.removeFilter(filter1);
 
-				log( (!myPresen1.hasFilter(filter1)) ? 'assert ok' : 'filter is found.');
+				log( (!myPresen1.hasFilter(filter1)) ? 'removeFilter - assert ok' : 'filter is found.');
+
+				var filter2Result = 0,
+					filter3Result = 0;
 
 				var filter2 = {
 					activate: function(content){}
@@ -68,8 +90,12 @@
 
 				myPresen2.removeFilters([ filter2, filter3 ]);
 
-				log( (!myPresen2.hasFilter(filter2)) ? 'assert ok' : 'Filter2 is found.' );
-				log( (!myPresen2.hasFilter(filter3)) ? 'assert ok' : 'Filter3 is found.' );
+				log( (!myPresen2.hasFilter(filter2)) ? 'removeFilters1 - assert ok' : 'Filter2 is found.' );
+				log( (!myPresen2.hasFilter(filter3)) ? 'removeFilters2 - assert ok' : 'Filter3 is found.' );
+
+				log( (filter2Result == 0) ? 'Filter2 disable - assert ok' : 'Filter2 is not disable.' );
+				log( (filter3Result == 0) ? 'Filter3 disable - assert ok' : 'Filter3 is not disable.' );
+
 			}
 		});
 

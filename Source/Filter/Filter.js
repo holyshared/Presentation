@@ -20,6 +20,8 @@ provides:
 
 (function(Presentation){
 
+var observeEvents = ['activate', 'deactivate'];
+
 //Validator of filter
 function validateFilter(filter) {
 	if (!Type.isObject(filter)){
@@ -41,7 +43,11 @@ Presentation.Filter = new Class({
 	filters: [],
 
 	addFilter: function(filter){
+		var presentation = this;
 		this.filters.push(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._enableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -54,8 +60,12 @@ Presentation.Filter = new Class({
 	},
 
 	removeFilter: function(filter){
+		var presentation = this;
 		if (!this.hasFilter(filter)) return this;
 		this.filters.erase(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._disableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -74,10 +84,27 @@ Presentation.Filter = new Class({
 	applyFilter: function(type, content){
 		var filters = this.filters;
 		filters.each(function(filter){
-			if (filter[type]){
-				filter[type](content);
+			if (!filter[type]){
+				return;
 			}
+			filter[type](content);
 		});
+	},
+
+	_enableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.addEvent(type, callback);
+		return this;
+	},
+
+	_disableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.removeEvent(type, callback);
+		return this;
 	}
 
 });
