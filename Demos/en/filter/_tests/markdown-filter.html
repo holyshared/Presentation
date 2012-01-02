@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+		<meta charset="UTF-8" />
+		<title>Presentation.js - Markdown filter test</title>
+        <meta name="description" content="Presentation.js - Markdown filter test" />
+        <meta name="keywords" content="mootools,processing,markdown,syntax highlighter,presentation.js,filter" />
+
+        <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="../../../tools/css/jasmine.css" media="screen,print" />
+
+        <script src="../../../tools/js/jasmine.js"></script>
+        <script src="../../../tools/js/jasmine-html.js"></script>
+
+        <script src="../js/lib/mootools/mootools-core-1.4.1.js"></script>
+        <script src="../js/lib/markdown/showdown.js"></script>
+        <script src="../js/markdown-filter.js"></script>
+
+        <script src="spec/markdown-filter-spec.js"></script>
+    </head>
+	<body>
+
+		<article data-presentation-role="container">
+            <header>
+                <h1>Presentation.js - Markdown filter</h1>
+            </header>
+
+			<section id="markdown1"
+                data-presentation-role="content"
+                data-presentation-filter="markdown">
+
+<div data-markdown-content="true">
+Markdown header level2
+--------------------------------------------------
+
+### Markdown header level3
+
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+
+### Markdown header level3
+
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+markdown text markdown text markdown text markdown text markdown text markdown text markdown text  
+</div>
+            </section>
+
+
+    		<section id="markdown2"
+                data-presentation-role="content"
+                data-presentation-filter="markdown">
+
+<div data-markdown-content="false">
+    <h2>Markdown</h2>
+    <p>markdown text markdown text markdown text markdown text markdown text markdown text markdown text</p>
+    <p>markdown text markdown text markdown text markdown text markdown text markdown text markdown text</p>
+    <p>markdown text markdown text markdown text markdown text markdown text markdown text markdown text</p>
+</div>
+
+            </section>
+
+		</article>
+
+        <script type="text/javascript">
+            jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+            jasmine.getEnv().execute();
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,117 @@
+@charset "utf-8";
+
+/**
+ * Presentation.js helper style.
+ * @version: 1.0
+ * @author: Noritaka Horio<holy.shared.design@gmail.com>
+ * @licence: public domain
+ */
+
+/* Theme changer
+-----------------------------------------------------*/
+.themes {
+	float: right;
+	font-size: 108%;
+	line-height: 100%;
+	overflow: hidden;
+	margin-bottom: 0px;
+	margin-right: 15px;
+	width: 272px;
+}
+
+.themes li {
+    list-style: none;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+.themes li a {
+    border-left: 1px solid #295175;
+    background: #0a6caa;
+    display: block;
+    float: left;
+    padding: 10px 10px;
+    text-decoration: none;
+    width: 70px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.themes li a:hover,
+.themes li a.selected {
+/*    font-weight: bold;*/
+    background: #2d587d;
+}
+
+.themes li:first-child a {
+    border-left: none;
+/*    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+*/
+}
+
+.themes li:last-child a {
+ /*   -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px; */
+}
+
+
+/* Controller
+-----------------------------------------------------*/
+
+.controller {
+    top: 80%;
+    position: fixed;
+    height: 80px;
+    margin-top: -40px;
+    width: 100%;
+}
+
+.controller button {
+	width: 100px;
+   height: 80px;
+   display: block;
+   border: none;
+   cursor: pointer;
+   position: absolute;
+   box-shadow: 0px 0px 5px #666666;
+	font-size: 147%;
+	background: #0a6caa;
+	color: #ffffff;
+}
+
+.controller button:hover {
+	background-color: #2d587d;
+}
+
+.controller button.disabled,
+.controller button.disabled:hover {
+	background-color: #cccccc;
+	color: #000000;
+}
+
+.controller button:first-child {
+    left: 0px;
+}
+
+.controller button:last-child {
+	right: 0px;
+}
+
+/* Page
+-----------------------------------------------------*/
+
+.page {
+	position: fixed;
+    text-align: center; 
+    bottom: 65px;
+    width: 100%;
+}
+
+.page .current {
+    font-size: 230%;
+}
+
+.page .total {
+    font-size: 108%;
+}

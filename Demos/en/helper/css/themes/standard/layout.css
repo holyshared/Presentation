@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+.presentation .header,
+.presentation .footer {
+/*	color: #ffffff;
+	background: #222222;
+	*/
+}
+
+.presentation .header {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	top: 0px;
+	padding: 0px 0px 5px 0px;
+	overflow: hidden;
+	background-image: -moz-linear-gradient(center bottom, #d5d7d8 0%, #ffffff 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#d5d7d8), to(#ffffff));
+
+    background-image: -o-linear-gradient(top, #ffffff 0%, #d5d7d8 100%);
+
+    border-bottom: 1px solid #cccccc;
+}
+
+.presentation .footer {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	bottom: 0px;
+	padding: 15px 0px 15px 0px;
+	background-image: -moz-linear-gradient(center bottom, #ffffff 0%, #d5d7d8 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#ffffff), to(#d5d7d8));
+    background-image: -o-linear-gradient(top, #d5d7d8 0%, #ffffff 100%);
+	border-top: 1px solid #cccccc;
+}
+
+.presentation .container {
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+	background: #ffffff;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+		<meta charset="UTF-8" />
+		<title>Presentation.js - Filter</title>
+        <meta name="description" content="Presentation.js - Filter demonstration" />
+        <meta name="keywords" content="mootools,processing,markdown,syntax highlighter,presentation.js,filter" />
+        <link rel="stylesheet" type="text/css" href="css/theme.css" media="screen,print" />
+        <script src="js/lib/mootools/mootools-core-1.4.1.js"></script>
+
+        <script src="js/lib/markdown/showdown.js"></script>
+
+        <script src="js/lib/highlighter/shCore.js"></script>
+        <script src="js/lib/highlighter/shBrushJScript.js"></script>
+        <script src="js/lib/highlighter/shBrushCss.js"></script>
+        <script src="js/lib/highlighter/shBrushXml.js"></script>
+
+        <script src="js/lib/processing/processing-1.3.6.min.js"></script>
+
+        <script src="js/lib/presentation/presentation-standard.js"></script>
+
+        <script src="js/markdown-filter.js"></script>
+        <script src="js/processing-filter.js"></script>
+        <script src="js/syntax-highlighter-filter.js"></script>
+        <script src="js/runner.js"></script>
+    </head>
+	<body>
+
+		<article id="presentation" class="presentation">
+
+            <header class="header">
+                <h1>Presentation.js - Filter Demonstration</h1>
+            </header>
+
+			<article data-presentation-role="container" class="container">
+				<section data-presentation-role="content" data-presentation-filter="markdown" class="content">
+	
+	                <div class="content-inner">
+		                <div class="content-description">
+		                    <hgroup>
+		                        <h2>Markdown filter</h2>
+		                        <h3>Filter demonstration example 1</h3>
+		                    </hgroup>
+							<p>When the part described with the Markdown form is in contents, with the application of a filter, it changes into HTML form from Markdown form automatically.</p>
+		                </div>
+		                <div class="content-result" data-markdown-content="true">
+	### Header level3
+	
+	#### Header level4
+	
+	* list item 1
+	* list item 2
+	* list item 3
+	
+	#### Header level4
+	
+	1. list item 1
+	2. list item 2
+	3. list item 3
+						</div>
+	                </div>
+	
+	            </section>
+	
+				<section data-presentation-role="content" data-presentation-filter="processing" class="content">
+	
+	                <div class="content-inner">
+	
+	                <div class="content-description">
+	                    <hgroup>
+	                        <h2>Processing filter</h2>
+		                    <h3>Filter demonstration example 2</h3>
+	                    </hgroup>
+						<p>If the code of Processing is detected from the inside in contents, a code will be executed automatically.</p>
+						<p>If it changes to other pages, a code will stop automatically.</p>
+	                </div>
+	                <div class="content-result">
+	
+	                    <script type="text/application" data-processing-draw-target="processing">
+	void setup(){
+	
+	    size(200,200);
+	    background(125);
+	    fill(255);
+	    PFont fontA = loadFont("courier");
+	    textFont(fontA, 14);
+	}
+	
+	void draw(){
+	    text("Hello Web!",20,20);
+	    println("Hello ErrorLog!");
+	}
+	                    </script>
+	
+	                    <canvas id="processing"></canvas>
+	                </div>
+	
+	                </div>
+				</section>
+	
+	    		<section data-presentation-role="content" data-presentation-filter="syntax-highlighther" class="content">
+	                <div class="content-inner">
+	                <div class="content-description">
+	                    <hgroup>
+	                        <h2>Syntax highlighther filter</h2>
+		                    <h3>Filter demonstration example 3</h3>
+	                    </hgroup>
+						<p>If the code of a program is found from the inside in contents, it will indicate by highlight automatically. </p>
+						<p>Only the part of required program language needs to read a style sheet and a javascript file.</p>
+	                </div>
+	                <div class="content-result">
+	
+	                    <pre class="brush: js">
+	(functioin(global){
+	
+	global.addEvent('domready', function(){
+	
+	    //do something
+	
+	});
+	
+	}(this));
+	                    </pre>
+	
+	                </div>
+	                </div>
+				</section>
+
+			</article>
+
+			<div class="page"><span class="current"></span> | <span class="total"></span></div>
+
+			<div class="controller">
+			    <button type="button" class="first">first</button>
+				<button type="button" class="prev">prev</button>
+				<button type="button" class="next">next</button>
+				<button type="button" class="last">last</button>
+			</div>
+
+            <footer class="footer">
+            	<p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+            </footer>
+
+		</article>
+
+    </body>
+</html>

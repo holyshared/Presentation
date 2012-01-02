@@ -1,0 +1,177 @@
+@charset "utf-8";
+
+/**
+ * Presentation.js helper style.
+ * @version: 1.0
+ * @author: Noritaka Horio<holy.shared.design@gmail.com>
+ * @licence: public domain
+ */
+
+/* Theme changer
+-----------------------------------------------------*/
+.themes {
+    float: right;
+    font-size: 108%;
+    line-height: 100%;
+    overflow: hidden;
+    margin-bottom: 0px;
+	margin-right: 15px;
+    padding-top: 5px;
+    width: 274px;
+}
+
+.themes li {
+    list-style: none;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+.themes li a {
+    border-right: 1px solid #888888;
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+
+/*    background: #444444; */
+
+	background-image: -moz-linear-gradient(center bottom, #777777 0%, #bbbbbb 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#777777), to(#bbbbbb));
+    background-image: -o-linear-gradient(top, #777777 0%, #bbbbbb 100%);
+
+    display: block;
+    float: left;
+    padding: 10px 10px;
+    text-decoration: none;
+    width: 70px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.themes li a:hover,
+.themes li a.selected {
+/*	font-weight: bold; */
+	background-image: -moz-linear-gradient(center bottom, #333333 0%, #222222 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#333333), to(#222222));
+    background-image: -o-linear-gradient(top, #333333 0%, #222222 100%);
+}
+
+.themes li:first-child a {
+    border-left: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-left: 1px solid #888888;
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+}
+
+.themes li:last-child a {
+    border-right: 1px solid #888888;
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+/* Controller
+-----------------------------------------------------*/
+
+.controller {
+    bottom: 65px;
+    position: fixed;
+/*    height: 150px; */
+/*    margin-top: -75px;*/
+     width: 400px;
+    overflow: hidden;
+    left: 50%;
+    margin-left: -200px;
+/*    width: 100%;*/
+}
+
+.controller button {
+	font-size: 147%;
+   display: inline-block;
+   border: 1px solid #cccccc;
+   padding: 10px 15px;
+	background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#eeeeee), to(#ffffff));
+    background-image: -o-linear-gradient(top, #eeeeee 0%, #ffffff 100%);
+}
+
+.controller button:hover {
+	background-image: -moz-linear-gradient(center bottom, #e5f5f7 0%, #ffffff 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#e5f5f7), to(#ffffff));
+    background-image: -o-linear-gradient(top, #e5f5f7 0%, #ffffff 100%);
+	border: 1px solid #aaaaaa;
+}
+
+.controller button.disabled,
+.controller button.disabled:hover {
+	color: #ababab;
+	background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, #efefef 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#eeeeee), to(#efefef));
+    background-image: -o-linear-gradient(top, #eeeeee 0%, #efefef 100%);
+}
+
+
+.controller button:first-child {
+
+   border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+/*    box-shadow: 0px 0px 5px #666666; */
+    float: left;
+/*    background-image: url(images/img_prev_button.gif);
+    background-position: 13px 50%;
+    position: absolute;
+    left: 0px; */
+}
+
+.controller button:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; 
+
+/*    box-shadow: 0px 0px 5px #666666; */
+    float: right;
+/*    background-image: url(images/img_next_button.gif);
+    background-position: 13px 50%;
+    position: absolute;
+    right: 0px; */
+}
+
+.controller input:first-child:hover {
+/*    background-image: url(images/img_prev_button_hover.gif);
+*/}
+
+.controller input:last-child:hover {
+/*    background-image: url(images/img_next_button_hover.gif);
+*/}
+
+.controller input.disabled:first-child {
+ /*   background-image: url(images/img_prev_button_disabled.gif);
+*/
+}
+
+.controller input.disabled:last-child {
+/*    background-image: url(images/img_next_button_disabled.gif);
+*/
+}
+
+
+
+
+/* Page
+-----------------------------------------------------*/
+
+.page {
+	position: fixed;
+    text-align: center; 
+    bottom: 70px;
+    width: 100%;
+}
+
+.page .current {
+    font-size: 230%;
+}
+
+.page .total {
+    font-size: 108%;
+}
