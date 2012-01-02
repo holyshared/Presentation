@@ -1,36 +1,5 @@
 @charset "utf-8";
 
-/**
- * Presentation.js default style.
- * @version: 1.0
- * @author: Noritaka Horio<holy.shared.design@gmail.com>
- * @licence: public domain
- */
-
-/* Elements
-----------------------------------------*/
-
-/* Reset
---------------------------*/
-
-
-
-
-/* Contents
-----------------------------------------*/
-.copyright {
-	text-align: right;
-	margin-bottom: 0px;
-	margin-right: 1%;
-}
-
-.copyright a {
-	color: #F9A200;
-}
-
-.copyright a:hover {
-	color: #FFFF00;
-}
 
 
 /* Slide
@@ -74,7 +43,7 @@
 	width: 100%;
 	overflow: hidden;
 	position: relative;
-	background: #ffffff;
+	background: #333333;
 }
 
 /* Slide Content
@@ -84,23 +53,19 @@
 	width: 94%;
 	padding: 0px 3% 0px 3%;
 	margin: 0px 0px 0px -50%;
-	left: 50%;
+	left: 150%;
 	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-webkit-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
-	background: #ffffff;
+	background: #333333;
+}
+
+.content:first-child {
+	left: 50%;
 }
 
 .content hgroup {
 	margin: 5% 0px 30px 0px;
 }
-
-/*
-.control {
-	position: absolute;
-	z-index: 1;
-	top: 80%;
-}
-*/

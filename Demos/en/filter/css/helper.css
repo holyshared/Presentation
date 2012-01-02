@@ -1,12 +1,5 @@
 @charset "utf-8";
 
-/**
- * Presentation.js helper style.
- * @version: 1.0
- * @author: Noritaka Horio<holy.shared.design@gmail.com>
- * @licence: public domain
- */
-
 /* Status Helper
 -----------------------------------------------------*/
 
@@ -14,6 +7,7 @@
 	position: fixed;
 	right: 1%;
 	bottom: 65px;
+	color: #cccccc;
 }
 
 .page .current {

@@ -44,19 +44,24 @@
 							<p>When the part described with the Markdown form is in contents, with the application of a filter, it changes into HTML form from Markdown form automatically.</p>
 		                </div>
 		                <div class="content-result" data-markdown-content="true">
-	### Header level3
+### Header level3
 	
-	#### Header level4
+#### Header level4
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
 	
-	* list item 1
-	* list item 2
-	* list item 3
-	
-	#### Header level4
-	
-	1. list item 1
-	2. list item 2
-	3. list item 3
+#### Header level4
+
+Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
+Ruler
+
+1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+2. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+3. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
 						</div>
 	                </div>
 	
@@ -78,17 +83,16 @@
 	
 	                    <script type="text/application" data-processing-draw-target="processing">
 	void setup(){
-	
 	    size(200,200);
 	    background(125);
 	    fill(255);
-	    PFont fontA = loadFont("courier");
+	    PFont fontA = loadFont("Times New Roman");
 	    textFont(fontA, 14);
+		noLoop();
 	}
-	
+
 	void draw(){
 	    text("Hello Web!",20,20);
-	    println("Hello ErrorLog!");
 	}
 	                    </script>
 	
@@ -109,17 +113,34 @@
 						<p>Only the part of required program language needs to read a style sheet and a javascript file.</p>
 	                </div>
 	                <div class="content-result">
-	
+
+						<p>This code is the executable code of this demonstration.<br />
+It is described by file called runner.js.</p>
+
+<p>The code highlighter is using SyntaxHighlighter.<br />
+Download of a code highlighter is here.<br />
+<a title="SyntaxHighlighter" href="http://alexgorbatchev.com/SyntaxHighlighter">http://alexgorbatchev.com/SyntaxHighlighter</a></p>
 	                    <pre class="brush: js">
-	(functioin(global){
-	
-	global.addEvent('domready', function(){
-	
-	    //do something
-	
-	});
-	
-	}(this));
+(function(win){
+
+this.addEvent('domready', function(){
+
+	var p = new Presentation('presentation');
+
+	p.addHelper(new Presentation.Helper.Controller())
+		.addHelper(new Presentation.Helper.Keyboard())
+		.addHelper(new Presentation.Helper.Page());
+
+	p.addFilter(filters.MarkdownFilter)
+		.addFilter(filters.ProcessingFilter)
+		.addFilter(filters.SyntaxHighlighterFilter);
+
+	p.displayFullScreen()
+		.start();
+
+});
+
+}.call(this, this));
 	                    </pre>
 	
 	                </div>

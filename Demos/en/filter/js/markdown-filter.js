@@ -5,7 +5,7 @@ var filters = global.filters = filters;
 filters.MarkdownFilter = {
 
     activate: function(content){
-alert('aa');
+
         var element = $(content),
             filter = element.get('data-presentation-filter'),
             isMarkdown = element.retrieve('markdown'),
@@ -23,17 +23,15 @@ alert('aa');
         }
 
         markdownContents.each(function(element){
-
             markdownText = element.get('html');
 
             converter = new Showdown.converter();
             markdownResult = converter.makeHtml(markdownText);
 
             element.set('html', markdownResult);
-
         });
 
-        element.store('markdown', true);
+		element.store('markdown', true);
     }
 
 };

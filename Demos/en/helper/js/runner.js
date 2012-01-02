@@ -11,9 +11,11 @@ this.addEvent('domready', function(){
 
     p.addHelper(new Presentation.Helper.CustumController())
         .addHelper(new Presentation.Helper.ThemeSelector())
+        .addHelper(new Presentation.Helper.Keyboard())
         .addHelper(new Presentation.Helper.Page());
-    
-    p.start();
+
+	p.displayFullScreen()
+		.start();
 
 });
 
