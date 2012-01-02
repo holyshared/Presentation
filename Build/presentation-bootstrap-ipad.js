@@ -38,6 +38,13 @@ var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
+	options: {
+		//onStart
+		//onTransitionStart
+		//onTransitionEnd
+		//onChange
+	},
+
 	_startup: false,
 	_containerRole: '[data-presentation-role="container"]',
 	_contentsRole: '[data-presentation-role="content"]',
@@ -67,14 +74,10 @@ var Presentation = this.Presentation = new Class({
 		var content = null,
 			context = null;
 
-		if (!this.isStarted()){
-			this.start();
-		}
-
-		content = this.getCurrentContent(),
+		content = this.getCurrentContent();
 		context = this._getContext(index);
 
-		this.fireEvent('__deactivate', [content]);
+		this.fireEvent('__deactivate__', [content]);
 		this._contents.setCurrentIndex(index);
 		this._changeContent(context);
 		this._notifyChange();
@@ -154,7 +157,7 @@ var Presentation = this.Presentation = new Class({
 				this.getCurrentIndex(),
 				this.getCurrentContent()
 			]);
-			this.fireEvent('__activate', [this.getCurrentContent()]);
+			this.fireEvent('__activate__', [this.getCurrentContent()]);
 		}
 	},
 
@@ -436,6 +439,67 @@ Presentation.Content = new Class(Object.merge({
 
 /*
 ---
+name: Presentation.FullScreen
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+
+provides:
+  - FullScreen
+...
+*/
+
+(function(win, doc, Presentation){
+
+/*
+	var p = new Presentation('id');
+	p.displayFullScreen().start();
+ */
+Presentation.implement({
+
+	displayFullScreen: function(){
+
+		var height = 0;
+		if (win.innerHeight) {
+			height = win.innerHeight;
+		} else if (doc.documentElement.clientHeight) {
+			height = doc.documentElement.clientHeight;
+		} else if (doc.body.clientHeight) {
+			height = doc.body.clientHeight;
+		}
+
+		for (var i = 0; l = this.getLength(), i < l; i++){
+			var content = this.getContent(i).toElement();
+			content.setStyles({
+				'height': height,
+				'width': '100%',
+				'margin-left': '-50%'
+			});
+		}
+
+		var container = this.getContainerElement();
+		container.setStyles({
+			'height': height,
+			'width': '100%'
+		});
+
+		return this;
+	}
+
+});
+
+}(this, document, Presentation));
+
+
+/*
+---
 name: Moostrap
 
 description: The core module of Moostrap
@@ -464,12 +528,12 @@ provides:
 
 var Moostrap = this.Moostrap = function(executer, module, options){
 
-	var executerType = executer.capitalize();
-		executerClass = null;
+	var executerType = executer,
+		executerClass = null,
 		instance = null;
 
 	if (!Moostrap.Executer[executerType]){
-		throw new Error(executerType + 'is not found');
+		throw new Error(executerType + ' is not found');
 	}
 	executerClass = Moostrap.Executer[executerType];
 
@@ -580,7 +644,7 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var bootstrapper = this;
+		var bootstrapper = this
 			method = null,
 			setter = null,
 			handler = null;
@@ -966,6 +1030,8 @@ provides:
 
 (function(namespace){
 
+Moostrap.ASYNC_EXECUTER = 'Async';
+
 namespace.Async = new Class({
 
 	Extends: namespace.Executer,
@@ -1067,6 +1133,8 @@ provides:
 
 (function(Presentation){
 
+var observeEvents = ['activate', 'deactivate'];
+
 //Validator of filter
 function validateFilter(filter) {
 	if (!Type.isObject(filter)){
@@ -1088,7 +1156,11 @@ Presentation.Filter = new Class({
 	filters: [],
 
 	addFilter: function(filter){
+		var presentation = this;
 		this.filters.push(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._enableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -1101,8 +1173,12 @@ Presentation.Filter = new Class({
 	},
 
 	removeFilter: function(filter){
+		var presentation = this;
 		if (!this.hasFilter(filter)) return this;
 		this.filters.erase(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._disableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -1121,10 +1197,27 @@ Presentation.Filter = new Class({
 	applyFilter: function(type, content){
 		var filters = this.filters;
 		filters.each(function(filter){
-			if (filter[type]){
-				filter[type](content);
+			if (!filter[type]){
+				return;
 			}
+			filter[type](content);
 		});
+	},
+
+	_enableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.addEvent(type, callback);
+		return this;
+	},
+
+	_disableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.removeEvent(type, callback);
+		return this;
 	}
 
 });
@@ -2086,245 +2179,6 @@ Module.register('controller', {
 });
 
 }(Presentation.Bootstrap.Module, Presentation.Helper));
-
-
-/*
----
-
-name: Element.defineCustomEvent
-
-description: Allows to create custom events based on other custom events.
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Core/Element.Event]
-
-provides: Element.defineCustomEvent
-
-...
-*/
-
-(function(){
-
-[Element, Window, Document].invoke('implement', {hasEvent: function(event){
-	var events = this.retrieve('events'),
-		list = (events && events[event]) ? events[event].values : null;
-	if (list){
-		var i = list.length;
-		while (i--) if (i in list){
-			return true;
-		}
-	}
-	return false;
-}});
-
-var wrap = function(custom, method, extended){
-	method = custom[method];
-	extended = custom[extended];
-
-	return function(fn, name){
-		if (extended && !this.hasEvent(name)) extended.call(this, fn, name);
-		if (method) method.call(this, fn, name);
-	};
-};
-
-var inherit = function(custom, base, method){
-	return function(fn, name){
-		base[method].call(this, fn, name);
-		custom[method].call(this, fn, name);
-	};
-};
-
-var events = Element.Events;
-
-Element.defineCustomEvent = function(name, custom){
-	var base = events[custom.base];
-
-	custom.onAdd = wrap(custom, 'onAdd', 'onSetup');
-	custom.onRemove = wrap(custom, 'onRemove', 'onTeardown');
-
-	events[name] = base ? Object.append({}, custom, {
-
-		base: base.base,
-
-		condition: function(event, name){
-			return (!base.condition || base.condition.call(this, event, name)) &&
-				(!custom.condition || custom.condition.call(this, event, name));
-		},
-
-		onAdd: inherit(custom, base, 'onAdd'),
-		onRemove: inherit(custom, base, 'onRemove')
-
-	}) : custom;
-
-	return this;
-};
-
-Element.enableCustomEvents = function(){
-  Object.each(events, function(event, name){
-    if (event.onEnable) event.onEnable.call(event, name);
-  });
-};
-
-Element.disableCustomEvents = function(){
-  Object.each(events, function(event, name){
-    if (event.onDisable) event.onDisable.call(event, name);
-  });
-};
-
-})();
-
-
-/*
----
-
-name: Browser.Features.Touch
-
-description: Checks whether the used Browser has touch events
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Core/Browser]
-
-provides: Browser.Features.Touch
-
-...
-*/
-
-Browser.Features.Touch = (function(){
-	try {
-		document.createEvent('TouchEvent').initTouchEvent('touchstart');
-		return true;
-	} catch (exception){}
-	
-	return false;
-})();
-
-// Android doesn't have a touch delay and dispatchEvent does not fire the handler
-Browser.Features.iOSTouch = (function(){
-	var name = 'cantouch', // Name does not matter
-		html = document.html,
-		hasTouch = false;
-
-	if (!html.addEventListener) return false;
-
-	var handler = function(){
-		html.removeEventListener(name, handler, true);
-		hasTouch = true;
-	};
-
-	try {
-		html.addEventListener(name, handler, true);
-		var event = document.createEvent('TouchEvent');
-		event.initTouchEvent(name);
-		html.dispatchEvent(event);
-		return hasTouch;
-	} catch (exception){}
-
-	handler(); // Remove listener
-	return false;
-})();
-
-
-/*
----
-
-name: Swipe
-
-description: Provides a custom swipe event for touch devices
-
-authors: Christopher Beloch (@C_BHole), Christoph Pojer (@cpojer), Ian Collins (@3n)
-
-license: MIT-style license.
-
-requires: [Core/Element.Event, Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
-
-provides: Swipe
-
-...
-*/
-
-(function(){
-
-var name = 'swipe',
-	distanceKey = name + ':distance',
-	cancelKey = name + ':cancelVertical',
-	dflt = 50;
-
-var start = {}, disabled, active;
-
-var clean = function(){
-	active = false;
-};
-
-var events = {
-
-	touchstart: function(event){
-		if (event.touches.length > 1) return;
-
-		var touch = event.touches[0];
-		active = true;
-		start = {x: touch.pageX, y: touch.pageY};
-	},
-	
-	touchmove: function(event){
-		if (disabled || !active) return;
-		
-		var touch = event.changedTouches[0],
-			end = {x: touch.pageX, y: touch.pageY};
-		if (this.retrieve(cancelKey) && Math.abs(start.y - end.y) > 10){
-			active = false;
-			return;
-		}
-		
-		var distance = this.retrieve(distanceKey, dflt),
-			delta = end.x - start.x,
-			isLeftSwipe = delta < -distance,
-			isRightSwipe = delta > distance;
-
-		if (!isRightSwipe && !isLeftSwipe)
-			return;
-		
-		event.preventDefault();
-		active = false;
-		event.direction = (isLeftSwipe ? 'left' : 'right');
-		event.start = start;
-		event.end = end;
-		
-		this.fireEvent(name, event);
-	},
-
-	touchend: clean,
-	touchcancel: clean
-
-};
-
-Element.defineCustomEvent(name, {
-
-	onSetup: function(){
-		this.addEvents(events);
-	},
-
-	onTeardown: function(){
-		this.removeEvents(events);
-	},
-
-	onEnable: function(){
-		disabled = false;
-	},
-
-	onDisable: function(){
-		disabled = true;
-		clean();
-	}
-
-});
-
-})();
 
 
 /*

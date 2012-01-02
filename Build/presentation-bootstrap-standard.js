@@ -38,6 +38,13 @@ var Presentation = this.Presentation = new Class({
 
 	Implements: [Events, Options],
 
+	options: {
+		//onStart
+		//onTransitionStart
+		//onTransitionEnd
+		//onChange
+	},
+
 	_startup: false,
 	_containerRole: '[data-presentation-role="container"]',
 	_contentsRole: '[data-presentation-role="content"]',
@@ -67,14 +74,10 @@ var Presentation = this.Presentation = new Class({
 		var content = null,
 			context = null;
 
-		if (!this.isStarted()){
-			this.start();
-		}
-
-		content = this.getCurrentContent(),
+		content = this.getCurrentContent();
 		context = this._getContext(index);
 
-		this.fireEvent('__deactivate', [content]);
+		this.fireEvent('__deactivate__', [content]);
 		this._contents.setCurrentIndex(index);
 		this._changeContent(context);
 		this._notifyChange();
@@ -154,7 +157,7 @@ var Presentation = this.Presentation = new Class({
 				this.getCurrentIndex(),
 				this.getCurrentContent()
 			]);
-			this.fireEvent('__activate', [this.getCurrentContent()]);
+			this.fireEvent('__activate__', [this.getCurrentContent()]);
 		}
 	},
 
@@ -436,6 +439,67 @@ Presentation.Content = new Class(Object.merge({
 
 /*
 ---
+name: Presentation.FullScreen
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Presentation/Presentation
+
+provides:
+  - FullScreen
+...
+*/
+
+(function(win, doc, Presentation){
+
+/*
+	var p = new Presentation('id');
+	p.displayFullScreen().start();
+ */
+Presentation.implement({
+
+	displayFullScreen: function(){
+
+		var height = 0;
+		if (win.innerHeight) {
+			height = win.innerHeight;
+		} else if (doc.documentElement.clientHeight) {
+			height = doc.documentElement.clientHeight;
+		} else if (doc.body.clientHeight) {
+			height = doc.body.clientHeight;
+		}
+
+		for (var i = 0; l = this.getLength(), i < l; i++){
+			var content = this.getContent(i).toElement();
+			content.setStyles({
+				'height': height,
+				'width': '100%',
+				'margin-left': '-50%'
+			});
+		}
+
+		var container = this.getContainerElement();
+		container.setStyles({
+			'height': height,
+			'width': '100%'
+		});
+
+		return this;
+	}
+
+});
+
+}(this, document, Presentation));
+
+
+/*
+---
 name: Moostrap
 
 description: The core module of Moostrap
@@ -464,12 +528,12 @@ provides:
 
 var Moostrap = this.Moostrap = function(executer, module, options){
 
-	var executerType = executer.capitalize();
-		executerClass = null;
+	var executerType = executer,
+		executerClass = null,
 		instance = null;
 
 	if (!Moostrap.Executer[executerType]){
-		throw new Error(executerType + 'is not found');
+		throw new Error(executerType + ' is not found');
 	}
 	executerClass = Moostrap.Executer[executerType];
 
@@ -580,7 +644,7 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var bootstrapper = this;
+		var bootstrapper = this
 			method = null,
 			setter = null,
 			handler = null;
@@ -966,6 +1030,8 @@ provides:
 
 (function(namespace){
 
+Moostrap.ASYNC_EXECUTER = 'Async';
+
 namespace.Async = new Class({
 
 	Extends: namespace.Executer,
@@ -1067,6 +1133,8 @@ provides:
 
 (function(Presentation){
 
+var observeEvents = ['activate', 'deactivate'];
+
 //Validator of filter
 function validateFilter(filter) {
 	if (!Type.isObject(filter)){
@@ -1088,7 +1156,11 @@ Presentation.Filter = new Class({
 	filters: [],
 
 	addFilter: function(filter){
+		var presentation = this;
 		this.filters.push(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._enableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -1101,8 +1173,12 @@ Presentation.Filter = new Class({
 	},
 
 	removeFilter: function(filter){
+		var presentation = this;
 		if (!this.hasFilter(filter)) return this;
 		this.filters.erase(validateFilter(filter));
+		observeEvents.each(function(key){
+			presentation._disableListener('__' + key + '__', filter[key] || null);
+		});
 		return this;
 	},
 
@@ -1121,10 +1197,27 @@ Presentation.Filter = new Class({
 	applyFilter: function(type, content){
 		var filters = this.filters;
 		filters.each(function(filter){
-			if (filter[type]){
-				filter[type](content);
+			if (!filter[type]){
+				return;
 			}
+			filter[type](content);
 		});
+	},
+
+	_enableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.addEvent(type, callback);
+		return this;
+	},
+
+	_disableListener: function(type, callback){
+		if (!callback){
+			return this;
+		}
+		this.removeEvent(type, callback);
+		return this;
 	}
 
 });
