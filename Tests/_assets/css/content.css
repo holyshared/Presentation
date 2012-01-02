@@ -16,7 +16,6 @@
 	height: 100px;
 	display: block;
 	position: absolute;
-	top: 50%;
 	left: 50%;
 	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
@@ -24,5 +23,5 @@
 	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #cccccc;
-	padding: 10px;
+	padding: 0px;
 }

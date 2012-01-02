@@ -12,6 +12,7 @@ copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
   - "Source/Core/Presentation.js"
+  - "Source/Utils/FullScreen.js"
   - "Source/Filter/Filter.js"
   - "Source/Helper/Helper.js"
   - "Source/Helper/Swipe.js"
