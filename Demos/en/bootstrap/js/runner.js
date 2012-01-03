@@ -1,29 +1,32 @@
 (function(global, module){
 
     var p = null,
-        bootstrapper = null;
+		bootstrapper = null;
 
     global.addEvent('domready', function(){
 
         p = new Presentation('presentation');
 
-        bootstrapper = new Moostrap('async', module, {
+        bootstrapper = new Moostrap(Moostrap.ASYNC_EXECUTER, module, {
             onBeforeBootstrap: function(key ,title, current, total){
                 if ('console' in window){
-                    console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
+					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
                 }
             },
             onAfterBootstrap: function(key ,title, current, total){
                 if ('console' in window){
-                    console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
+					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
                 }
             },
             onSuccess: function(){
-                p.start();
+				p.displayFullScreen().start();
+            },
+            onFailure: function(){
+				alert('oops!!');
             }
         });
-        bootstrapper.execute(p);
+		bootstrapper.execute(p);
 
-    });
+	});
 
 }(this, Presentation.Bootstrap.Module));

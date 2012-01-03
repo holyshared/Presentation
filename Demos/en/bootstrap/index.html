@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ja">
     <head>
-        <meta charset="UTF-8" />
-	    <title>Presentation.js - Bootstrap</title>
+    	<meta charset="UTF-8" />
+		<title>Presentation.js - Bootstrap</title>
         <meta name="description" content="Presentation.js - Bootstrap demonstration" />
         <meta name="keywords" content="mootools,presentation.js,bootstrap" />
-        <script type="text/javascript" href="js/lib/mootools/mootools-core-1.4.1.js" /></script>
-        <script type="text/javascript" href="js/lib/presentation/presentation-bootstrap-standard.js" /></script>
-        <script type="text/javascript" href="js/runner.js" /></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css" media="print,screen" />
+        <script type="text/javascript" src="js/lib/mootools/mootools-core-1.4.1.js" /></script>
+        <script type="text/javascript" src="js/lib/presentation/presentation-bootstrap-standard.js" /></script>
+        <script type="text/javascript" src="js/runner.js" /></script>
     </head>
 	<body>
-        <article id="presentation">
+        <article id="presentation" class="presentation">
 
-            <article data-presentation-role="container">
-                <section data-presentation-role="content">
+            <header class="header">
+                <h1>Presentation.js - Bootstrap Demonstration</h1>
+            </header>
+
+            <article data-presentation-role="container" class="container">
+                <section data-presentation-role="content" class="content">
                     <hgroup>
                         <h1>section1</h1>
                     </hgroup>
                 </section>
-    			<section data-presentation-role="content">
+    			<section data-presentation-role="content" class="content">
                     <hgroup>
                         <h1>section2</h1>
                     </hgroup>
     			</section>
     		</article>
 
-            <div class="page"><span class="current"></span> | <span class="total"></span></div>
+            <div class="page"><span class="current">1</span> / <span class="total">1</span></div>
 
     		<div class="controller">
     		    <button type="button" class="first">first</button>
@@ -33,6 +38,10 @@
     			<button type="button" class="next">next</button>
     			<button type="button" class="last">last</button>
     		</div>
+
+            <footer class="footer">
+                <p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+            </footer>
 
         </article>
 
