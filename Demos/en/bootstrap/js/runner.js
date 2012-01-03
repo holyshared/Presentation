@@ -15,7 +15,7 @@
             },
             onAfterBootstrap: function(key ,title, current, total){
                 if ('console' in window){
-					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
+					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' complete');
                 }
             },
             onSuccess: function(){
