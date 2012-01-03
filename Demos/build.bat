@@ -1,0 +1,4 @@
+cd C:\var\www\tools\packager
+php packager build Presentation/Presentation Presentation/FullScreen Presentation/Filter Presentation/Helper Presentation/Helper.Keyboard Presentation/Helper.Page Presentation/Helper.Controller > C:\var\www\git\Presentation\Demos\en\filter\js\lib\presentation\presentation-standard.js
+php packager build Presentation/Presentation Presentation/FullScreen Presentation/Filter Presentation/Helper Presentation/Helper.Keyboard Presentation/Helper.Page Presentation/Helper.Controller > C:\var\www\git\Presentation\Demos\en\helper\js\lib\presentation\presentation-standard.js
+php packager build Presentation/FullScreen Presentation.Bootstrap/Filter Presentation.Bootstrap/Keyboard Presentation.Bootstrap/Page Presentation.Bootstrap/Controller > C:\var\www\git\Presentation\Demos\en\bootstrap\js\lib\presentation\presentation-bootstrap-standard.js
