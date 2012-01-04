@@ -548,12 +548,18 @@ Moostrap.Module = new Class({
 
 	_executeOrder: [],
 	_bootstrappers: {},
+	_bootstrapCount: 0,
 
 	register: function(key, options){
+		var bootstrapper = null;
 		if (this.isRegistered(key) === true){
 			throw new Error(key + ' is already registered');
 		}
-		var bootstrapper = new Moostrap.Bootstrapper(options);
+
+		bootstrapper = new Moostrap.Bootstrapper(options);
+		bootstrapper.setOrder(this._bootstrapCount);
+
+		this._bootstrapCount++;
 		this._bootstrappers[key] = bootstrapper;
 		this._executeOrder.push(key);
 		return this;
@@ -635,6 +641,7 @@ Moostrap.Bootstrapper = new Class({
 	_resource: null,
 	_configuration: null,
 	_handler: null,
+	_order: 0,
 
 	_status: null,
 	_started: false,
@@ -675,6 +682,17 @@ Moostrap.Bootstrapper = new Class({
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
 		this.fireEvent('failure');
+	},
+
+	setOrder: function(orderNo){
+		if (!Type.isNumber(orderNo)){
+			throw new TypeError('The specified order is not valid.');
+		}
+		this._order = orderNo;
+	},
+
+	getOrder: function(){
+		return this._order;
 	},
 
 	setTitle: function(title){
@@ -849,6 +867,7 @@ namespace.Executer = new Class({
 				bootstrapper.setResource(model.getResource());
 			});
 		}
+
 		Object.each(bootstrappers, function(bootstrapper, key){
 			model._setupBootstrapper(key, bootstrapper);
 		});
@@ -948,7 +967,7 @@ namespace.Executer = new Class({
 		args = [
 			key,
 			handler.getTitle(),
-			order.index() + 1,
+			handler.getOrder() + 1,
 			module.getLength()
 		];
 		this.fireEvent(type, args);

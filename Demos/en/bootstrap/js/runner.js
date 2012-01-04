@@ -8,10 +8,8 @@
         p = new Presentation('presentation');
 
         bootstrapper = new Moostrap(Moostrap.ASYNC_EXECUTER, module, {
-            onBeforeBootstrap: function(key ,title, current, total){
-                if ('console' in window){
-					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' start');
-                }
+            onStart: function(){
+				console.log('start!!');
             },
             onAfterBootstrap: function(key ,title, current, total){
                 if ('console' in window){
