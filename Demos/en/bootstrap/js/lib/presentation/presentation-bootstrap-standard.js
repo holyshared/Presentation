@@ -651,7 +651,7 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var bootstrapper = this
+		var bootstrapper = this,
 			method = null,
 			setter = null,
 			handler = null;
@@ -1010,7 +1010,7 @@ namespace.Executer = new Class({
 			});
 			this.setResource(resource);
 		}
-		this.fireEvent('start');
+		this.fireEvent('start', [module]);
 		this.bootstrap();
 	},
 

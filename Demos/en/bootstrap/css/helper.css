@@ -60,3 +60,35 @@
 	color: #FFFF00;
 	cursor: pointer;
 }
+
+.progress {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 220px;
+	margin-left: -110px;
+	padding: 10px 10px;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #cccccc;
+	border: 2px solid #cccccc;
+	text-align: center;
+	background: #333333;
+	color: #ffffff;
+	z-index: 9999;
+}
+
+.progress .value {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+.progress .bar {
+	border: 1px solid #888888;
+	height: 10px;
+	border-radius: 5px;
+	display: block;
+	background-color: #253E5A;
+	background-image: -moz-linear-gradient(center bottom, #253E5A 0%, #006699 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#253E5A), to(#006699));
+    background-image: -o-linear-gradient(top, #006699 0%, #253E5A 100%);
+}

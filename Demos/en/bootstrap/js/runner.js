@@ -1,29 +1,17 @@
 (function(global, module){
 
-    var p = null,
-		bootstrapper = null;
-
     global.addEvent('domready', function(){
+
+	    var p = null,
+			bootstrapper = null,
+			adapter = null;
 
         p = new Presentation('presentation');
 
-        bootstrapper = new Moostrap(Moostrap.ASYNC_EXECUTER, module, {
-            onStart: function(){
-				console.log('start!!');
-            },
-            onAfterBootstrap: function(key ,title, current, total){
-                if ('console' in window){
-					console.log(current + '/' + total + ' ' + key + ' - ' + title + ' complete');
-                }
-            },
-            onSuccess: function(){
-				p.displayFullScreen().start();
-            },
-            onFailure: function(){
-				alert('oops!!');
-            }
-        });
-		bootstrapper.execute(p);
+        bootstrapper = new Moostrap(Moostrap.ASYNC_EXECUTER, module);
+
+		adapter = new BootstrapAdapter(bootstrapper);
+		adapter.start(p);
 
 	});
 

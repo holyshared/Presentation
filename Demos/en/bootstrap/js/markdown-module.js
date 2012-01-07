@@ -1,112 +1,39 @@
-(function(Presentation, Module, Helper){
+(function(markdown, Module){
 
-var Markdown = {};
+var markdown = this.markdown = markdown;
 
-var ResponseParser = Markdown.ResponseParser = {
+var handlers = markdown.handlers;
 
-	_result: [],
+Module.register('showdown', {
 
-	parse: function(text){
-		var converter = null,
-			parser = null,
-			html = null;
+	title: 'load markdown library',
+
+	handler: handlers.isLoadedShowDown
+
+});
+
+Module.register('parser', {
+
+	title: 'load markdown parser',
+
+	handler: handlers.isLoadedParser
+
+});
+
+[1, 2, 3, 4, 5].each(function(order){
+
+	name = 'content-' + order.toString();
+
+	Module.register(name, {
+
+		title: 'load presentation ' + name,
 	
-		converter = new Showdown.converter(),
-		html = converter.makeHtml(text);
+		configuration: 'content/' + name + '.md',
 	
-		parser = new Element('div', { html: html });
-	
-		this._result = parser.getChildren();
+		handler: handlers.loadContent
 
-		return this;
-	},
+	});
 
-	createSection: function(elements){
-		var content = new Element('section', {
-			'data-presentation-role': 'content',
-			'class': 'content'
-		}).adopt(elements);
-		return content;
-	},
+});
 
-	createHeader: function(element){
-		var header = new Element('header');
-		element.inject(header);
-		return header;
-	},
-
-	toSections: function(){
-		var contents = [],
-			sections = [],
-			parser = this,
-			elements = this._result;
-
-		elements.each(function(element){
-			switch(element.tagName.toLowerCase()){
-				case 'h1':
-					break;
-				case 'h2':
-					if (contents.length > 0){
-						sections.push(parser.createSection(contents));
-						contents = [];
-					}
-					contents.push(parser.createHeader(element));
-					break;
-				default:
-					contents.push(element);
-			}
-		});
-		if (contents.length > 0){
-			sections.push(parser.createSection(contents));
-		}
-		return sections;
-	}
-
-};
-
-var Bootstrapper = Markdown.Module = {
-
-	title: 'load presentation content',
-
-	configuration: 'content/content.md',
-
-	handler: function(presentation, configuration){
-		var bootstrapper = this,
-			container = null,
-			sections = [],
-			request = null;
-
-		if (!Showdown){
-			bootstrapper.failure();
-		}
-
-		container = presentation.getContainerElement();
-
-		var request = new Request({
-			url: configuration,
-			onSuccess: function(text, xml){
-
-				try {
-					sections = ResponseParser.parse(text).toSections();
-				} catch(exception){
-					bootstrapper.failure();
-					throw exception;
-				}
-
-				sections.each(function(section){
-					section.inject(container);
-					presentation.addContent(new Presentation.Content(section));
-				});
-
-				bootstrapper.success();
-
-			}
-		});
-		request.get();
-	}
-
-};
-
-Module.register('contents', Bootstrapper);
-
-}(Presentation, Presentation.Bootstrap.Module, Presentation.Helper));
+}(this.markdown || {}, Presentation.Bootstrap.Module));
