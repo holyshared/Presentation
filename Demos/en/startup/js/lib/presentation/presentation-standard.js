@@ -2,7 +2,7 @@
 ---
 name: Presentation
 
-description: 
+description: core module of Presentation.js
 
 license: MIT-style
 
@@ -441,7 +441,7 @@ Presentation.Content = new Class(Object.merge({
 ---
 name: Presentation.FullScreen
 
-description: 
+description: The function which can be displayed by a full screen is offered.
 
 license: MIT-style
 
@@ -502,7 +502,7 @@ Presentation.implement({
 ---
 name: Presentation.Filter
 
-description: 
+description: The module which offers the filter facility applied to contents
 
 license: MIT-style
 
@@ -888,7 +888,7 @@ Helper.Pluggable = new Class({
 ---
 name: Presentation.Helper
 
-description: 
+description: The enhancement module incorporating a helper
 
 license: MIT-style
 
@@ -1096,7 +1096,7 @@ Helper.Keyboard = new Class({
 ---
 name: Presentation.Helper.Keyboard
 
-description: 
+description: The helper who enables keyboard operation
 
 license: MIT-style
 
@@ -1165,7 +1165,7 @@ HelperNamespace.Keyboard = KeyboardHelper;
 ---
 name: Presentation.Helper.Page
 
-description: 
+description: The helper who displays the number of pages
 
 license: MIT-style
 
@@ -1238,7 +1238,7 @@ HelperNamespace.Page = new Class({
 ---
 name: Presentation.Helper.Controller
 
-description: 
+description: A GUI interface is offered
 
 license: MIT-style
 

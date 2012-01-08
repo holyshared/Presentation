@@ -1,12 +1,12 @@
-(function(win){
+(function(plugins){
 
 this.addEvent('domready', function(){
 
 	var p = new Presentation('presentation');
 
-	p.addHelper(new Presentation.Helper.Controller())
-		.addHelper(new Presentation.Helper.Keyboard())
-		.addHelper(new Presentation.Helper.Page());
+	p.addHelper(new plugins.Controller())
+		.addHelper(new plugins.Keyboard())
+		.addHelper(new plugins.Page());
 
 	p.addFilter(filters.MarkdownFilter)
 		.addFilter(filters.ProcessingFilter)
@@ -17,4 +17,4 @@ this.addEvent('domready', function(){
 
 });
 
-}.call(this, this));
+}.call(this, Presentation.Helper));

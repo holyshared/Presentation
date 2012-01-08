@@ -1,22 +1,17 @@
-(function(){
+(function(plugins){
 
 this.addEvent('domready', function(){
 
-    var p = new Presentation('presentation', {
-        onStart: function(){
-        },
-        onFailure: function(){
-        }
-    });
+    var p = new Presentation('presentation');
 
-    p.addHelper(new Presentation.Helper.CustumController())
-        .addHelper(new Presentation.Helper.ThemeSelector())
-        .addHelper(new Presentation.Helper.Keyboard())
-        .addHelper(new Presentation.Helper.Page());
+    p.addHelper(new plugins.CustumController())
+        .addHelper(new plugins.ThemeSelector())
+        .addHelper(new plugins.Keyboard())
+        .addHelper(new plugins.Page());
 
 	p.displayFullScreen()
 		.start();
 
 });
 
-}.call(this));
+}.call(this, Presentation.Helper));

@@ -2,7 +2,7 @@
 ---
 name: Presentation
 
-description: 
+description: core module of Presentation.js
 
 license: MIT-style
 
@@ -441,7 +441,7 @@ Presentation.Content = new Class(Object.merge({
 ---
 name: Presentation.FullScreen
 
-description: 
+description: The function which can be displayed by a full screen is offered.
 
 license: MIT-style
 
@@ -651,7 +651,7 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var bootstrapper = this,
+		var bootstrapper = this
 			method = null,
 			setter = null,
 			handler = null;
@@ -1134,7 +1134,7 @@ Presentation.Bootstrap.Module = Module;
 ---
 name: Presentation.Filter
 
-description: 
+description: The module which offers the filter facility applied to contents
 
 license: MIT-style
 
@@ -1580,7 +1580,7 @@ Helper.Pluggable = new Class({
 ---
 name: Presentation.Helper
 
-description: 
+description: The enhancement module incorporating a helper
 
 license: MIT-style
 
@@ -1788,7 +1788,7 @@ Helper.Keyboard = new Class({
 ---
 name: Presentation.Helper.Keyboard
 
-description: 
+description: The helper who enables keyboard operation
 
 license: MIT-style
 
@@ -1916,7 +1916,7 @@ Module.register('keyboard', {
 ---
 name: Presentation.Helper.Page
 
-description: 
+description: The helper who displays the number of pages
 
 license: MIT-style
 
@@ -2048,7 +2048,7 @@ Module.register('page', {
 ---
 name: Presentation.Helper.Controller
 
-description: 
+description: A GUI interface is offered
 
 license: MIT-style
 

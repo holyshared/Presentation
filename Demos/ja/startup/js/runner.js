@@ -1,33 +1,16 @@
-(function(win, doc){
+(function(plugins){
 
-	win.addEvent('domready', function(){
+this.addEvent('domready', function(){
 
-			var height = 0;
-			if (win.innerHeight) {
-				height = win.innerHeight;
-			} else if (doc.documentElement.clientHeight) {
-				height = doc.documentElement.clientHeight;
-			} else if (doc.body.clientHeight) {
-				height = doc.body.clientHeight;
-			}
+    var p = new Presentation('presentation');
 
-			var container = $('presentation').getElement('.container');
-			var contents = container.getElements('.content');
-			container.setStyle('height', height);
-			contents.setStyle('height', height);
+    p.addHelper(new plugins.Controller())
+        .addHelper(new plugins.Keyboard())
+        .addHelper(new plugins.Page());
 
-			var presentation = new Presentation('presentation', {
-				keyboard: {
-					prev: ['j', 'left'],
-					next: ['k', 'right'],
-					first: '0',
-					last: '4' //$
-				},
-				swipe: true
-			});
+	p.displayFullScreen()
+		.start();
 
-			presentation.start();
+});
 
-	});
-
-}(window, document));
+}.call(this, Presentation.Helper));
