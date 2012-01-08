@@ -6,12 +6,12 @@
 	padding: 0px;
 	display: block;
 	border: 1px solid #cccccc;	
-	height: 320px;
+	height: 680px;
 }
-	
+
 *[data-presentation-role="content"] {
 	width: 300px;
-	height: 300px;
+	height: 150px;
 	display: block;
 	position: absolute;
 	margin-left: -160px;

@@ -43,8 +43,8 @@
 			notify: function(){
 				var args = [
 					this.index,
-					null,
-					this.total
+					this.total,
+					null
 				];
 				this.fireEvent('change', args);
 			},
