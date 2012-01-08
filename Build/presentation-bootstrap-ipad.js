@@ -2,7 +2,7 @@
 ---
 name: Presentation
 
-description: 
+description: core module of Presentation.js
 
 license: MIT-style
 
@@ -377,7 +377,7 @@ var Content = {
 	},
 
 	backward: function(){
-		this._element.setStyle('left', '0%');
+		this._element.setStyle('left', '-50%');
 	},
 
 	center: function(){
@@ -402,7 +402,7 @@ if (Browser.chrome || Browser.safari) {
 	transitionEnd = 'msTransitionEnd';
 }
 
-if (Browser.ie && Browser.version <= 7) {
+if (Browser.ie && Browser.version <= 9) {
 	Object.merge(Content, {
 		initialize: function(element, options){
 			this.setOptions(options);
@@ -441,7 +441,7 @@ Presentation.Content = new Class(Object.merge({
 ---
 name: Presentation.FullScreen
 
-description: 
+description: The function which can be displayed by a full screen is offered.
 
 license: MIT-style
 
@@ -1010,7 +1010,7 @@ namespace.Executer = new Class({
 			});
 			this.setResource(resource);
 		}
-		this.fireEvent('start');
+		this.fireEvent('start', [module]);
 		this.bootstrap();
 	},
 
@@ -1134,7 +1134,7 @@ Presentation.Bootstrap.Module = Module;
 ---
 name: Presentation.Filter
 
-description: 
+description: The module which offers the filter facility applied to contents
 
 license: MIT-style
 
@@ -1580,7 +1580,7 @@ Helper.Pluggable = new Class({
 ---
 name: Presentation.Helper
 
-description: 
+description: The enhancement module incorporating a helper
 
 license: MIT-style
 
@@ -1788,7 +1788,7 @@ Helper.Keyboard = new Class({
 ---
 name: Presentation.Helper.Keyboard
 
-description: 
+description: The helper who enables keyboard operation
 
 license: MIT-style
 
@@ -1916,7 +1916,7 @@ Module.register('keyboard', {
 ---
 name: Presentation.Helper.Page
 
-description: 
+description: The helper who displays the number of pages
 
 license: MIT-style
 
@@ -2048,7 +2048,7 @@ Module.register('page', {
 ---
 name: Presentation.Helper.Controller
 
-description: 
+description: A GUI interface is offered
 
 license: MIT-style
 
@@ -2276,7 +2276,7 @@ Helper.Swipe = new Class({
 ---
 name: Presentation.Swipe
 
-description: 
+description: The helper who enables swipe operation
 
 license: MIT-style
 
