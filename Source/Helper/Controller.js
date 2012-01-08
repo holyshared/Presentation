@@ -2,7 +2,7 @@
 ---
 name: Presentation.Helper.Controller
 
-description: 
+description: A GUI interface is offered
 
 license: MIT-style
 

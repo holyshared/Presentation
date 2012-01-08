@@ -2,7 +2,7 @@
 ---
 name: Presentation.Filter
 
-description: 
+description: The module which offers the filter facility applied to contents
 
 license: MIT-style
 

@@ -2,7 +2,7 @@
 ---
 name: Presentation.Helper.Keyboard
 
-description: 
+description: The helper who enables keyboard operation
 
 license: MIT-style
 

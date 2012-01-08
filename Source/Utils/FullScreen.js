@@ -2,7 +2,7 @@
 ---
 name: Presentation.FullScreen
 
-description: 
+description: The function which can be displayed by a full screen is offered.
 
 license: MIT-style
 

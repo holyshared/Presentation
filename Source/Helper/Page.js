@@ -2,7 +2,7 @@
 ---
 name: Presentation.Helper.Page
 
-description: 
+description: The helper who displays the number of pages
 
 license: MIT-style
 

@@ -2,7 +2,7 @@
 ---
 name: Presentation.Helper
 
-description: 
+description: The enhancement module incorporating a helper
 
 license: MIT-style
 

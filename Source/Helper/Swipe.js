@@ -2,7 +2,7 @@
 ---
 name: Presentation.Swipe
 
-description: 
+description: The helper who enables swipe operation
 
 license: MIT-style
 

@@ -2,7 +2,7 @@
 ---
 name: Presentation
 
-description: 
+description: core module of Presentation.js
 
 license: MIT-style
 
