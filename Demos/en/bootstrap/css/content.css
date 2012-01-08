@@ -12,11 +12,11 @@
 	padding: 0px 3% 0px 3%;
 	margin: 0px 0px 0px -50%;
 	left: 50%;
-	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-webkit-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
 	background: #ffffff;
 }
 

@@ -31,29 +31,20 @@
 }
 
 .controller button {
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
+	display: inline-block;
 	padding: 1.6% 6%;
 	margin: 0px 1.4%;
-	background-color: #000000;
-	display: inline-block;
 	color: #FFFFFF;
+
 	border: 2px solid #FFFFFF;
-	background: #4971A0;
-	background: -moz-linear-gradient(
-	center bottom,
-		#000000 0%,
-		#666666 80%,
-		#666666 100%
-	);
-	background: -webkit-gradient(
-		linear,
-		left 80%,
-		left top,
-		color-stop(0, #000000),
-		color-stop(1, #666666),
-		color-stop(1, #666666)
-	);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+
+	background-color: #222222;
+	background-image: -moz-linear-gradient(center bottom, #222222 0%, #000000 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#222222), to(#000000));
+    background-image: -o-linear-gradient(top, #000000 0%, #222222 100%);
+
 }
 
 .controller button:hover {

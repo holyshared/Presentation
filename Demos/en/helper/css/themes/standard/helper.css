@@ -31,7 +31,7 @@
     border-top: 1px solid #888888;
     border-bottom: 1px solid #888888;
 
-/*    background: #444444; */
+    background: #777777;
 
 	background-image: -moz-linear-gradient(center bottom, #777777 0%, #bbbbbb 100%);
 	background-image: -webkit-gradient(linear, left 80%, left top, from(#777777), to(#bbbbbb));
@@ -48,7 +48,7 @@
 
 .themes li a:hover,
 .themes li a.selected {
-/*	font-weight: bold; */
+    background: #333333;
 	background-image: -moz-linear-gradient(center bottom, #333333 0%, #222222 100%);
 	background-image: -webkit-gradient(linear, left 80%, left top, from(#333333), to(#222222));
     background-image: -o-linear-gradient(top, #333333 0%, #222222 100%);

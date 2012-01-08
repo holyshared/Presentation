@@ -402,7 +402,7 @@ if (Browser.chrome || Browser.safari) {
 	transitionEnd = 'msTransitionEnd';
 }
 
-if (Browser.ie && Browser.version <= 7) {
+if (Browser.ie && Browser.version <= 9) {
 	Object.merge(Content, {
 		initialize: function(element, options){
 			this.setOptions(options);
