@@ -4,8 +4,12 @@ this.addEvent('domready', function(){
 
     var p = new Presentation('presentation');
 
-    p.addHelper(new plugins.Controller())
+/*    p.addHelper(new plugins.Controller())
         .addHelper(new plugins.Keyboard())
+        .addHelper(new plugins.Page());
+*/
+    p.addHelper(new plugins.Controller())
+    	.addHelper(new plugins.Keyboard())
         .addHelper(new plugins.Page());
 
 	p.displayFullScreen()

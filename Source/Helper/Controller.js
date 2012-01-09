@@ -80,11 +80,12 @@ HelperNamespace.Controller = new Class({
 	},
 
 	_onChange: function(current, total, content){
+		var currentNumber = current + 1;
 		//is first?
-		if (current <= 0){
+		if (currentNumber <= 1){
 			this._changeButtonState([ 'next', 'last' ]);
 		//is last?
-		} else if (current >= total){
+		} else if (currentNumber >= total){
 			this._changeButtonState([ 'first', 'prev' ]);
 		} else {
 			this._changeButtonState([ 'first', 'prev', 'next', 'last' ]);

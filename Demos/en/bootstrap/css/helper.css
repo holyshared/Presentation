@@ -52,6 +52,14 @@
 	cursor: pointer;
 }
 
+.controller .disabled {
+	background-color: #aaaaaa;
+	background-image: -moz-linear-gradient(center bottom, #aaaaaa 0%, #cccccc 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#aaaaaa), to(#cccccc));
+	background-image: -o-linear-gradient(top, #cccccc 0%, #aaaaaa 100%);
+}
+
+
 .progress {
 	position: absolute;
 	left: 50%;

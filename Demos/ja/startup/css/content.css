@@ -56,8 +56,8 @@
 	background-color: #eeeeee;
 }
 
-.total th,
-.total td {
+.totalSize th,
+.totalSize td {
 	border: 2px solid #dd0000;
 }
 

@@ -31,7 +31,7 @@
 				alert('first');
 			},
 			last: function(){
-				this.index = this.total;
+				this.index = this.total - 1;
 				this.notify();
 				alert('last');
 			},

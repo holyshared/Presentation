@@ -44,12 +44,18 @@
 	background-image: -moz-linear-gradient(center bottom, #222222 0%, #000000 100%);
 	background-image: -webkit-gradient(linear, left 80%, left top, from(#222222), to(#000000));
     background-image: -o-linear-gradient(top, #000000 0%, #222222 100%);
-
 }
 
 .controller button:hover {
 	color: #FFFF00;
 	cursor: pointer;
+}
+
+.controller .disabled {
+	background-color: #aaaaaa;
+	background-image: -moz-linear-gradient(center bottom, #aaaaaa 0%, #cccccc 100%);
+	background-image: -webkit-gradient(linear, left 80%, left top, from(#aaaaaa), to(#cccccc));
+	background-image: -o-linear-gradient(top, #cccccc 0%, #aaaaaa 100%);
 }
 
 .progress {
