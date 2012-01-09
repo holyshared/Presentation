@@ -10,6 +10,8 @@
 		});
 		var controller = new Controller(container);
 		controller.addHelper(helper);
+		controller.start();
+
 		controller.next();
 
 	}, false);

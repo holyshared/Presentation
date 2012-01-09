@@ -13,6 +13,8 @@
 		var controller = new Controller(container);
 		controller.addHelper(helper);
 
+		controller.start();
+
 	}, false);
 
 }(document));

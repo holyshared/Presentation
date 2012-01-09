@@ -29,7 +29,8 @@ HelperNamespace.Controller = new Class({
 		first: 'first',
 		prev: 'prev',
 		next: 'next',
-		last: 'last'
+		last: 'last',
+		disabled: 'disabled'
 	},
 
 	_name: 'controller',
@@ -41,10 +42,13 @@ HelperNamespace.Controller = new Class({
 		last: 'last'
 	},
 	_handlers: {},
+	_changeState: null,
 
 	setup: function(){
 		var container = this.getTarget().getLayoutElement(),
 			trigger = null;
+
+		this._changeState = this._onChange.bind(this);
 		this._keys.each(function(key){
 			trigger = container.getElement('.' + this.options[key]);
 			if (!trigger){
@@ -56,12 +60,14 @@ HelperNamespace.Controller = new Class({
 	},
 
 	enable: function(){
+		this.getTarget().addEvent('change', this._changeState);
 		this._keys.each(function(key){
 			this['_' + key].addEvent('click', this._getHandler(key));
 		}, this);
 	},
 
 	disable: function(){
+		this.getTarget().removeEvent('change', this._changeState);
 		this._keys.each(function(key){
 			this['_' + key].removeEvent('click', this._getHandler(key));
 		}, this);
@@ -70,6 +76,29 @@ HelperNamespace.Controller = new Class({
 	destroy: function(){
 		this._keys.each(function(key){
 			delete this['_' + key];
+		}, this);
+	},
+
+	_onChange: function(current, total, content){
+		//is first?
+		if (current <= 0){
+			this._changeButtonState([ 'next', 'last' ]);
+		//is last?
+		} else if (current >= total){
+			this._changeButtonState([ 'first', 'prev' ]);
+		} else {
+			this._changeButtonState([ 'first', 'prev', 'next', 'last' ]);
+		}
+	},
+
+	_changeButtonState: function(enables){
+		var disabledClass = this.options.disabled;
+		this._keys.each(function(key){
+			if (enables.contains(key)){
+				this['_' + key].removeClass(disabledClass);
+			} else {
+				this['_' + key].addClass(disabledClass);
+			}
 		}, this);
 	},
 

@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 *[data-presentation-role="container"] {
 	width: 320px;
 	overflow: hidden;

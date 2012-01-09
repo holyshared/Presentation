@@ -7,7 +7,7 @@
 		var helper = new Presentation.Helper.Swipe();
 		var controller = new Controller(container);
 		controller.addHelper(helper);
-
+		controller.start();
 
 		var event = {};
 		event.direction = 'left';

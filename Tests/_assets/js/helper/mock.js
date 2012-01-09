@@ -51,8 +51,11 @@
 
 			getLayoutElement: function(){
 				return this.container;
-			}
+			},
 
+			start: function(){
+				this.notify();
+			}
 		});
 		Controller.implement(new Helper());
 		Controller.implement(new Events());
