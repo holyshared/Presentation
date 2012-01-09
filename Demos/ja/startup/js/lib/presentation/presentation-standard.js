@@ -544,8 +544,13 @@ Presentation.Filter = new Class({
 
 	addFilter: function(filter){
 		var presentation = this;
+
 		this.filters.push(validateFilter(filter));
+
 		observeEvents.each(function(key){
+			if (Type.isFunction(filter[key]) === true){
+				filter[key] = filter[key].bind(filter);
+			}
 			presentation._enableListener('__' + key + '__', filter[key] || null);
 		});
 		return this;
@@ -553,6 +558,7 @@ Presentation.Filter = new Class({
 
 	addFilters: function(filters){
 		var values = validateFilters(filters);
+
 		values.each(function(filter, index){
 			this.addFilter(filter);
 		}, this);
@@ -561,8 +567,13 @@ Presentation.Filter = new Class({
 
 	removeFilter: function(filter){
 		var presentation = this;
-		if (!this.hasFilter(filter)) return this;
+
+		if (!this.hasFilter(filter)){
+			return this;
+		}
+
 		this.filters.erase(validateFilter(filter));
+
 		observeEvents.each(function(key){
 			presentation._disableListener('__' + key + '__', filter[key] || null);
 		});
@@ -571,6 +582,7 @@ Presentation.Filter = new Class({
 
 	removeFilters: function(filters){
 		var values = validateFilters(filters);
+
 		values.each(function(filter, index){
 			this.removeFilter(filter);
 		}, this);
@@ -583,6 +595,7 @@ Presentation.Filter = new Class({
 
 	applyFilter: function(type, content){
 		var filters = this.filters;
+
 		filters.each(function(filter){
 			if (!filter[type]){
 				return;
