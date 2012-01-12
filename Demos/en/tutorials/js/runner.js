@@ -1,4 +1,4 @@
-(function(yournamesapce){
+(function(yournamespace){
 
 this.addEvent('domready', function(){
 
@@ -13,4 +13,4 @@ this.addEvent('domready', function(){
 
 });
 
-}.call(this, yournamesapce));
+}.call(this, yournamespace));

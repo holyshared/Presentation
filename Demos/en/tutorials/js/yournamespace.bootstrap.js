@@ -1,6 +1,6 @@
-(function(yournamesapce){
+(function(yournamespace){
 
-	var yournamesapce = this.yournamesapce = yournamesapce;
+	var yournamespace = this.yournamespace = yournamespace;
 
 	yournamespace.Module = Moostrap.Module();
 
@@ -89,4 +89,4 @@
 
 	});
 
-}.call(this, this.yournamesapce || {}));
+}.call(this, this.yournamespace || {}));
