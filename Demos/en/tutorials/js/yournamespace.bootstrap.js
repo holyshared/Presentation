@@ -2,7 +2,7 @@
 
 	var yournamespace = this.yournamespace = yournamespace;
 
-	yournamespace.Module = Moostrap.Module();
+	yournamespace.Module = new Moostrap.Module();
 
 	yournamespace.Module.register('controller', {
 

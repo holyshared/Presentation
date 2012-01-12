@@ -4,9 +4,9 @@ this.addEvent('domready', function(){
 
 	var p = new Presentation('presentation');
 
-    p.addFilter(yournamesapce.KeywordFilter);
+    p.addFilter(yournamespace.KeywordFilter);
 
-    p.addHelper(new yournamesapce.Controller());
+    p.addHelper(new yournamespace.Controller());
 
 	p.displayFullScreen()
 		.start();
