@@ -1176,8 +1176,13 @@ Presentation.Filter = new Class({
 
 	addFilter: function(filter){
 		var presentation = this;
+
 		this.filters.push(validateFilter(filter));
+
 		observeEvents.each(function(key){
+			if (Type.isFunction(filter[key]) === true){
+				filter[key] = filter[key].bind(filter);
+			}
 			presentation._enableListener('__' + key + '__', filter[key] || null);
 		});
 		return this;
@@ -1185,6 +1190,7 @@ Presentation.Filter = new Class({
 
 	addFilters: function(filters){
 		var values = validateFilters(filters);
+
 		values.each(function(filter, index){
 			this.addFilter(filter);
 		}, this);
@@ -1193,8 +1199,13 @@ Presentation.Filter = new Class({
 
 	removeFilter: function(filter){
 		var presentation = this;
-		if (!this.hasFilter(filter)) return this;
+
+		if (!this.hasFilter(filter)){
+			return this;
+		}
+
 		this.filters.erase(validateFilter(filter));
+
 		observeEvents.each(function(key){
 			presentation._disableListener('__' + key + '__', filter[key] || null);
 		});
@@ -1203,6 +1214,7 @@ Presentation.Filter = new Class({
 
 	removeFilters: function(filters){
 		var values = validateFilters(filters);
+
 		values.each(function(filter, index){
 			this.removeFilter(filter);
 		}, this);
@@ -1215,6 +1227,7 @@ Presentation.Filter = new Class({
 
 	applyFilter: function(type, content){
 		var filters = this.filters;
+
 		filters.each(function(filter){
 			if (!filter[type]){
 				return;
@@ -1808,7 +1821,7 @@ provides:
 (function(Presentation, HelperNamespace){
 
 //Keyboard helper's option is added to options of Presentation.Slide.
-var defaultOptions = {
+var defaults = {
 	'j': 'prev',
 	'k': 'next',
 	'left': 'prev',
@@ -1818,12 +1831,18 @@ var defaultOptions = {
 };
 
 function KeyboardHelper(options){
-	var methods = convertToDelegateMethods(options);
-	var keybinds = Object.merge(defaultOptions, methods);
-	var helperOptions = {
-		methods: keybinds
-	};
-	return new Helper.Keyboard(helperOptions);
+	var methods = null,
+		keybinds = null;
+
+	options = options || {};
+
+	keybinds = options.keybinds || {};
+	methods = convertToDelegateMethods(keybinds);
+	delete options.keybinds;
+
+	options.methods = Object.merge(defaults, methods);
+
+	return new Helper.Keyboard(options);
 }
 
 function convertToDelegateMethods(options){
@@ -2325,16 +2344,21 @@ provides:
 
 (function(Presentation, HelperNamespace){
 
-function SwipeHelper() {
-	var options = {
+function SwipeHelper(options) {
+
+	var defaults = null,
+		helper = null;
+
+	defaults = {
 		methods: {
 			left: 'next',
 			right: 'prev'
 		}
 	};
-	var helper = new Helper.Swipe(options);
 
-	return helper;
+	options = Object.merge(defaults, options);
+
+	return new Helper.Swipe(options);
 }
 
 HelperNamespace.Swipe = SwipeHelper;
