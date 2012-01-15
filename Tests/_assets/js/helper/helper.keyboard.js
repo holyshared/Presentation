@@ -23,10 +23,12 @@
 		Controller.implement(new Events());
 
 		var helper = new Presentation.Helper.Keyboard({
-			prev: ['j', 'left'],
-			next: ['k', 'right'],
-			first: '0',
-			last: '4' //$
+			keybinds: {
+				prev: ['j', 'left'],
+				next: ['k', 'right'],
+				first: '0',
+				last: '4' //$
+			}
 		});
 		var controller = new Controller();
 		controller.addHelper(helper);

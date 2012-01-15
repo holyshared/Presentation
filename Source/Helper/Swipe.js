@@ -21,16 +21,21 @@ provides:
 
 (function(Presentation, HelperNamespace){
 
-function SwipeHelper() {
-	var options = {
+function SwipeHelper(options) {
+
+	var defaults = null,
+		helper = null;
+
+	defaults = {
 		methods: {
 			left: 'next',
 			right: 'prev'
 		}
 	};
-	var helper = new Helper.Swipe(options);
 
-	return helper;
+	options = Object.merge(defaults, options);
+
+	return new Helper.Swipe(options);
 }
 
 HelperNamespace.Swipe = SwipeHelper;

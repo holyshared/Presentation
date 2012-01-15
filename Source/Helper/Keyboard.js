@@ -22,7 +22,7 @@ provides:
 (function(Presentation, HelperNamespace){
 
 //Keyboard helper's option is added to options of Presentation.Slide.
-var defaultOptions = {
+var defaults = {
 	'j': 'prev',
 	'k': 'next',
 	'left': 'prev',
@@ -32,12 +32,18 @@ var defaultOptions = {
 };
 
 function KeyboardHelper(options){
-	var methods = convertToDelegateMethods(options);
-	var keybinds = Object.merge(defaultOptions, methods);
-	var helperOptions = {
-		methods: keybinds
-	};
-	return new Helper.Keyboard(helperOptions);
+	var methods = null,
+		keybinds = null;
+
+	options = options || {};
+
+	keybinds = options.keybinds || {};
+	methods = convertToDelegateMethods(keybinds);
+	delete options.keybinds;
+
+	options.methods = Object.merge(defaults, methods);
+
+	return new Helper.Keyboard(options);
 }
 
 function convertToDelegateMethods(options){
