@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.header {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	top: 0px;
+	padding: 15px 0px 15px 0px;
+	overflow: hidden;
+}
+
+.container {
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+	background: #ffffff;
+}
+
+.footer {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	bottom: 0px;
+	padding: 15px 0px 15px 0px;
+}
+
+
+.header, .footer {
+	color: #ffffff;
+	background: #222222;
+}
