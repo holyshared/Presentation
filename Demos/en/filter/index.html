@@ -82,19 +82,33 @@ Ruler
 	                <div class="content-result">
 	
 	                    <script type="text/application" data-processing-draw-target="processing">
-	void setup(){
-	    size(200,200);
-	    background(125);
-	    fill(255);
-	    PFont fontA = loadFont("Times New Roman");
-	    textFont(fontA, 14);
-		noLoop();
-	}
+int loopCount = 40;
+int plusValue = 5;
 
-	void draw(){
-	    text("Hello Web!",20,20);
-	}
-	                    </script>
+void setup() {
+  size(700,600);
+  background(#FFFFFF);
+  smooth();
+  noLoop();
+  noStroke();
+}
+
+void draw() {
+  for (int i = plusValue; i < (plusValue * loopCount); i += plusValue) {
+    fill(color(
+      random(0, 255), random(0, 255),
+      random(0, 255), random(0, 100)
+    ));
+
+    float xPos = random(0, width);
+    float yPos = random(0, height);
+
+    if (xPos < i) { xPos = i; }
+    if (yPos < i) { yPos = i; }
+    ellipse(xPos, yPos, i, i);
+  }
+}
+						</script>
 	
 	                    <canvas id="processing"></canvas>
 	                </div>
