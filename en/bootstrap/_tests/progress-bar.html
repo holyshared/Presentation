@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+		<meta charset="UTF-8" />
+		<title>Presentation.js - Progressbar test</title>
+		<meta name="description" content="Presentation.js - Progressbar test" />
+		<meta name="keywords" content="mootools,processing,progressbar,presentation.js" />
+
+        <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="../../../tools/css/jasmine.css" media="screen,print" />
+		<link rel="stylesheet" type="text/css" href="../css/helper.css" />
+
+        <script src="../../../tools/js/jasmine.js"></script>
+        <script src="../../../tools/js/jasmine-html.js"></script>
+
+		<script src="../js/lib/mootools/mootools-core-1.4.1.js"></script>
+
+		<script src="../js/progressable.js"></script>
+		<script src="spec/progress-bar-spec.js"></script>
+	</head>
+	<body>
+
+		<article data-presentation-role="container">
+            <header>
+				<h1>Presentation.js - Progressbar</h1>
+            </header>
+
+			<section data-presentation-role="content" class="content">
+            </section>
+
+    		<section data-presentation-role="content" class="content">
+            </section>
+		</article>
+
+        <script type="text/javascript">
+			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+			jasmine.getEnv().execute();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>Presentation.js</title>
+		<meta name="description" content="Presentation.js" />
+		<meta name="author" content="Noritaka Horio" />
+		<link rel="stylesheet" href="css/theme.css" media="screen,print" />
+		<script src="js/lib/mootools/mootools-core-1.4.2.js"></script>
+		<script src="js/lib/presentation/presentation-standard.js"></script>
+		<script src="js/runner.js"></script>
+	</head>
+
+	<body>
+		<article id="presentation" class="presentation">
+			<header class="header">
+				<h1>Presentation.js v1.1</h1>
+			</header>
+
+			<div data-presentation-role="container" class="container">
+
+			<section data-presentation-role="content" class="content">
+				<hgroup>
+					<h2>Presentation.js</h2>
+					<h3>About this library</h3>
+				</hgroup>
+
+				<p>Presentation.js is a javascript library which can create the slide using <strong>html, css, and javascript</strong> for presentations. <br/>
+				By making <strong>"not to take a user's freedom"</strong> into a concept, it is designing on the assumption that it can extend.</p>
+
+				<h4>The feature of a library</h4>
+				<p>Some are following as a big feature.</p>
+				<ul>
+				    <li>Offer of the plugin extension using a helper.</li>
+				    <li>Offer of the optimization facility of contents.</li>
+				    <li>Offer of the initialization function of a slide.</li>
+				    <li>iPad correspondence using the library of third party nature.</li>
+				</ul>
+			</section>
+
+
+			<section data-presentation-role="content" class="content">
+				<hgroup>
+					<h2>Library composition</h2>
+					<h3>A required library</h3>
+				</hgroup>
+				<p>The library composition of Presentation.js is as follows.<br />
+PowerTools is used for the library of a core for MooTools and iPad correspondence.</p>
+				<table class="specList">
+				    <thead>
+				        <tr>
+				            <th>Library</th>
+				            <th>Uncompression size</th>
+				            <th>Compression size</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				        <tr>
+				            <td>Mootools Core</td>
+				            <td class="size">110KB - 116KB</td>
+				            <td class="size">65KB - 70KB</td>
+				        </tr>
+				        <tr>
+				            <td>Presentation.js</td>
+				            <td class="size">27KB - 46KB</td>
+				            <td class="size">16KB - 25KB</td>
+				        </tr>
+				        <tr>
+				            <td>PowerTools (Optional)</td>
+				            <td class="size">6KB</td>
+				            <td class="size">3KB</td>
+				        </tr>
+				        <tr class="totalSize">
+				            <th>Total size</th>
+				            <td class="size">143KB(min) - 168KB(max)</td>
+				            <td class="size">84KB(min) - 98KB(max)</td>
+				        </tr>
+				    </tbody>
+				</table>
+			</section>
+
+			<section data-presentation-role="content" class="content">
+				<hgroup>
+					<h2>The function of Presentation.js</h2>
+					<h3>Three big features</h3>
+				</hgroup>
+				<p>This library is made on the assumption that it extends, as the outline of Presentation.js explained.</p>
+				<p>I introduce three big features one in order also in it.</p>
+			</section>
+
+			<section data-presentation-role="content" class="content helper-plugin">
+				<hgroup>
+					<h2>The feature 1 - Plugin using a helper</h2>
+					<h3>Extension by inclusion of plugin</h3>
+				</hgroup>
+
+				<p>Helper plug-in is expanded function freely incorporable according to the contents of the presentation.<br />
+The plugin currently prepared from the beginning is as follows.</p>
+
+				<ul>
+				<li><strong>Controller</strong> - The GUI interface which can operate a slide is offered.</li>
+				<li><strong>Page</strong> - The page information displayed now is displayed.</li>
+				<li><strong>Keyboard</strong> - Operation of the slide by a keyboard input is enabled.</li>
+				<li><strong>Swipe</strong> - A slide is made to correspond to tap operation with a mobile terminal.</li>
+				</ul>
+
+				<p>The plugin itself can be created very easily.</p>
+
+                <p><a title="The demo of a helper is seen" href="../../en/helper/">The demo of a helper is seen.</a></p>
+
+			</section>
+
+			<section data-presentation-role="content" class="content contents-filter">
+				<hgroup>
+					<h2>The feature 2 - Powerful contents filter</h2>
+					<h3>Optimization of the contents using a filter</h3>
+				</hgroup>
+				<p>If a filter is used, contents can be optimized freely. <br />
+				<strong>A filter is applied, when displaying applicable contents, and when making it undisplayed.</strong></p>
+
+				<p>To this timing, some contents can be substituted or new contents can be added.</p>
+                <p><a title="The demo of a filter is seen." href="../../en/filter/">The demo of a filter is seen.</a></p>
+            </section>
+
+			<section data-presentation-role="content" class="content bootstrap">
+				<hgroup>
+					<h2>The feature 3 - Initialization of the slide by bootstrap</h2>
+					<h3>A slide is optimized freely.</h3>
+				</hgroup>
+                <p>If a bootstrap function is used, a slide can be initialized freely.<br/>
+For example, the contents of the slide can be dynamically read by Ajax, or its own plug-in can be incorporated.</p>
+                <p>Moreover, since initialization processing can be modularized, it is possible to create a slide setup for every case to be used.</p>
+                <p><a title="The demo of a bootstrap is seen." href="../../en/bootstrap/">The demo of a bootstrap is seen.</a></p>
+			</section>
+
+			<section data-presentation-role="content" class="content">
+				<hgroup>
+					<h2>A detailed document</h2>
+					<h3>To those who want to know in more detail</h3>
+				</hgroup>
+				<p>The document of Presentation.js is here.<br/>Those who want to know in more detail need to have a look.</p>
+				<ul>
+					<li><a title="The creation tutorial of helper plugin" href="https://github.com/holyshared/Presentation/wiki/The-tutorial-of-Filter">The creation tutorial of helper plugin</a></li>
+					<li><a title="The creation tutorial of filter plugin" href="https://github.com/holyshared/Presentation/wiki/The-tutorial-of-Helper">The creation tutorial of filter plugin</a></li>
+					<li><a title="The creation tutorial of an initialization module" href="https://github.com/holyshared/Presentation/wiki/The-tutorial-of-Bootstrap">The creation tutorial of an initialization module</a></li>
+				</ul>
+			</section>
+
+			<section data-presentation-role="content" class="content">
+				<hgroup>
+					<h2>To the person who saw so far</h2>
+					<h3>Language of gratitude</h3>
+				</hgroup>
+				<p>Thank you for seeing to the last.<br />Please give me Presentation.js from now on.</p>
+				<dl>
+					<dt>Email:</dt>
+					<dd><a title="Email" href="mailto:holy.shared.design@gmail.com">holy.shared.design@gmail.com</a></dd>
+					<dt>Twitter</dt>
+					<dd><a title="Twitter" href="http://twitter.com/#!/holydesign/">twitter@holydesign</a></dd>
+					<dt>Repogitory</dt>
+					<dd><a title="Repogitory" href="https://github.com/holyshared/Presentation">Github repogitory</a></dd>
+				</dl>
+			</section>
+
+			</div>
+
+			<div id="controller" class="controller">
+				<button id="first" class="first" type="button">first</button>
+				<button id="prev" class="prev" type="button">prev</button>
+				<button id="next" class="next" type="button">next</button>
+				<button id="last" class="last" type="button">last</button>
+			</div>
+
+			<div class="page">
+				<strong class="current">16</strong> / <span class="total">36</span>
+			</div>
+
+			<footer class="footer">
+				<p class="copyright">Copyright 2012 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+			</footer>
+		</article>
+	</body>
+</html>

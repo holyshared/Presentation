@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+.presentation .container,
+.presentation .container .content {
+	height: 604px;
+}
+
+.presentation .container {
+	top: 50%;
+	position: absolute;
+	margin-top: -302px;
+}

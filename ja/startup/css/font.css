@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+body {
+/*	font-family: Sylfaen, "Time New Roman", serif;  */
+
+	font-family: "ヒラギノ角ゴ Pro W3", Sylfaen, Georgia, "Times New Roman", serif;
+}
+
+select, input, button, textarea {
+/*	font-family: Sylfaen, "Time New Roman", serif;  */
+	font-family: "ヒラギノ角ゴ Pro W3", Sylfaen, Georgia, "Times New Roman", serif;
+
+}

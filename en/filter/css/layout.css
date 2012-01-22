@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+
+
+/* Slide
+----------------------------------------*/
+
+/* Slide Header
+--------------------------*/
+.presentation header {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	top: 0px;
+	padding: 15px 0px 15px 1%;
+}
+
+.presentation header h1 {
+	font-size: 108%;
+	line-height: 100%;
+}
+
+/* Slide Footer
+--------------------------*/
+.presentation footer {
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	left: 0px;
+	bottom: 0px;
+	padding: 15px 1% 15px 0px;
+}
+
+.presentation footer p {
+	font-size: 108%;
+}
+
+
+/* Slide Container
+--------------------------*/
+.container {
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+	background: #333333;
+}
+
+/* Slide Content
+--------------------------*/
+.content {
+	position: absolute;
+	width: 94%;
+	padding: 0px 3% 0px 3%;
+	margin: 0px 0px 0px -50%;
+	left: 150%;
+	transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-moz-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-webkit-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-o-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	-ms-transition: left 0.3s cubic-bezier(0.85, 0, 0.15, 1);
+	background: #333333;
+}
+
+.content:first-child {
+	left: 50%;
+}
+
+.content hgroup {
+	margin: 5% 0px 30px 0px;
+}

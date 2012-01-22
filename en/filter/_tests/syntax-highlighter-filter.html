@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+		<meta charset="UTF-8" />
+		<title>Presentation.js - Syntax highlighter filter test</title>
+        <meta name="description" content="Presentation.js - Syntax highlighter filter test" />
+        <meta name="keywords" content="mootools,processing,markdown,syntax highlighter,presentation.js,filter" />
+
+        <link rel="stylesheet" type="text/css" href="../css/highlighter/shCoreRDark.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="../css/highlighter/shThemeRDark.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="../../../tools/css/jasmine.css" media="screen,print" />
+
+        <script src="../../../tools/js/jasmine.js"></script>
+        <script src="../../../tools/js/jasmine-html.js"></script>
+
+        <script src="../js/lib/mootools/mootools-core-1.4.1.js"></script>
+
+        <script src="../js/lib/highlighter/shCore.js"></script>
+        <script src="../js/lib/highlighter/shBrushJScript.js"></script>
+        <script src="../js/lib/highlighter/shBrushCss.js"></script>
+        <script src="../js/lib/highlighter/shBrushXml.js"></script>
+
+        <script src="../js/syntax-highlighter-filter.js"></script>
+
+        <script src="spec/syntax-highlighter-filter-spec.js"></script>
+    </head>
+	<body>
+
+		<article data-presentation-role="container">
+
+            <header>
+                <h1>Presentation.js - Syntax highlighter filter</h1>
+            </header>
+
+			<section id="syntax-highlighther1"
+                data-presentation-role="content"
+                data-presentation-filter="syntax-highlighther">
+
+                <h2>Example code.</h2>
+                <pre class="brush: js">
+(functioin(global){
+
+global.addEvent('domready', function(){
+
+    //do something
+
+});
+
+}(this));
+                </pre>
+            </section>
+
+		</article>
+
+        <script type="text/javascript">
+            jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+            jasmine.getEnv().execute();
+        </script>
+
+    </body>
+</html>

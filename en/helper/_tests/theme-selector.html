@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+    	<meta charset="UTF-8" />
+		<title>Presentation.js - Theme selector test</title>
+        <meta name="description" content="Presentation.js - Theme selector test" />
+        <meta name="keywords" content="mootools,helper,presentation.js" />
+        <link rel="stylesheet" type="text/css" title="jasmine" href="../../../tools/css/jasmine.css" media="screen,print" />
+        <script src="../../../tools/js/jasmine.js"></script>
+        <script src="../../../tools/js/jasmine-html.js"></script>
+
+        <script src="../js/lib/mootools/mootools-core-1.4.1.js"></script>
+        <script src="../js/lib/presentation/presentation-standard.js"></script>
+        <script src="../js/lib/stylesheet/stylesheet.js"></script>
+        <script src="../js/theme-selector.js"></script>
+        <script src="spec/theme-selector.spec.js"></script>
+
+    </head>
+	<body>
+
+        <article id="presentation" class="presentation">
+
+            <header class="header">
+                <h1>Presentation.js</h1>
+                <ul class="themes">
+                    <li><a href="#standard">standard</a></li>
+                    <li><a class="selected" href="#rich-black">rich-black</a></li>
+                    <li><a href="#whiteout">whiteout</a></li>
+                </ul>
+            </header>
+
+            <article data-presentation-role="container" class="container">
+
+    			<section data-presentation-role="content" class="content">
+                    <hgroup>
+                        <h2>Page title</h2>
+                        <h3>Page sub title</h3>
+                    </hgroup>
+    			</section>
+    
+    			<section data-presentation-role="content" class="content">
+                    <hgroup>
+                        <h2>Page title</h2>
+                        <h3>Page sub title</h3>
+                    </hgroup>
+    			</section>
+
+        	</article>
+
+            <div class="controller">
+    		    <input title="Prev" type="button" class="prev disabled" value="&lt;&lt; prev" />
+    			<input title="Next" type="button" class="next" value="next &gt;&gt;" />
+    		</div>
+
+            <div class="page">
+                <span class="current">1</span> / <span class="total">10</span>
+            </div>
+
+            <footer class="footer">
+                <p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+            </footer>
+
+        </article>
+
+        <script type="text/javascript">
+            window.addEvent('domready', function(){
+                jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+                jasmine.getEnv().execute();
+            });
+        </script>
+
+    </body>
+</html>

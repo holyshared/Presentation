@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ja">
+    <head>
+		<meta charset="UTF-8" />
+		<title>Presentation.js - Filter</title>
+        <meta name="description" content="Presentation.js - Filter demonstration" />
+        <meta name="keywords" content="mootools,processing,markdown,syntax highlighter,presentation.js,filter" />
+        <link rel="stylesheet" type="text/css" href="css/theme.css" media="screen,print" />
+        <script src="js/lib/mootools/mootools-core-1.4.2.js"></script>
+
+        <script src="js/lib/markdown/showdown.js"></script>
+
+        <script src="js/lib/highlighter/shCore.js"></script>
+        <script src="js/lib/highlighter/shBrushJScript.js"></script>
+        <script src="js/lib/highlighter/shBrushCss.js"></script>
+        <script src="js/lib/highlighter/shBrushXml.js"></script>
+
+        <script src="js/lib/processing/processing-1.3.6.min.js"></script>
+
+        <script src="js/lib/presentation/presentation-standard.js"></script>
+
+        <script src="js/markdown-filter.js"></script>
+        <script src="js/processing-filter.js"></script>
+        <script src="js/syntax-highlighter-filter.js"></script>
+        <script src="js/runner.js"></script>
+    </head>
+	<body>
+
+		<article id="presentation" class="presentation">
+
+            <header class="header">
+                <h1>Presentation.js - Filter Demonstration</h1>
+            </header>
+
+			<article data-presentation-role="container" class="container">
+				<section data-presentation-role="content" data-presentation-filter="markdown" class="content">
+	
+	                <div class="content-inner">
+		                <div class="content-description">
+		                    <hgroup>
+		                        <h2>Markdown filter</h2>
+		                        <h3>Filter demonstration example 1</h3>
+		                    </hgroup>
+							<p>When the part described with the Markdown form is in contents, with the application of a filter, it changes into HTML form from Markdown form automatically.</p>
+		                </div>
+		                <div class="content-result" data-markdown-content="true">
+### Header level3
+	
+#### Header level4
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+	
+#### Header level4
+
+Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
+Ruler
+
+1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+2. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+3. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+						</div>
+	                </div>
+	
+	            </section>
+	
+				<section data-presentation-role="content" data-presentation-filter="processing" class="content">
+	
+	                <div class="content-inner">
+	
+	                <div class="content-description">
+	                    <hgroup>
+	                        <h2>Processing filter</h2>
+		                    <h3>Filter demonstration example 2</h3>
+	                    </hgroup>
+						<p>If the code of Processing is detected from the inside in contents, a code will be executed automatically.</p>
+						<p>If it changes to other pages, a code will stop automatically.</p>
+	                </div>
+	                <div class="content-result">
+	
+	                    <script type="text/application" data-processing-draw-target="processing">
+int loopCount = 40;
+int plusValue = 5;
+
+void setup() {
+  size(700,600);
+  background(#FFFFFF);
+  smooth();
+  noLoop();
+  noStroke();
+}
+
+void draw() {
+  for (int i = plusValue; i < (plusValue * loopCount); i += plusValue) {
+    fill(color(
+      random(0, 255), random(0, 255),
+      random(0, 255), random(0, 100)
+    ));
+
+    float xPos = random(0, width);
+    float yPos = random(0, height);
+
+    if (xPos < i) { xPos = i; }
+    if (yPos < i) { yPos = i; }
+    ellipse(xPos, yPos, i, i);
+  }
+}
+						</script>
+	
+	                    <canvas id="processing"></canvas>
+	                </div>
+	
+	                </div>
+				</section>
+	
+	    		<section data-presentation-role="content" data-presentation-filter="syntax-highlighther" class="content">
+	                <div class="content-inner">
+	                <div class="content-description">
+	                    <hgroup>
+	                        <h2>Syntax highlighther filter</h2>
+		                    <h3>Filter demonstration example 3</h3>
+	                    </hgroup>
+						<p>If the code of a program is found from the inside in contents, it will indicate by highlight automatically. </p>
+						<p>Only the part of required program language needs to read a style sheet and a javascript file.</p>
+	                </div>
+	                <div class="content-result">
+
+						<p>This code is the executable code of this demonstration.<br />
+It is described by file called runner.js.</p>
+
+<p>The code highlighter is using SyntaxHighlighter.<br />
+Download of a code highlighter is here.<br />
+<a title="SyntaxHighlighter" href="http://alexgorbatchev.com/SyntaxHighlighter">http://alexgorbatchev.com/SyntaxHighlighter</a></p>
+	                    <pre class="brush: js">
+(function(win){
+
+this.addEvent('domready', function(){
+
+	var p = new Presentation('presentation');
+
+	p.addHelper(new Presentation.Helper.Controller())
+		.addHelper(new Presentation.Helper.Keyboard())
+		.addHelper(new Presentation.Helper.Page());
+
+	p.addFilter(filters.MarkdownFilter)
+		.addFilter(filters.ProcessingFilter)
+		.addFilter(filters.SyntaxHighlighterFilter);
+
+	p.displayFullScreen()
+		.start();
+
+});
+
+}.call(this, this));
+	                    </pre>
+	
+	                </div>
+	                </div>
+				</section>
+
+			</article>
+
+			<div class="page"><span class="current"></span> | <span class="total"></span></div>
+
+			<div class="controller">
+			    <button type="button" class="first">first</button>
+				<button type="button" class="prev">prev</button>
+				<button type="button" class="next">next</button>
+				<button type="button" class="last">last</button>
+			</div>
+
+            <footer class="footer">
+            	<p class="copyright">Copyright 2011 <a title="Noritaka Horio" href="http://sharedhat.com">Noritaka Horio</a> all rights reserved.</p>
+            </footer>
+
+		</article>
+
+    </body>
+</html>
