@@ -25,18 +25,15 @@
 	font-size: 127%;
 	position: fixed;
 	bottom: 65px;
-	left: 50%;
-	margin-left: -12%;
-	width: 28%;
+	width: 100%;
 	text-align: center;
 }
 
 .controller button {
 	display: inline-block;
-	padding: 1.6% 6%;
-	margin: 0px 1.4%;
 	color: #FFFFFF;
-
+	padding: 10px 35px;
+	margin: 0px 5px;
 	border: 2px solid #FFFFFF;
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
