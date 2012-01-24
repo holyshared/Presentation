@@ -642,9 +642,10 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	failure: function(){
+		var args = Array.from(arguments);
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
-		this.fireEvent('failure');
+		this.fireEvent('failure', args);
 	},
 
 	setOrder: function(orderNo){
@@ -981,10 +982,11 @@ namespace.Executer = new Class({
 	bootstrap: function(){
 	},
 
-	onFailure: function(key){
+	onFailure: function(){
+		var args = Array.from(arguments);
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
-		this.fireEvent('failure');
+		this.fireEvent('failure', args);
 	}
 
 });
@@ -1045,7 +1047,7 @@ namespace.Async = new Class({
 
 		Object.append(events, {
 			success: this.onSuccess.bind(this, args),
-			failure: this.onFailure.bind(this, args)
+			failure: this.onFailure.bind(this)
 		});
 
 		configuration = this.getConfiguration(key) || null;
