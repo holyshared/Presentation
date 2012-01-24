@@ -349,28 +349,14 @@ Presentation.Container = new Class({
 });
 
 
-var Decorater = {
+(function(Presentation){
 
-	//ie7, ie8
-	Legacy: function(handler) {
-		return function() {
-			this.fireEvent('transitionStart', [this]);
-			handler.call(this);
-			this.fireEvent('transitionEnd', [this]);
-		};
+var content = {
+
+	initialize: function(element, options){
+		this.setOptions(options);
+		this._element = element;
 	},
-
-	//firefox, safari, chrome, opera, ie9
-	Modan: function(handler) {
-		return function() {
-			this.fireEvent('transitionStart', [this]);
-			handler.call(this);
-		};
-	}
-
-};
-
-var Content = {
 
 	forward: function(){
 		this._element.setStyle('left', '150%');
@@ -390,41 +376,16 @@ var Content = {
 
 };
 
-var decorater, transitionEnd;
-
-if (Browser.chrome || Browser.safari) {
-	transitionEnd = 'webkitTransitionEnd';
-} else if (Browser.firefox) {
-	transitionEnd = 'transitionend';
-} else if (Browser.opera) {
-	transitionEnd = 'oTransitionEnd';
-} else {
-	transitionEnd = 'msTransitionEnd';
-}
-
-if (Browser.ie && Browser.version <= 9) {
-	Object.merge(Content, {
-		initialize: function(element, options){
-			this.setOptions(options);
-			this._element = element;
-		}
-	});
-	decorater = Decorater.Modan;
-} else {
-	Object.merge(Content, {
-		initialize: function(element, options){
-			this.setOptions(options);
-			this._element = element;
-			this._element.addEventListener(transitionEnd, function(){
-				this.fireEvent('transitionEnd', [this]);
-			}, false);
-		}
-	});
-	decorater = Decorater.Legacy;
-}
+var decorater = function(handler){
+	return function() {
+		this.fireEvent('transitionStart', [this]);
+		handler.call(this);
+		this.fireEvent('transitionEnd', [this]);
+	};
+};
 
 ['backward', 'forward', 'center'].each(function(method){
-	Content[method] = decorater(Content[method]);
+	content[method] = decorater(content[method]);
 });
 
 //Presentation.Content
@@ -432,7 +393,9 @@ Presentation.Content = new Class(Object.merge({
 
 	Implements: [Events, Options]
 
-}, Content));
+}, content));
+
+}(Presentation));
 
 }(document.id));
 
@@ -679,9 +642,10 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	failure: function(){
+		var args = Array.from(arguments);
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
-		this.fireEvent('failure');
+		this.fireEvent('failure', args);
 	},
 
 	setOrder: function(orderNo){
@@ -1018,10 +982,11 @@ namespace.Executer = new Class({
 	bootstrap: function(){
 	},
 
-	onFailure: function(key){
+	onFailure: function(){
+		var args = Array.from(arguments);
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
-		this.fireEvent('failure');
+		this.fireEvent('failure', args);
 	}
 
 });
@@ -1082,7 +1047,7 @@ namespace.Async = new Class({
 
 		Object.append(events, {
 			success: this.onSuccess.bind(this, args),
-			failure: this.onFailure.bind(this, args)
+			failure: this.onFailure.bind(this)
 		});
 
 		configuration = this.getConfiguration(key) || null;
@@ -1733,7 +1698,8 @@ Helper.Delegator = new Class({
 		if (!Type.isFunction(target[method])) {
 			throw new Error('Method ' + method + ' doesn\'t exist or it is an invalid method.');
 		}
-		target[method].apply(target, args);
+		args = args || [];
+		target[method](args);
 	}
 
 });

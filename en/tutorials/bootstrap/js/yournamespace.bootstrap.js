@@ -43,7 +43,7 @@
 
 			try {
 				filter = yournamespace.KeywordFilter;
-				filter.keyword.contat(config);
+				filter.keywords.concat(config);
 			} catch(exception){
 				action.failure(exception);
 			}
@@ -61,18 +61,26 @@
 
 		configuration: {
 			method: 'get',
-			url: '/document/'
+			url: 'content/document.html'
 		},
 
 		handler: function(pt, config){
-			var content = null,
-				action = this;
+			var action = this,
+				parser = null,
+				content = null,
+				sections = [],
+				container = pt.getContainerElement();
 
 			var request = new Request.HTML({
 				url: config.url,
 				method: config.method,
 				onSuccess: function(tree, elements, html, js){
-					elements.each(function(element, key){
+
+					parser = new Element('div', { html: html });
+					sections = parser.getElements('section');
+
+					sections.each(function(element, key){
+						element.inject(container);
 						content = new Presentation.Content(element);
 						pt.addContent(content);
 					});
