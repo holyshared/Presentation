@@ -2,14 +2,22 @@
 
 this.addEvent('domready', function(){
 
-	var p = new Presentation('presentation');
+    var pt = new Presentation('presentation');
 
-    p.addFilter(yournamespace.KeywordFilter);
+    var bootstrapper = new Moostrap(Moostrap.ASYNC_EXECUTER, yournamespace.Module, {
+        onSuccess: function(){
+        	pt.displayFullScreen().start();
+        },
+        onFailure: function(error){
+            if (error instanceof Error){
+                throw error;
+            } else {
+            	throw new Error(error.statusText);
+            }
+        }
+    });
 
-    p.addHelper(new yournamespace.Controller());
-
-	p.displayFullScreen()
-		.start();
+    bootstrapper.execute(pt);
 
 });
 
